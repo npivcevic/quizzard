@@ -14,6 +14,4 @@ public class Answer
     public string Text { get; set; }
 
     public bool isCorrect { get; set; }
-
-    public Question Question { get; set; }
 }
