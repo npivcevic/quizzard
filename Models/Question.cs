@@ -11,6 +11,7 @@ public class Question
     [Key]
     public Guid ID { get; set; }
 
+    [Required]
     public string Text { get; set; }
 
     public List<Answer> Answers {get; set;}

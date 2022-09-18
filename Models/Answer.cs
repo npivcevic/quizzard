@@ -11,7 +11,9 @@ public class Answer
     [Key]
     public Guid ID { get; set; }
 
+    [Required]
     public string Text { get; set; }
 
+    [Required]
     public bool isCorrect { get; set; }
 }
