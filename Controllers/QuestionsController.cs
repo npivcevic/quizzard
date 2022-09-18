@@ -61,7 +61,16 @@ namespace quizzard.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(question).State = EntityState.Modified;
+
+
+            var dbQuestion = _context.Questions
+                .Include(q => q.Answers)
+                .FirstOrDefault(q => q.ID.Equals(id));
+        
+            _context.RemoveRange(dbQuestion.Answers);
+
+            dbQuestion.Text = question.Text;
+            dbQuestion.Answers = question.Answers;
 
             try
             {
