@@ -30,7 +30,7 @@
             <td>{{q.answers[1].text}}</td>
             <td>{{q.answers[2].text}}</td>
             <td>{{q.answers[3].text}}</td>
-            <td><button type="button" class="btn btn-outline-secondary">Edit</button>
+            <td><button type="button" class="btn btn-outline-secondary" (click)="deleteQuestion(q.id)">Edit</button>
                 <button type="button" class="btn btn-outline-secondary">Delete</button>
             </td>
           </tr>

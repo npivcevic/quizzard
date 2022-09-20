@@ -17,6 +17,11 @@ export class QuestionsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.questions = this.questionsService.getQuestions()
+    
+  }
+  deleteQuestion(id:string){
+    console.log(id)
+    this.questionsService.deleteQuestion(id)
   }
 
 }

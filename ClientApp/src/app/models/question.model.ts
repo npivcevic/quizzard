@@ -1,7 +1,7 @@
 import { Answer } from './answer.model';
 
 export interface Question {
-    id?: string;
+    id: string;
     text: string;
     answers: Answer[];
   }

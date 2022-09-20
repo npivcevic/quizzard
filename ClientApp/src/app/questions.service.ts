@@ -21,4 +21,9 @@ export class QuestionsService {
     return this.questions*/
     return this.questions
   }
+  deleteQuestion(id: string){
+    console.log(this.baseUrl + 'api/questions/'+id)
+    this.http.delete(this.baseUrl + 'api/questions/'+id).subscribe(()=>{})
+  }
+
 }
