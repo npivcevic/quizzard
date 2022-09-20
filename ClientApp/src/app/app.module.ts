@@ -12,7 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
-import { QuestionPageComponent } from './question-page/question-page.component';
+import { QuestionsPageComponent } from './questions-page/questions-page.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { QuestionPageComponent } from './question-page/question-page.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    QuestionPageComponent
+    QuestionsPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,7 +32,7 @@ import { QuestionPageComponent } from './question-page/question-page.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-      { path: 'question-page', component: QuestionPageComponent, },
+      { path: 'questions', component: QuestionsPageComponent, },
     ])
   ],
   providers: [
