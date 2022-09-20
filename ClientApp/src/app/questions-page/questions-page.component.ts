@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {QuestionsService} from '../questions.service'
+import { Question } from '../models/question.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-questions-page',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuestionsPageComponent implements OnInit {
 
-  constructor() { }
+  questions!: Observable<Question[]>;
+  constructor(private questionsService: QuestionsService) { 
+
+  }
 
   ngOnInit(): void {
+    this.questions = this.questionsService.getQuestions()
   }
 
 }

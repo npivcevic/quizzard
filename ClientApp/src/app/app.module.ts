@@ -13,8 +13,6 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { QuestionsPageComponent } from './questions-page/questions-page.component';
-import { QuizPageComponent } from './quiz-page/quiz-page.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,8 +20,7 @@ import { QuizPageComponent } from './quiz-page/quiz-page.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    QuestionsPageComponent,
-    QuizPageComponent
+    QuestionsPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -35,7 +32,6 @@ import { QuizPageComponent } from './quiz-page/quiz-page.component';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'questions', component: QuestionsPageComponent, },
-      { path: 'quiz', component: QuizPageComponent},
     ])
   ],
   providers: [

@@ -1,5 +1,16 @@
 <div id="questions-page">
-    <h1>This is a question page</h1> 
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1>This is a question page</h1> 
+        </div>
+        <div class="col">
+          <div class="float-right">
+            <button>add q</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <table class="table">
         <thead class="thead-light">
           <tr>
@@ -12,44 +23,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td><button type="button" class="btn btn-outline-secondary">Edit</button>
-                <button type="button" class="btn btn-outline-secondary">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>2</td>
-            <td>2</td>
-            <td>2</td>
-            <td>2</td>
-            <td>2</td>
-            <td><button type="button" class="btn btn-outline-secondary">Edit</button>
-                <button type="button" class="btn btn-outline-secondary">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>3</td>
-            <td>3</td>
-            <td>3</td>
-            <td>3</td>
-            <td>3</td>
+          <tr *ngFor="let q of questions | async">
+            <th scope="row"></th>
+            <td>{{q.text}}</td>
+            <td>{{q.answers[0].text}}</td>
+            <td>{{q.answers[1].text}}</td>
+            <td>{{q.answers[2].text}}</td>
+            <td>{{q.answers[3].text}}</td>
             <td><button type="button" class="btn btn-outline-secondary">Edit</button>
                 <button type="button" class="btn btn-outline-secondary">Delete</button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="container">
-        <div class="row">
-            <button type="button" [routerLink]="['/quiz']" class="btn btn-secondary btn-lg btn-block">Play</button>
-        </div>
-      </div>
+
     </div>
