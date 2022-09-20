@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -13,6 +13,7 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { QuestionsPageComponent } from './questions-page/questions-page.component';
+import { QuizPageComponent } from './quiz-page/quiz-page.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { QuestionsPageComponent } from './questions-page/questions-page.componen
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    QuestionsPageComponent
+    QuestionsPageComponent,
+    QuizPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,6 +35,7 @@ import { QuestionsPageComponent } from './questions-page/questions-page.componen
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'questions', component: QuestionsPageComponent, },
+      { path: 'quiz', component: QuizPageComponent},
     ])
   ],
   providers: [
