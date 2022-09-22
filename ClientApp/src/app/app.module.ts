@@ -14,6 +14,7 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { QuestionsPageComponent } from './questions-page/questions-page.component';
 import { MatDialogModule} from '@angular/material';
+import { AddQuestionComponent } from './add-question/add-question.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MatDialogModule} from '@angular/material';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    QuestionsPageComponent
+    QuestionsPageComponent,
+    AddQuestionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
