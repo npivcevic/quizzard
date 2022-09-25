@@ -14,6 +14,8 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { AddquestionComponent } from './addquestion/addquestion.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AmaterialModule } from './amaterial/amaterial.module';
 
 
 @NgModule({
@@ -28,6 +30,7 @@ import { AddquestionComponent } from './addquestion/addquestion.component';
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    AmaterialModule,
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
@@ -36,7 +39,8 @@ import { AddquestionComponent } from './addquestion/addquestion.component';
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'addquestion', component: AddquestionComponent}
 
-    ])
+    ]),
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
