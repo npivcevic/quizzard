@@ -1,0 +1,34 @@
+<div class="add-question-form">
+    <form #addquestionForm="ngForm" (ngSubmit)="postQuestion(question)">
+        <mat-form-field appearance="outline">
+            <mat-label>Question</mat-label>
+            <input matInput name="question" [(ngModel)]="question.text">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="outline">
+            <mat-label>Answer 1</mat-label>
+            <input matInput name="answer" [(ngModel)]="question.answers[0].text">
+          </mat-form-field>
+          <input type="checkbox" name="isCorrect" [(ngModel)]="question.answers[0].isCorrect">Correct Answer
+          <br>
+          <mat-form-field appearance="outline">
+            <mat-label>Answer 2</mat-label>
+            <input matInput name="answer" [(ngModel)]="question.answers[1].text">
+          </mat-form-field>
+          <input type="checkbox" name="isCorrect" [(ngModel)]="question.answers[1].isCorrect">Correct Answer
+          <br>
+          <mat-form-field appearance="outline">
+            <mat-label>Answer 3</mat-label>
+            <input matInput name="answer" [(ngModel)]="question.answers[2].text">
+          </mat-form-field>
+          <input type="checkbox" name="isCorrect" [(ngModel)]="question.answers[2].isCorrect">Correct Answer
+          <br>
+          <mat-form-field appearance="outline">
+            <mat-label>Answer 4</mat-label>
+            <input matInput name="answer" [(ngModel)]="question.answers[3].text">
+          </mat-form-field>
+          <input type="checkbox" name="isCorrect" [(ngModel)]="question.answers[3].isCorrect">Correct Answer
+          <br>
+          <button mat-raised-button color="primary" type="submit">Add </button>
+    </form>
+</div>

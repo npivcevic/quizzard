@@ -27,6 +27,13 @@
           >
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a class="nav-link text-dark" [routerLink]="['/add-question']">AddQuestion</a>
+          </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/counter']"
               >Counter</a
