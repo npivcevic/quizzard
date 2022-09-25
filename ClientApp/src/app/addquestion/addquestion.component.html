@@ -1,0 +1,41 @@
+<div>
+    <form  #addquestion="ngForm" (ngSubmit)="addQuestion()">
+
+        <div ngModelGroup="question">
+            <label for="question">Question</label>
+            <input type="text" name="question"  [(ngModel)]="question.text">
+        </div>
+            <br>
+        <div ngModelGroup="answers1">
+            <label for="answer1">Answer1</label>
+            <input type="text" name="text" id="answer1" [(ngModel)]="question.answers[0].text">
+            <input type="checkbox" name="isCorrect" id="checkbox1" [(ngModel)]="question.answers[0].isCorrect">
+        </div>
+            <br>
+        <div ngModelGroup="answers2">
+            <label for="answer2">Answer2</label>
+            <input type="text" name="text" id="answer2" [(ngModel)]="question.answers[1].text">
+            <input type="checkbox" name="isCorrect" id="checkbox2" [(ngModel)]="question.answers[1].isCorrect">         
+        </div>
+            <br>
+        <div ngModelGroup="answers3">
+            <label for="answer3">Answer3</label>
+            <input type="text" name="text" id="answer3" [(ngModel)]="question.answers[2].text">
+            <input type="checkbox" name="isCorrect" id="checkbox3" [(ngModel)]="question.answers[2].isCorrect">
+            <br>
+        </div>
+            <br>
+        <div ngModelGroup="answers4">
+            <label for="answer4">Answer4</label>
+            <input type="text" name="text" id="answer4" [(ngModel)]="question.answers[3].text">
+            <input type="checkbox" name="isCorrect" id="checkbox4" [(ngModel)]="question.answers[3].isCorrect">
+            <br>
+        </div>
+            <br>           
+            <button type="submit">Add Question</button>
+
+    </form>
+</div>
+
+<div>
+</div>
