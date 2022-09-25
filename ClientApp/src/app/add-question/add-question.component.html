@@ -1,8 +1,8 @@
 <div class="add-question-form">
-    <form #addquestionForm="ngForm" (ngSubmit)="postQuestion(question)">
+    <form  #addquestionForm="ngForm" (ngSubmit)="postQuestion(question)">
         <mat-form-field appearance="outline">
             <mat-label>Question</mat-label>
-            <input matInput name="question" [(ngModel)]="question.text">
+            <input  matInput name="question" [(ngModel)]="question.text">
           </mat-form-field>
           <br>
           <mat-form-field appearance="outline">
@@ -32,3 +32,4 @@
           <button mat-raised-button color="primary" type="submit">Add </button>
     </form>
 </div>
+<button mat-raised-button type="button" (click)="toggle()"></button>

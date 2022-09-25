@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Question } from '../model/question';
-
+import { PostserviceService } from '../postservice.service';
 @Component({
   selector: 'app-add-question',
   templateUrl: './add-question.component.html',
@@ -10,7 +10,7 @@ import { Question } from '../model/question';
 export class AddQuestionComponent implements OnInit {
 
   
-  constructor(private http : HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private POST : PostserviceService) { }
 
   ngOnInit(): void {
   }
@@ -24,12 +24,17 @@ export class AddQuestionComponent implements OnInit {
       {text:"", isCorrect:false}
     ]
   }
+
+  isDisabled:boolean = false
+
   postQuestion(x: Question){
     
-    this.http.post(this.baseUrl+"api/Questions", this.question )
-    .subscribe((response)=>{
-      console.log(response)
-    })
+    this.POST.postQuestion(this.question)
+  }
+
+  toggle(){
+    this.isDisabled=!this.isDisabled
+    console.log(this.isDisabled) 
   }
 
 }
