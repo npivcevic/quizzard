@@ -10,7 +10,7 @@ import { Question } from '../interface/question';
 })
 export class AddquestionComponent implements OnInit {
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { 
   }
 
   question : Question = {
@@ -29,7 +29,7 @@ export class AddquestionComponent implements OnInit {
     addQuestion(){
 
       console.log(this.question)
-      this.http.post("https://localhost:7181/api/Questions", this.question)
+      this.http.post(this.baseUrl + "api/Questions", this.question)
       .subscribe((response)=>{
         console.log(response)
       })
