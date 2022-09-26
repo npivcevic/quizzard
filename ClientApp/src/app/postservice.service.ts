@@ -20,8 +20,8 @@ export class PostserviceService {
     ]
   }
   postQuestion(x: Question){
-    
-    this.http.post(this.baseUrl+"api/Questions", this.question )
+    console.log(this.question)
+    this.http.post(this.baseUrl+"api/Questions", x)
     .subscribe((response)=>{
       console.log(response)
     })
