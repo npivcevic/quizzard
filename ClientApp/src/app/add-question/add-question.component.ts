@@ -13,6 +13,10 @@ export class AddQuestionComponent implements OnInit {
   constructor(private POST : PostserviceService) { }
 
   ngOnInit(): void {
+
+    this.POST.getQuestions()
+      .subscribe( data => this.questions = data)
+    
   }
 
   question:Question={
@@ -24,6 +28,8 @@ export class AddQuestionComponent implements OnInit {
       {text:"", isCorrect:false}
     ]
   }
+
+  public questions:Question[] =[];
 
   isDisabled:boolean = false
 

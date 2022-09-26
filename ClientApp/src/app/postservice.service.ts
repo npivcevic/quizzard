@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Question } from './model/question';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -25,6 +26,11 @@ export class PostserviceService {
     .subscribe((response)=>{
       console.log(response)
     })
+  }
+
+  getQuestions():Observable<Question[]>{
+
+    return this.http.get<Question[]>(this.baseUrl+"api/Questions")
   }
 
 }
