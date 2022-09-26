@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {QuestionsService} from '../questions.service'
 import { Question } from '../models/question.model';
 import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
 import { AddQuestionComponent } from '../add-question/add-question.component';
 
 @Component({
@@ -13,8 +12,7 @@ import { AddQuestionComponent } from '../add-question/add-question.component';
 export class QuestionsPageComponent implements OnInit {
 
   questions!: Observable<Question[]>;
-  constructor(private questionsService: QuestionsService,
-              private modal : MatDialog) { 
+  constructor(private questionsService: QuestionsService) { 
 
   }
 
@@ -25,9 +23,5 @@ export class QuestionsPageComponent implements OnInit {
   deleteQuestion(id:string){
     console.log(id)
     this.questionsService.deleteQuestion(id)
-  }
-
-  addQuestion(){
-    this.modal.open(AddQuestionComponent);
   }
 }
