@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Question } from '../model/question';
 import { PostserviceService } from '../postservice.service';

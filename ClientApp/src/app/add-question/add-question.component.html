@@ -32,3 +32,9 @@
           <button mat-raised-button color="primary" type="submit">Add </button>
     </form>
 </div>
+<div *ngFor="let q of questions">
+<div>{{q.text}}</div>
+<div>{{q.answers[0].text}}</div>
+<div>{{q.answers[1].text}}</div>
+
+</div>
