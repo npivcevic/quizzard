@@ -1,5 +1,5 @@
 export interface Question{
-    id?:string
+    id:string
     text : string,
     answers: [
         {"text": string,"isCorrect": boolean},

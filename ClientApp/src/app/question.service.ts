@@ -36,7 +36,7 @@ export class QuestionService {
 
   deleteQuestion(id:string){
 
-    this.http.delete(this.baseUrl+"api/Questions"+id)
+    this.http.delete(this.baseUrl+"api/Questions/"+id).subscribe(()=>[])
   }
 
 }

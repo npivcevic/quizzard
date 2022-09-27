@@ -1,5 +1,5 @@
 <div class="add-question-form" *ngFor="let question of questions">
-    <form  #addquestionForm="ngForm" (ngSubmit)="deleteQuestion(question.text)">
+    <form  #addquestionForm="ngForm" (ngSubmit)="deleteQuestion(question.id)">
         <mat-form-field appearance="outline">
             <mat-label>Question</mat-label>
             <input  matInput name="question" value={{question.text}}>
@@ -29,9 +29,8 @@
           </mat-form-field>
           <input type="checkbox" name="isCorrect" value={{question.answers[3].isCorrect}}>Correct Answer
           <br>
-          <button mat-raised-button color="primary" type="submit">Delete</button>
+          <button mat-raised-button color="primary" type="submit">{{question.id}}</button>
           {{question.id}}
     </form>
-    
 </div>
 
