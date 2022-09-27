@@ -16,6 +16,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { DeleteQuestionComponent } from './delete-question/delete-question.component';
+import { PutQuestionComponent } from './put-question/put-question.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { DeleteQuestionComponent } from './delete-question/delete-question.compo
     CounterComponent,
     FetchDataComponent,
     AddQuestionComponent,
-    DeleteQuestionComponent
+    DeleteQuestionComponent,
+    PutQuestionComponent
   ],
   imports: [
     MaterialModule,

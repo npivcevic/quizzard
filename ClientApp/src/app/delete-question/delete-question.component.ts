@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Question } from '../model/question';
 import { Questions } from '../model/questions';
+import { PutQuestionComponent } from '../put-question/put-question.component';
 import { QuestionService } from '../question.service';
+
 
 
 @Component({
@@ -11,7 +14,7 @@ import { QuestionService } from '../question.service';
 })
 export class DeleteQuestionComponent implements OnInit {
 
-  constructor(private questionservice:QuestionService) { }
+  constructor(private questionservice:QuestionService, public dialog: MatDialog) { }
 
   public questions: Questions [] = []
 
@@ -29,6 +32,9 @@ export class DeleteQuestionComponent implements OnInit {
     subscribe(data => this.questions = data)
   }
 
-
+  openDialog(){
+    this.dialog.open(PutQuestionComponent)
+    return false
+  }
 
 }
