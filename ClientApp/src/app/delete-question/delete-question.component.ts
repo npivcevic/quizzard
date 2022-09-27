@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Question } from '../model/question';
+import { Questions } from '../model/questions';
 import { QuestionService } from '../question.service';
 
 
@@ -12,7 +13,7 @@ export class DeleteQuestionComponent implements OnInit {
 
   constructor(private questionservice:QuestionService) { }
 
-  public questions: Question[] = []
+  public questions: Questions [] = []
 
   ngOnInit(): void {
 
@@ -23,6 +24,9 @@ export class DeleteQuestionComponent implements OnInit {
 
   deleteQuestion(id:string){
     this.questionservice.deleteQuestion(id)
+
+    this.questionservice.getQuestions().
+    subscribe(data => this.questions = data)
   }
 
 

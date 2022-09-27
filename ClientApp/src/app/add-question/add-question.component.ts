@@ -1,5 +1,7 @@
 import { Component, OnInit} from '@angular/core';
+import { PostQuestion } from '../model/post-question';
 import { Question } from '../model/question';
+import { Questions } from '../model/questions';
 import { QuestionService } from '../question.service';
 @Component({
   selector: 'app-add-question',
@@ -18,9 +20,9 @@ export class AddQuestionComponent implements OnInit {
     
   }
 
-  question:Question={
-    id:"",
-    text: "",
+
+  postquestion: PostQuestion={
+    text:"",
     answers:[
       {text:"", isCorrect:false},
       {text:"", isCorrect:false},
@@ -29,13 +31,13 @@ export class AddQuestionComponent implements OnInit {
     ]
   }
 
-  public questions:Question[] =[];
+  public questions:Questions[] =[];
 
   isDisabled:boolean = false
 
-  postQuestion(x: Question){
+  postQuestion(x: PostQuestion){
     
-    this.questionservice.postQuestion(this.question)
+    this.questionservice.postQuestion(this.postquestion)
   }
 
   toggle(){
