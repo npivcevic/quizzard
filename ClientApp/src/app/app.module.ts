@@ -15,6 +15,7 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
+import { DeleteQuestionComponent } from './delete-question/delete-question.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AddQuestionComponent } from './add-question/add-question.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    AddQuestionComponent
+    AddQuestionComponent,
+    DeleteQuestionComponent
   ],
   imports: [
     MaterialModule,
@@ -35,6 +37,7 @@ import { AddQuestionComponent } from './add-question/add-question.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'add-question', component: AddQuestionComponent },
+      { path: 'delete-question', component: DeleteQuestionComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
     ]),
     BrowserAnimationsModule

@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class PostserviceService {
+export class QuestionService {
 
   constructor(private http : HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   question:Question={
+    id:"",
     text: "",
     answers:[
       {text:"", isCorrect:false},
@@ -31,6 +32,11 @@ export class PostserviceService {
   getQuestions():Observable<Question[]>{
 
     return this.http.get<Question[]>(this.baseUrl+"api/Questions")
+  }
+
+  deleteQuestion(id:string){
+
+    this.http.delete(this.baseUrl+"api/Questions"+id)
   }
 
 }

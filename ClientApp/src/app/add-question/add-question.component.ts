@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Question } from '../model/question';
-import { PostserviceService } from '../postservice.service';
+import { QuestionService } from '../question.service';
 @Component({
   selector: 'app-add-question',
   templateUrl: './add-question.component.html',
@@ -9,16 +9,17 @@ import { PostserviceService } from '../postservice.service';
 export class AddQuestionComponent implements OnInit {
 
   
-  constructor(private POST : PostserviceService) { }
+  constructor(private questionservice : QuestionService) { }
 
   ngOnInit(): void {
 
-    this.POST.getQuestions()
+    this.questionservice.getQuestions()
       .subscribe( data => this.questions = data)
     
   }
 
   question:Question={
+    id:"",
     text: "",
     answers:[
       {text:"", isCorrect:false},
@@ -34,7 +35,7 @@ export class AddQuestionComponent implements OnInit {
 
   postQuestion(x: Question){
     
-    this.POST.postQuestion(this.question)
+    this.questionservice.postQuestion(this.question)
   }
 
   toggle(){
