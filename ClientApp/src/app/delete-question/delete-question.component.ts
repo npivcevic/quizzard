@@ -14,7 +14,7 @@ import { QuestionService } from '../question.service';
 })
 export class DeleteQuestionComponent implements OnInit {
 
-  constructor(private questionservice:QuestionService, public dialog: MatDialog) { }
+  constructor(private questionservice:QuestionService, private dialog: MatDialog) { }
 
   public questions: Questions [] = []
 
@@ -32,9 +32,18 @@ export class DeleteQuestionComponent implements OnInit {
     subscribe(data => this.questions = data)
   }
 
-  openDialog(){
-    this.dialog.open(PutQuestionComponent)
-    return false
+  openDialog(q:string,w:string,e:string,r:string,t:string){
+    this.dialog.open(PutQuestionComponent,
+      {
+        data:{
+          text: q,
+          answer1: w,
+          answer2: e,
+          answer3: r,
+          answer4: t
+        }
+      })
+      return false
   }
 
 }

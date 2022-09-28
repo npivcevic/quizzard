@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-put-question',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PutQuestionComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(@Inject(MAT_DIALOG_DATA) public data:{text:string,answer1:string,answer2:string,answer3:string,answer4:string}) { }
+  
   ngOnInit(): void {
+    
   }
-
+ 
 }

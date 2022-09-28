@@ -29,9 +29,9 @@
           </mat-form-field>
           <input type="checkbox" name="isCorrect" value={{question.answers[3].isCorrect}}>Correct Answer
           <br>
-          <button mat-raised-button color="primary" type="submit">{{question.id}}</button>
-          {{question.id}}
-          <button mat-raised-button (click)="openDialog()">Edit</button> 
+          <button mat-raised-button color="primary" type="submit">Delete</button>
     </form>
+    <button mat-raised-button (click)="openDialog(question.text,question.answers[0].text,question.answers[1].text,question.answers[2].text,question.answers[3].text)">Edit</button> 
+    
 </div>
 
