@@ -4,29 +4,6 @@
         <input  matInput name="question" value={{data.text}}>
       </mat-form-field>
       <br>
-      <mat-form-field appearance="outline">
-        <mat-label>Answer 1</mat-label>
-        <input matInput name="answer" value={{data.answer1}}>
-      </mat-form-field>
-      <input type="checkbox" name="isCorrect">Correct Answer
-      <br>
-      <mat-form-field appearance="outline">
-        <mat-label>Answer 2</mat-label>
-        <input matInput name="answer" value={{data.answer2}}>
-      </mat-form-field>
-      <input type="checkbox" name="isCorrect">Correct Answer
-      <br>
-      <mat-form-field appearance="outline">
-        <mat-label>Answer 3</mat-label>
-        <input matInput name="answer" value={{data.answer3}}>
-      </mat-form-field>
-      <input type="checkbox" name="isCorrect">Correct Answer
-      <br>
-      <mat-form-field appearance="outline">
-        <mat-label>Answer 4</mat-label>
-        <input matInput name="answer" value={{data.answer4}}>
-      </mat-form-field>
-      <input type="checkbox" name="isCorrect">Correct Answer
-      <br>
+      <app-answer-input *ngFor="let answer of data.answers; let i = index" [answer]="answer" [i]="i"></app-answer-input>
       <button mat-raised-button color="primary" type="submit">Change</button>
 </form>

@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { DeleteQuestionComponent } from './delete-question/delete-question.component';
 import { PutQuestionComponent } from './put-question/put-question.component';
+import { AnswerInputComponent } from './answer-input/answer-input.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { PutQuestionComponent } from './put-question/put-question.component';
     FetchDataComponent,
     AddQuestionComponent,
     DeleteQuestionComponent,
-    PutQuestionComponent
+    PutQuestionComponent,
+    AnswerInputComponent
   ],
   imports: [
     MaterialModule,
