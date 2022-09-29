@@ -31,7 +31,6 @@ export class DeleteQuestionComponent implements OnInit {
   }
 
   openDialog(question: Question){
-    console.log(question)
     this.dialog.open(PutQuestionComponent, {data: question})
       return false
   }
