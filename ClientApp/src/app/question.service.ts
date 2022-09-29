@@ -30,4 +30,7 @@ export class QuestionService {
     this.http.delete(this.baseUrl+"api/Questions/"+id).subscribe(()=>[])
   }
 
+    putQuestion(id:string,x :Question){
+      this.http.put(this.baseUrl+"api/Questions/"+id, x).subscribe(()=>{})
+    }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Question } from '../model/question';
+import { QuestionService } from '../question.service';
 
 @Component({
   selector: 'app-put-question',
@@ -9,10 +10,13 @@ import { Question } from '../model/question';
 })
 export class PutQuestionComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:Question) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data:Question, private questionservice : QuestionService) { }
   
   ngOnInit(): void {
-    console.log(this.data)
   }
- 
+
+  test(id:string, x:Question){
+    console.log(this.data)
+    this.questionservice.putQuestion(id, x)
+  } 
 }
