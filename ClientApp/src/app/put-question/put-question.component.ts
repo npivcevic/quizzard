@@ -19,12 +19,6 @@ export class PutQuestionComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-  test(id:string, x:Question){
-    console.log(this.data)
-    this.questionservice.putQuestion(id, x)
-  } 
-
   question:Question={
 
     id:"",

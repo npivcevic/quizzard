@@ -6,6 +6,6 @@
       <br>
       <app-answer-input *ngFor="let answer of data.answers; let i = index" [answer]="answer" [i]="i"></app-answer-input>
 
-      <button mat-raised-button color="primary" type="submit" (click)="test(data.id, data)">Change</button>
+      <button mat-raised-button color="primary" type="submit" (click)="putQuestion(data.id, data)">Change</button>
 
 </form>
