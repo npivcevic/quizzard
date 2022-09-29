@@ -1,6 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { PostQuestion } from '../model/post-question';
 import { QuestionService } from '../question.service';
+import { FormControl } from '@angular/forms';
+
 @Component({
   selector: 'app-add-question',
   templateUrl: './add-question.component.html',
@@ -8,7 +10,8 @@ import { QuestionService } from '../question.service';
 })
 export class AddQuestionComponent implements OnInit {
 
-  
+ 
+
   constructor(private questionservice : QuestionService) { }
 
   ngOnInit(): void {
@@ -24,9 +27,12 @@ export class AddQuestionComponent implements OnInit {
     ]
   }
 
+  questionText = new FormControl(this.postquestion.text)
+
   postQuestion(x: PostQuestion){
-    
-    this.questionservice.postQuestion(this.postquestion)
+
+     
+    this.questionservice.postQuestion(x)
   }
 
   

@@ -3,9 +3,9 @@
       <mat-label>Answer {{i+1}}</mat-label>
       <input matInput name="answer" class="answerTextInput" [(ngModel)]="answer.text">
     </mat-form-field>
-    <input
-        type="checkbox"
-        class="anwerIsCorrectInput"
-        [ngModelOptions]="{standalone: true}"
-        [(ngModel)]="answer.isCorrect">Correct Answer
+     <mat-slide-toggle 
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="answer.isCorrect"
+      color="primary"
+      > </mat-slide-toggle>
   </div>

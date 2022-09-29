@@ -1,34 +1,17 @@
-<div class="add-question-form">
-    <form  #addquestionForm="ngForm" (ngSubmit)="postQuestion(postquestion)">
+<div class="add-question-form" >
+    <form  #addquestionForm="ngForm" (ngSubmit)="postQuestion(this.postquestion)">
         <mat-form-field appearance="fill">
             <mat-label>Question</mat-label>
             <input  matInput name="question" [(ngModel)]="postquestion.text">
           </mat-form-field>
           <br>
+          <div *ngFor="let answer of postquestion.answers; let i = index">
           <mat-form-field appearance="fill">
-            <mat-label>Answer 1</mat-label>
-            <input matInput name="answer" [(ngModel)]="postquestion.answers[0].text">
+            <mat-label>Answer {{i+1}}</mat-label>
+            <input matInput name="answer" [(ngModel)]="postquestion.answers[i].text"> 
           </mat-form-field>      
-          <mat-slide-toggle name="isCorrect" color="primary" [(ngModel)]="postquestion.answers[0].isCorrect"></mat-slide-toggle>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>Answer 2</mat-label>
-            <input matInput name="answer" [(ngModel)]="postquestion.answers[1].text">
-          </mat-form-field>
-          <mat-slide-toggle name="isCorrect" color="primary" [(ngModel)]="postquestion.answers[1].isCorrect"></mat-slide-toggle>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>Answer 3</mat-label>
-            <input matInput name="answer" [(ngModel)]="postquestion.answers[2].text">
-          </mat-form-field>
-          <mat-slide-toggle name="isCorrect" color="primary" [(ngModel)]="postquestion.answers[2].isCorrect"></mat-slide-toggle>
-          <br>
-          <mat-form-field appearance="fill">
-            <mat-label>Answer 4</mat-label>
-            <input matInput name="answer" [(ngModel)]="postquestion.answers[3].text">
-          </mat-form-field>
-          <mat-slide-toggle name="isCorrect" color="primary" [(ngModel)]="postquestion.answers[3].isCorrect"></mat-slide-toggle>
-          <br>
+          <mat-slide-toggle name="isCorrect" color="primary" [(ngModel)]="postquestion.answers[i].isCorrect"></mat-slide-toggle>
+        </div>
           <button mat-raised-button color="primary" type="submit">Add </button>
     </form>
 </div>
