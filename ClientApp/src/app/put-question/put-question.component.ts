@@ -10,21 +10,28 @@ import { QuestionService } from '../question.service';
 })
 export class PutQuestionComponent implements OnInit {
 
+<<<<<<< HEAD
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:Question, private questionservice : QuestionService) { }
 
 
 
+=======
+  constructor(@Inject(MAT_DIALOG_DATA) public data:Question,private questionservice: QuestionService) { }
+>>>>>>> 117b5d95cc5cf62301369533b4f96626324becf6
   
   ngOnInit(): void {
   }
 
+<<<<<<< HEAD
 
   test(id:string, x:Question){
     console.log(this.data)
     this.questionservice.putQuestion(id, x)
   } 
 
+=======
+>>>>>>> 117b5d95cc5cf62301369533b4f96626324becf6
   question:Question={
 
     id:"",
@@ -42,6 +49,12 @@ export class PutQuestionComponent implements OnInit {
     this.questionservice.putquestion(id, this.question)
   }
   
+<<<<<<< HEAD
 
 
+=======
+  test(){
+    console.log(this.question)
+  }
+>>>>>>> 117b5d95cc5cf62301369533b4f96626324becf6
 }
