@@ -55,7 +55,7 @@ export class QuestionsComponent implements OnInit {
 
 @Component({
   selector: 'snack-bar-component-example-snack',
-  template: '<p>Question Deleted</p>'
+  template: '<p align="center" >Question Deleted</p>'
 
 })
 export class DeleteMessage {}

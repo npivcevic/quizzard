@@ -7,7 +7,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 
 
@@ -20,7 +20,8 @@ const MaterialComponents=[
   MatCardModule,
   MatGridListModule,
   MatIconModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  ScrollingModule
 ]
 
 @NgModule({
