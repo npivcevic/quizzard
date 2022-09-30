@@ -1,11 +1,15 @@
 <form #putquestionForm="ngForm">
-    <mat-form-field appearance="outline">
-        <mat-label>Question</mat-label>
-        <input  matInput name="question" [(ngModel)]="data.text">
-      </mat-form-field>
-      <br>
-      <app-answer-input *ngFor="let answer of data.answers; let i = index" [answer]="answer" [i]="i"></app-answer-input>
+  <mat-form-field appearance="outline">
 
-      <button mat-raised-button color="primary" type="submit" (click)="putQuestion(data.id, data)">Change</button>
+    <mat-label>Question</mat-label>
+    <input matInput name="question" [value]="data.text" [(ngModel)]="question.text">
+
+  </mat-form-field>
+
+    <br>
+
+    <app-answer-input *ngFor="let answer of data.answers; let i = index" [answer]="answer" [i]="i"></app-answer-input>
+
+    <button mat-raised-button color="primary" type="submit" (click)="putQuestion(question.id, question)">Change</button>
 
 </form>

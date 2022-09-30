@@ -13,29 +13,24 @@ export class PutQuestionComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:Question, private questionservice : QuestionService) { }
 
-
-
-  
   ngOnInit(): void {
   }
 
   question:Question={
-
-    id:"",
-    text:"",
+    id:this.data.id,
+    text:this.data.text,
     answers:[
-      {text:this.data.answers[0].text,isCorrect:false},
-      {text:"",isCorrect:false},
-      {text:"",isCorrect:false},
-      {text:"",isCorrect:false}
+      {text:this.data.answers[0].text,isCorrect:this.data.answers[0].isCorrect},
+      {text:this.data.answers[1].text,isCorrect:this.data.answers[1].isCorrect},
+      {text:this.data.answers[2].text,isCorrect:this.data.answers[2].isCorrect},
+      {text:this.data.answers[3].text,isCorrect:this.data.answers[3].isCorrect}
     ]
   }
 
-  putQuestion(id:string, question:Question){
+  putQuestion(id:string, questionTemp:Question){
 
-    this.questionservice.putQuestion(id, question)
+   this.questionservice.putQuestion(id, questionTemp)  
+    console.log(this.question)
   }
-  
-
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Answer } from '../model/answer';
 
 @Component({
@@ -10,9 +10,14 @@ export class AnswerInputComponent implements OnInit {
 
   @Input() answer!: Answer;
   @Input() i!: number;
+  @Output() sendAmswers = new EventEmitter<string>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  sendAsnwersEvent(value:string){
+    this.sendAmswers.emit(value)
+  }
 }

@@ -1,7 +1,7 @@
 <div class="answerInput">
     <mat-form-field appearance="outline">
       <mat-label>Answer {{i+1}}</mat-label>
-      <input matInput name="answer" class="answerTextInput" [(ngModel)]="answer.text">
+      <input matInput name="answer" class="answerTextInput" [value]="answer.text">
     </mat-form-field>
      <mat-slide-toggle 
       [ngModelOptions]="{standalone: true}"
