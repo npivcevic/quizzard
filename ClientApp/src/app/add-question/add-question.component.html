@@ -10,7 +10,7 @@
             <mat-label>Answer {{i+1}}</mat-label>
             <input matInput name="answer" [(ngModel)]="postquestion.answers[i].text"> 
           </mat-form-field>      
-          <mat-slide-toggle name="isCorrect" color="primary" [(ngModel)]="postquestion.answers[i].isCorrect"></mat-slide-toggle>
+          <mat-slide-toggle name="isCorrect" color="primary" (click)="singleToggle(i)"  [(ngModel)]="postquestion.answers[i].isCorrect"></mat-slide-toggle>
         </div>
           <button mat-raised-button color="primary" type="submit">Add </button>
     </form>
