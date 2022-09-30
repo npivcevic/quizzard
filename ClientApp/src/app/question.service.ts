@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class QuestionService {
 
-  constructor(private http : HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private http : HttpClient, @Inject('BASE_URL') private baseUrl: string,) { }
 
 
   postQuestion(x: PostQuestion){
@@ -31,12 +31,13 @@ export class QuestionService {
   }
 
 
-    putQuestion(id:string,x :Question){
-      this.http.put(this.baseUrl+"api/Questions/"+id, x).subscribe(()=>{})
-    }
+  putQuestion(id:string,x :Question){
+    this.http.put(this.baseUrl+"api/Questions/"+id, x).subscribe(()=>{})
+  }
 
   putquestion(id:string, x :Question){
-    this.http.put(this.baseUrl+"api/Questions"+id,x)
+    this.http.put(this.baseUrl+"api/Questions/"+id,x).subscribe(()=>{})
   }
 
 }
+

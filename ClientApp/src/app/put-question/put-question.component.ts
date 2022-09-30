@@ -33,7 +33,7 @@ export class PutQuestionComponent implements OnInit {
 
   putQuestion(id:string, question:Question){
 
-    this.questionservice.putquestion(id, this.question)
+    this.questionservice.putquestion(id, question)
   }
   
 

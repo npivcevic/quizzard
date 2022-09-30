@@ -1,0 +1,29 @@
+<mat-card>
+  <button mat-raised-button (click)="openPostDialog()">Add Question</button>
+</mat-card>
+<mat-grid-list gutterSize="20"  cols="3" rowHeight="1.5:1">
+  <mat-grid-tile  *ngFor="let question of questions; let i = index">
+<mat-card>
+  <mat-card-title>Question {{i +1}}</mat-card-title>
+  <mat-card-content>
+    <div>
+      <b>Question Text: </b>{{question.text}}
+      <br>
+      <b>Answers:</b>
+      <br>
+      <ul>
+        <li>{{question.answers[0].text}},{{question.answers[0].isCorrect}}</li>
+        <li>{{question.answers[1].text}},{{question.answers[1].isCorrect}}</li>
+        <li>{{question.answers[2].text}},{{question.answers[2].isCorrect}}</li>
+        <li>{{question.answers[3].text}},{{question.answers[3].isCorrect}}</li>
+      </ul>
+    </div>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-icon-button color="primary" (click)="openPutDialog(question)"><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button  color="primary" (click)="deleteQuestion(question.id)"><mat-icon>delete</mat-icon></button>
+  </mat-card-actions>
+</mat-card>
+</mat-grid-tile>
+</mat-grid-list>
+

@@ -15,7 +15,7 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
-import { DeleteQuestionComponent } from './delete-question/delete-question.component';
+import { QuestionsComponent } from './questions/questions.component';
 import { PutQuestionComponent } from './put-question/put-question.component';
 import { AnswerInputComponent } from './answer-input/answer-input.component';
 
@@ -27,7 +27,7 @@ import { AnswerInputComponent } from './answer-input/answer-input.component';
     CounterComponent,
     FetchDataComponent,
     AddQuestionComponent,
-    DeleteQuestionComponent,
+    QuestionsComponent,
     PutQuestionComponent,
     AnswerInputComponent
   ],
@@ -41,8 +41,7 @@ import { AnswerInputComponent } from './answer-input/answer-input.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
-      { path: 'add-question', component: AddQuestionComponent },
-      { path: 'delete-question', component: DeleteQuestionComponent },
+      { path: 'app-question', component: QuestionsComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
     ]),
     BrowserAnimationsModule
