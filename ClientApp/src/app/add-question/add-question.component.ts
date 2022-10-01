@@ -35,9 +35,9 @@ export class AddQuestionComponent implements OnInit {
   singleToggle( index:number){
    
     this.postquestion.answers.forEach(answer => {
-      answer.isCorrect= false
-      if (answer.text=this.postquestion.answers[index].text) {
-        this.postquestion.answers[index].isCorrect=true
+      answer.isCorrect=false
+      if (answer.text==this.postquestion.answers[index].text) {
+        answer.isCorrect=false
       }
     });    
     console.log(this.postquestion)
