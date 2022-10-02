@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Question } from './model/question';
-import { PostQuestion } from './model/post-question';
+import { PostQuestion } from './model/question';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -14,10 +14,8 @@ export class QuestionService {
 
 
   postQuestion(x: PostQuestion){
-    this.http.post(this.baseUrl+"api/Questions", x)
-    .subscribe((response)=>{
-      console.log(response)
-    })
+    return this.http.post(this.baseUrl+"api/Questions", x)
+     
   }
 
   getQuestions():Observable<Question[]>{
@@ -27,14 +25,12 @@ export class QuestionService {
 
   deleteQuestion(id:string){
 
-    this.http.delete(this.baseUrl+"api/Questions/"+id).subscribe(()=>[])
+    return this.http.delete(this.baseUrl+"api/Questions/"+id)
   }
 
-  putQuestion(id:string,x :Question){
-    this.http.put(this.baseUrl+"api/Questions/"+id, x).subscribe(()=>{})
-  }
+  putQuestion(x :Question){
+    return this.http.put(this.baseUrl+"api/Questions/"+x.id, x)
 
-
-
+}
 }
 

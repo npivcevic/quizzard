@@ -5,3 +5,5 @@ export interface Question{
     text:string,
     answers:Answer[]
 }
+
+export interface PostQuestion extends Omit<Question,'id'>{}

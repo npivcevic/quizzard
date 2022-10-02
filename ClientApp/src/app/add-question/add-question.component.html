@@ -1,18 +1,18 @@
 <div class="add-question-form" >
-    <form  #addquestionForm="ngForm" (ngSubmit)="postQuestion(this.postquestion)">
+    <form  #addquestionForm="ngForm" (ngSubmit)="saveQuestion()">
         <mat-form-field appearance="fill">
             <mat-label>Question</mat-label>
-            <input  matInput name="question" [(ngModel)]="postquestion.text">
+            <input  matInput name="question" [(ngModel)]="question.text" required>
           </mat-form-field>
           <br>
-          <div *ngFor="let answer of postquestion.answers; let i = index">
+          <div *ngFor="let answer of question.answers; let i = index">
           <mat-form-field appearance="fill">
             <mat-label>Answer {{i+1}}</mat-label>
-            <input matInput name="answer" [(ngModel)]="postquestion.answers[i].text"> 
+            <input matInput [name]="'a'+i" [(ngModel)]="answer.text" required> 
           </mat-form-field>      
-          <mat-slide-toggle name="isCorrect" color="primary" (click)="singleToggle(i)"  [(ngModel)]="postquestion.answers[i].isCorrect"></mat-slide-toggle>
+          <mat-slide-toggle name="isCorrect" color="primary" (click)="singleToggle()" [ngModelOptions]="{standalone: true}" [(ngModel)]="answer.isCorrect"></mat-slide-toggle>
         </div>
-          <button mat-raised-button color="primary" type="submit">Add </button>
+          <button mat-raised-button  color="primary" type="submit">Add </button>
     </form>
 </div>
 

@@ -5,14 +5,11 @@
 <mat-grid-list gutterSize="50"  cols="3" rowHeight="400">
   <mat-grid-tile  *ngFor="let question of questions; let i = index">
 <mat-card>
-  <mat-card-title>Question {{i +1}}</mat-card-title>
   <mat-card-content>
     <div>
-      <b>Question Text:</b>
       <div>
         <mat-card class="question-text">{{question.text}}</mat-card>
       </div>
-      <b>Answers:</b>
       <div class="answers">
         <mat-card class="answer">
           {{question.answers[0].text}},{{question.answers[0].isCorrect}} <mat-icon>check</mat-icon>
@@ -31,7 +28,7 @@
   </mat-card-content>
   <mat-card-actions align="end">
     <button mat-icon-button color="primary" (click)="openPutDialog(question)"><mat-icon>edit</mat-icon></button>
-    <button mat-icon-button  color="primary" (click)="deleteQuestion(question.id)"><mat-icon>delete</mat-icon></button>
+    <button mat-icon-button  color="primary" (click)="deleteQuestion(question.id,i)"><mat-icon>delete</mat-icon></button>
   </mat-card-actions>
 </mat-card>
 </mat-grid-tile>

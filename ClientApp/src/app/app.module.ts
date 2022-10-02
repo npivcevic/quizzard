@@ -16,7 +16,6 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
-import { PutQuestionComponent } from './put-question/put-question.component';
 import { AnswerInputComponent } from './answer-input/answer-input.component';
 
 @NgModule({
@@ -28,7 +27,6 @@ import { AnswerInputComponent } from './answer-input/answer-input.component';
     FetchDataComponent,
     AddQuestionComponent,
     QuestionsComponent,
-    PutQuestionComponent,
     AnswerInputComponent
   ],
   imports: [

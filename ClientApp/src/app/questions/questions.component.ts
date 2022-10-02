@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddQuestionComponent } from '../add-question/add-question.component';
 import { Question } from '../model/question';
-import { PutQuestionComponent } from '../put-question/put-question.component';
 import { QuestionService } from '../question.service';
 
 
@@ -25,37 +24,47 @@ export class QuestionsComponent implements OnInit {
   
   }
 
-  deleteQuestion(id:string){
-    this.questionservice.deleteQuestion(id)
+  deleteQuestion(id:string, index:number){
+    this.questionservice.deleteQuestion(id).subscribe(()=>{
+      this.questions.splice(index, 1)
+      this.openSnackBar("question is deleted")
+    },(error)=>{
+      console.log(error)
+     this.openSnackBar("Something went wrong")
+    }
+    )
 
-    this.openSnackBar()
-
-    this.questionservice.getQuestions().
-    subscribe(data => this.questions = data)
   }
 
   openPutDialog(question: Question){
-    this.dialog.open(PutQuestionComponent, {data: question})
+    const dialog = this.dialog.open(AddQuestionComponent, {
+      data: question,
+      width: '50%'
+
+    })
+
+    dialog.afterClosed().subscribe(result=> {
+      if(result){
+        this.questions.splice(this.questions.findIndex(x=>x.id==question.id),1,result)
+      }
+    })
       return false
   }
 
   openPostDialog(){
-    this.dialog.open(AddQuestionComponent,{
+    const dialog = this.dialog.open(AddQuestionComponent,{
       width: '50%'
+    })
+
+    dialog.afterClosed().subscribe(result =>{
+      if(result){
+        this.questions.push(result)
+      }
     })
   }
   
-
-  openSnackBar() {
-    this.snack.openFromComponent(DeleteMessage, {
-      duration: 2000,
-    });
+  openSnackBar(message:string) {
+    this.snack.open(message);
   }
 }
 
-@Component({
-  selector: 'snack-bar-component-example-snack',
-  template: '<p align="center" >Question Deleted</p>'
-
-})
-export class DeleteMessage {}

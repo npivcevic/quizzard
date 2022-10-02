@@ -1,5 +1,7 @@
-import { Component, OnInit} from '@angular/core';
-import { PostQuestion } from '../model/post-question';
+import { Component, OnInit, Inject} from '@angular/core';
+import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
+import { Answer } from '../model/answer';
+import { PostQuestion, Question } from '../model/question';
 import { QuestionService } from '../question.service';
 
 @Component({
@@ -10,52 +12,53 @@ import { QuestionService } from '../question.service';
 export class AddQuestionComponent implements OnInit {
 
 
-  constructor(private questionservice : QuestionService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data:Question, private questionservice : QuestionService, private dialogRef :MatDialogRef<AddQuestionComponent>) { }
 
   ngOnInit(): void {
+
+    if(this.data){
+      this.isNew=false
+      this.question=JSON.parse(JSON.stringify(this.data))
+      console.log(this.question)
+    }
+  
   }
 
+  isNew:boolean = true
 
-  postquestion: PostQuestion={
+  question: PostQuestion | Question={
     text: "",
     answers:[
-      {text:"", isCorrect:false},
+      {text:"", isCorrect:true},
       {text:"", isCorrect:false},
       {text:"", isCorrect:false},
       {text:"", isCorrect:false}
     ]
   }
 
-  postQuestion(x: PostQuestion){
-
-    this.questionservice.postQuestion(x)
-  }
-
-  
-  singleToggle( index:number){
-   
-    this.postquestion.answers.forEach(answer => {
-      answer.isCorrect=false
-      if (answer.text==this.postquestion.answers[index].text) {
-        answer.isCorrect=false
-      }
-    });    
-    console.log(this.postquestion)
-  }
-
-  /*
-  singleToggle1( index:number){
-   
-    for (let i=0;i<this.postquestion.answers.length;i++){
-      this.postquestion.answers[i].isCorrect=false
-      if (this.postquestion.answers[i].text=this.postquestion.answers[index].text) {
-        this.postquestion.answers[i].isCorrect=true
-      }
+  saveQuestion(){
+    if(this.isNew){
+      return this.postQuestion(this.question)
     }
-    console.log(this.postquestion)
+    return this.putQuestion(this.question)
   }
-  */
-  
+
+
+  postQuestion(x: PostQuestion){
+    this.questionservice.postQuestion(x)
+    .subscribe((result)=>{ this.dialogRef.close(result)})
+  }
+
+  putQuestion(questionTemp:any){
+   this.questionservice.putQuestion(questionTemp)
+    .subscribe(()=>{this.dialogRef.close(this.question)})
+  }
+
+  singleToggle(){
+    this.question.answers.forEach(a => {
+      a.isCorrect=false
+    });
+  }
 
 }
 
