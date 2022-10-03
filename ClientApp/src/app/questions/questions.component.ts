@@ -25,10 +25,10 @@ export class QuestionsComponent implements OnInit {
   deleteQuestion(id:string, index:number){
     this.questionservice.deleteQuestion(id).subscribe(()=>{
       this.questions.splice(index, 1)
-      this.openSnackBar("question is deleted",3000)
+      this.openSnackBar("Question is deleted",2000)
     },(error)=>{
       console.log(error)
-     this.openSnackBar("Something went wrong",3000)
+     this.openSnackBar("Something went wrong",2000)
     }
     )
   }
@@ -42,10 +42,10 @@ export class QuestionsComponent implements OnInit {
     dialog.afterClosed().subscribe(result=> {
       if(result){
         this.questions.splice(this.questions.findIndex(x=>x.id==question.id),1,result)
-        this.openSnackBar("Question is updated",3000)
+        this.openSnackBar("Question is updated",2000)
       }
     },(error)=>{
-        this.openSnackBar("Something went wrong",3000)
+        this.openSnackBar("Something went wrong",2000)
       })
     }
 
@@ -57,10 +57,10 @@ export class QuestionsComponent implements OnInit {
     dialog.afterClosed().subscribe(result =>{
       if(result){
         this.questions.push(result)
-        this.openSnackBar("Question is added",3000)
+        this.openSnackBar("Question is added",2000)
       }
     },(error)=>{
-      this.openSnackBar("Something went wrong",3000)
+      this.openSnackBar("Something went wrong",2000)
     }
     )
   }

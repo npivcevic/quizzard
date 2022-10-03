@@ -9,11 +9,6 @@ mat-expansion-panel{
     margin: 10px 0;
 }
 
-.colortest{
-    height: 400px;
-    background-color: rgb(236, 157, 157);
-}
-
 .general-buttons-card{
     display: flex;
     justify-content: center;
@@ -23,7 +18,6 @@ mat-expansion-panel{
     flex-grow:1;
     margin: 0 20px;
 }
-
 
 .answers{
     display: flex;
