@@ -2,7 +2,6 @@
 mat-card{
     width: 100%;
     background: rgba(255, 235, 205, 0.39);
-
 }
 
 mat-expansion-panel{
@@ -24,8 +23,11 @@ mat-expansion-panel{
 .answers{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .answers>div{
-    width: 50%;
+    width: 40%;
+    margin: 10px;
+    background-color: rgb(255, 255, 255);
 }
