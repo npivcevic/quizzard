@@ -8,6 +8,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 
 
@@ -21,7 +23,8 @@ const MaterialComponents=[
   MatGridListModule,
   MatIconModule,
   MatSnackBarModule,
-  ScrollingModule
+  ScrollingModule,
+  MatExpansionModule
 ]
 
 @NgModule({

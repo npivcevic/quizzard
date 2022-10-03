@@ -5,6 +5,11 @@ mat-card{
 
 }
 
+mat-expansion-panel{
+    background: rgba(255, 235, 205, 0.39);
+    margin: 10px 0;
+}
+
 .general-buttons-card{
     display: flex;
     justify-content: center;
@@ -15,16 +20,12 @@ mat-card{
     margin: 0 20px;
 }
 
-.question-text{
-    word-wrap: break-word;
-
-}
 
 .answers{
     display: flex;
     flex-wrap: wrap;
 }
 
-.answer{
+.answers>div{
     width: 50%;
 }

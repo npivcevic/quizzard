@@ -2,35 +2,28 @@
   <button class="general-buttons" color="primary" mat-raised-button (click)="openPostDialog()">Add Question No.{{questions.length+1}}</button>
 </mat-card>
 <br>
-<mat-grid-list gutterSize="50"  cols="3" rowHeight="400">
-  <mat-grid-tile  *ngFor="let question of questions; let i = index">
-<mat-card>
-  <mat-card-content>
-    <div>
-      <div>
-        <mat-card class="question-text">{{question.text}}</mat-card>
-      </div>
-      <div class="answers">
-        <mat-card class="answer">
-          {{question.answers[0].text}},{{question.answers[0].isCorrect}} <mat-icon>check</mat-icon>
-        </mat-card>
-        <mat-card class="answer">
-          {{question.answers[1].text}},{{question.answers[1].isCorrect}}<mat-icon>close</mat-icon>
-        </mat-card>
-        <mat-card class="answer">
-          {{question.answers[2].text}},{{question.answers[2].isCorrect}}<mat-icon>close</mat-icon>
-        </mat-card>
-        <mat-card class="answer">
-          {{question.answers[3].text}},{{question.answers[3].isCorrect}}<mat-icon>close</mat-icon>
+<div *ngFor="let question of questions; let i = index">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+
+      <mat-panel-description>
+        <strong>{{question.text}}</strong>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+  
+    <div class="answers">
+      <div *ngFor="let answer of question.answers let i = index"> 
+        <mat-card>
+          {{question.answers[i].text}},{{question.answers[i].isCorrect}}
         </mat-card>
       </div>
     </div>
-  </mat-card-content>
-  <mat-card-actions align="end">
-    <button mat-icon-button color="primary" (click)="openPutDialog(question)"><mat-icon>edit</mat-icon></button>
-    <button mat-icon-button  color="primary" (click)="deleteQuestion(question.id,i)"><mat-icon>delete</mat-icon></button>
-  </mat-card-actions>
-</mat-card>
-</mat-grid-tile>
-</mat-grid-list>
+    <mat-action-row>
+      <button mat-icon-button color="primary" (click)="openPutDialog(question)"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button  color="primary" (click)="deleteQuestion(question.id,i)"><mat-icon>delete</mat-icon></button>
+    </mat-action-row>
+  
+  </mat-expansion-panel>
+</div>
+
 
