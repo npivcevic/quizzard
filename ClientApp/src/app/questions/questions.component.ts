@@ -18,6 +18,8 @@ export class QuestionsComponent implements OnInit {
 
   public questions: Question [] = []
 
+  public pageSlice = this.questions.slice(0,3);
+
   ngOnInit(): void {
     this.questionservice.getQuestions().
     subscribe(data => {
@@ -30,6 +32,7 @@ export class QuestionsComponent implements OnInit {
     this.questionservice.deleteQuestion(id).subscribe(()=>{
       this.questions.splice(index, 1)
       this.openSnackBar("Question is deleted",2000)
+      this.pageSlice = this.questions.slice(0,3);
     },(error)=>{
       console.log(error)
      this.openSnackBar("Something went wrong",2000)
@@ -51,7 +54,7 @@ export class QuestionsComponent implements OnInit {
     },(error)=>{
         this.openSnackBar("Something went wrong",2000)
       })
-    }
+  }
 
   openPostDialog(){
     const dialog = this.dialog.open(AddQuestionComponent,{
@@ -62,6 +65,7 @@ export class QuestionsComponent implements OnInit {
       if(result){
         this.questions.push(result)
         this.openSnackBar("Question is added",2000)
+        this.pageSlice = this.questions.slice(0,3);
       }
     },(error)=>{
       this.openSnackBar("Something went wrong",2000)
@@ -73,9 +77,6 @@ export class QuestionsComponent implements OnInit {
     this.snack.open(message,"",{duration:duration});
   }
 
-  public pageSlice = this.questions.slice(0,3);
-
-
   onPageChange( event : PageEvent){
 
     const startIndex = event.pageIndex*event.pageSize
@@ -84,6 +85,13 @@ export class QuestionsComponent implements OnInit {
       endIndex = this.questions.length;
     }
     this.pageSlice = this.questions.slice(startIndex, endIndex)
+  }
+
+  searchValue:string = "";
+
+  onSearchValueInput(x:string){
+    this.searchValue = x ;
+    console.log(this.searchValue)
   }
 }
 

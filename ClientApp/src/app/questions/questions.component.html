@@ -1,30 +1,32 @@
 <mat-card class="general-buttons-card" align="start">
-  <app-search-bar></app-search-bar>
+
+  <app-search-bar (searchValueChange)=" onSearchValueInput($event)"></app-search-bar>
+
   <button class="general-buttons" color="primary" mat-raised-button (click)="openPostDialog()">Add Question No.{{questions.length+1}}</button>
 </mat-card>
 <br>
 <div>
 <div *ngFor="let question of pageSlice; let i = index">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-
-      <mat-panel-description>
-        <strong>{{question.text}}</strong>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-  
-    <div class="answers">
-      <div *ngFor="let answer of question.answers let i = index"> 
-        <mat-card [ngStyle]="{background:answer.isCorrect===true ? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)' }">
-          {{question.answers[i].text}}
-        </mat-card>
+  <div *ngIf="searchValue ==='' || question.text.toLowerCase().includes(searchValue)">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-description>
+          <strong>{{question.text}}</strong>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="answers">
+        <div *ngFor="let answer of question.answers let i = index"> 
+          <mat-card [ngStyle]="{background:answer.isCorrect===true ? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)' }">
+            {{question.answers[i].text}}
+          </mat-card>
+        </div>
       </div>
-    </div>
-    <mat-action-row>
-      <button mat-icon-button color="primary" (click)="openPutDialog(question)"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button  color="primary" (click)="deleteQuestion(question.id,i)"><mat-icon>delete</mat-icon></button>
-    </mat-action-row>
-  </mat-expansion-panel>
+      <mat-action-row>
+        <button mat-icon-button color="primary" (click)="openPutDialog(question)"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button  color="primary" (click)="deleteQuestion(question.id,i)"><mat-icon>delete</mat-icon></button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </div>
 </div>
 <mat-paginator [length]="this.questions.length"
                [pageSize]="3"
