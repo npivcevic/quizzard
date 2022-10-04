@@ -1,25 +1,21 @@
-<div class="add-question-form" >
-    <form  #addquestionForm="ngForm" (ngSubmit)="saveQuestion()">
-        <mat-form-field appearance="fill">
-            <mat-label>Question</mat-label>
-            <input  matInput name="question" [(ngModel)]="question.text" required>
-          </mat-form-field>
-          <br>
-          <div *ngFor="let answer of question.answers; let i = index">
-          <mat-form-field appearance="fill">
-            <mat-label>Answer {{i+1}}</mat-label>
-            <input matInput [name]="'a'+i" [(ngModel)]="answer.text" required> 
-          </mat-form-field>      
-          <mat-slide-toggle name="isCorrect" color="primary" (click)="singleToggle()" [ngModelOptions]="{standalone: true}" [(ngModel)]="answer.isCorrect"></mat-slide-toggle>
-        </div>
-        <div *ngIf="this.isNew==true; else elseBlock" >
-          <button mat-raised-button  color="primary" type="submit">Add</button>
-        </div>
-        <ng-template #elseBlock>
-          <div>
-            <button mat-raised-button  color="primary" type="submit">Edit</button>
-          </div>
-        </ng-template>
-    </form>
+<div class="add-question-form">
+  <form #addquestionForm="ngForm" (ngSubmit)="saveQuestion()">
+    <mat-form-field appearance="fill">
+      <mat-label>Question</mat-label>
+      <input matInput name="question" [(ngModel)]="question.text" required>
+    </mat-form-field>
+    <br>
+    <div *ngFor="let answer of question.answers; let i = index">
+      <mat-form-field appearance="fill">
+        <mat-label>Answer {{i+1}}</mat-label>
+        <input matInput [name]="'a'+i" [(ngModel)]="answer.text" required>
+      </mat-form-field>
+      <mat-slide-toggle name="isCorrect" color="primary" (click)="untoggleAllAnswers()"
+        [ngModelOptions]="{standalone: true}" [(ngModel)]="answer.isCorrect">
+      </mat-slide-toggle>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" type="submit">{{this.isNew ? "Add" : "Edit"}}</button>
+    </div>
+  </form>
 </div>
-
