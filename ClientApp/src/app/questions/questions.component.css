@@ -1,0 +1,31 @@
+mat-card{
+    width: 100%;
+    background: rgba(255, 235, 205, 0.39);
+}
+
+mat-expansion-panel{
+    background: rgba(255, 235, 205, 0.39);
+    margin: 10px 0;
+}
+
+.general-buttons-card{
+    display: flex;
+    justify-content: center;
+}
+
+.general-buttons{
+    flex-grow:1;
+    margin: 0 20px;
+}
+
+.answers{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.answers>div{
+    width: 40%;
+    margin: 10px;
+    background-color: rgb(255, 255, 255);
+}
