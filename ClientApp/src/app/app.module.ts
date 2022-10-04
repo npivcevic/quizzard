@@ -16,6 +16,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { QuestionsComponent } from './questions/questions.component';
     CounterComponent,
     FetchDataComponent,
     AddQuestionComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    SearchBarComponent
   ],
   imports: [
     ReactiveFormsModule,
