@@ -2,7 +2,8 @@
   <button class="general-buttons" color="primary" mat-raised-button (click)="openPostDialog()">Add Question No.{{questions.length+1}}</button>
 </mat-card>
 <br>
-<div *ngFor="let question of questions; let i = index">
+<div>
+<div *ngFor="let question of pageSlice; let i = index">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
 
@@ -23,4 +24,10 @@
       <button mat-icon-button  color="primary" (click)="deleteQuestion(question.id,i)"><mat-icon>delete</mat-icon></button>
     </mat-action-row>
   </mat-expansion-panel>
+</div>
+<mat-paginator [length]="this.questions.length"
+               [pageSize]="3"
+               [pageSizeOptions]="[3,6,9]"
+               (page)="onPageChange($event)">
+</mat-paginator>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddQuestionComponent } from '../add-question/add-question.component';
 import { Question } from '../model/question';
@@ -19,7 +20,10 @@ export class QuestionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.questionservice.getQuestions().
-    subscribe(data => this.questions = data)
+    subscribe(data => {
+      this.questions = data
+      this.pageSlice = this.questions.slice(0,3);
+    })
   }
 
   deleteQuestion(id:string, index:number){
@@ -67,6 +71,19 @@ export class QuestionsComponent implements OnInit {
   
   openSnackBar(message:string, duration:number) {
     this.snack.open(message,"",{duration:duration});
+  }
+
+  public pageSlice = this.questions.slice(0,3);
+
+
+  onPageChange( event : PageEvent){
+
+    const startIndex = event.pageIndex*event.pageSize
+    let endIndex = startIndex+event.pageSize
+    if(endIndex > this.questions.length){
+      endIndex = this.questions.length;
+    }
+    this.pageSlice = this.questions.slice(startIndex, endIndex)
   }
 }
 

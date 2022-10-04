@@ -9,10 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatExpansionModule} from '@angular/material/expansion';
-
-
-
-
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 const MaterialComponents=[
   MatButtonModule,
@@ -24,7 +21,8 @@ const MaterialComponents=[
   MatIconModule,
   MatSnackBarModule,
   ScrollingModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatPaginatorModule
 ]
 
 @NgModule({
