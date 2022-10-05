@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject} from '@angular/core';
-import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PostQuestion, Question } from '../model/question';
 import { QuestionService } from '../question.service';
 
@@ -11,53 +11,52 @@ import { QuestionService } from '../question.service';
 export class AddQuestionComponent implements OnInit {
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:Question, private questionservice : QuestionService, private dialogRef :MatDialogRef<AddQuestionComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Question, private questionservice: QuestionService, private dialogRef: MatDialogRef<AddQuestionComponent>) { }
 
-  ngOnInit(): void {
+  isNew: boolean = true
 
-    if(this.data){
-      this.isNew=false
-      this.question=JSON.parse(JSON.stringify(this.data))
-      console.log(this.question)
-    }
-  
-  }
-
-  isNew:boolean = true
-
-  question: PostQuestion | Question={
+  question: PostQuestion | Question = {
     text: "",
-    answers:[
-      {text:"", isCorrect:true},
-      {text:"", isCorrect:false},
-      {text:"", isCorrect:false},
-      {text:"", isCorrect:false}
+    answers: [
+      { text: "", isCorrect: true },
+      { text: "", isCorrect: false },
+      { text: "", isCorrect: false },
+      { text: "", isCorrect: false }
     ]
   }
 
-  saveQuestion(){
-    if(this.isNew){
-      return this.postQuestion(this.question)
+  ngOnInit(): void {
+
+    if (this.data) {
+      this.isNew = false
+      this.question = JSON.parse(JSON.stringify(this.data))
     }
-    return this.putQuestion(this.question)
+
+  }
+
+  saveQuestion() {
+    if (this.isNew) {
+      this.postQuestion(this.question)
+      return
+    }
+    this.putQuestion(this.question)
   }
 
 
-  postQuestion(x: PostQuestion){
+  postQuestion(x: PostQuestion): void {
     this.questionservice.postQuestion(x)
-    .subscribe((result)=>{ this.dialogRef.close(result)})
+      .subscribe((result) => { this.dialogRef.close(result) })
   }
 
-  putQuestion(questionTemp:any){
-   this.questionservice.putQuestion(questionTemp)
-    .subscribe(()=>{this.dialogRef.close(this.question)})
+  putQuestion(questionTemp: any): void {
+    this.questionservice.putQuestion(questionTemp)
+      .subscribe(() => { this.dialogRef.close(this.question) })
   }
 
-  singleToggle(){
+  singleToggle() {
     this.question.answers.forEach(a => {
-      a.isCorrect=false
+      a.isCorrect = false
     });
   }
 
 }
-

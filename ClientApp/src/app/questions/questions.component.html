@@ -6,7 +6,7 @@
 </mat-card>
 <br>
 <div>
-<div *ngFor="let question of pageSlice; let i = index">
+<div *ngFor="let question of questions; let i = index">
   <div *ngIf="searchValue ==='' || question.text.toLowerCase().includes(searchValue)">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -28,9 +28,9 @@
     </mat-expansion-panel>
   </div>
 </div>
-<mat-paginator [length]="this.questions.length"
+<!-- <mat-paginator [length]="this.questions.length"
                [pageSize]="3"
                [pageSizeOptions]="[3,6,9]"
                (page)="onPageChange($event)">
-</mat-paginator>
+</mat-paginator> -->
 </div>

@@ -13,8 +13,8 @@ export class QuestionService {
   constructor(private http : HttpClient, @Inject('BASE_URL') private baseUrl: string,) { }
 
 
-  postQuestion(x: PostQuestion){
-    return this.http.post(this.baseUrl+"api/Questions", x)
+  postQuestion(x: PostQuestion):Observable<Question>{
+    return this.http.post<Question>(this.baseUrl+"api/Questions", x)
      
   }
 
@@ -23,13 +23,13 @@ export class QuestionService {
     return this.http.get<Question[]>(this.baseUrl+"api/Questions")
   }
 
-  deleteQuestion(id:string){
+  deleteQuestion(id:string): Observable<null>{
 
-    return this.http.delete(this.baseUrl+"api/Questions/"+id)
+    return this.http.delete<null>(this.baseUrl+"api/Questions/"+id)
   }
 
-  putQuestion(x :Question){
-    return this.http.put(this.baseUrl+"api/Questions/"+x.id, x)
+  putQuestion(x :Question): Observable<null>{
+    return this.http.put<null>(this.baseUrl+"api/Questions/"+x.id, x)
 
 }
 }
