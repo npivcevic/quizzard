@@ -1,0 +1,15 @@
+<div class="question" >
+    <div class="question-text">
+        <mat-card>
+            {{quiz[currentQuestion].text}}
+        </mat-card>
+    </div>
+    <div class="answers">
+        <div *ngFor="let answer of quiz[currentQuestion].answers">
+            <button mat-raised-button (click)="correctAnswer(answer.isCorrect)">{{answer.text}}</button>
+        </div>
+    </div>      
+</div>
+<div>
+    Your Curent Score Is {{score}}
+</div>

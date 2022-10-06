@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     FetchDataComponent,
     AddQuestionComponent,
     QuestionsComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    QuizComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -40,6 +42,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'app-question', component: QuestionsComponent },
+      { path: 'app-quiz', component: QuizComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
     ]),
     BrowserAnimationsModule

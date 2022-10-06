@@ -1,0 +1,22 @@
+.question{
+    justify-content: center;
+
+}
+.question-text{
+text-align: center;
+}
+
+.answers{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.answers>div{
+    width: 40%;
+    margin: 1%;
+}
+
+button{
+    width: 100%;
+    height: 100px;
+}
