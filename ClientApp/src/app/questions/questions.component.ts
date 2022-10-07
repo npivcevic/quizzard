@@ -14,70 +14,72 @@ import { QuestionService } from '../question.service';
 })
 export class QuestionsComponent implements OnInit {
 
-  constructor(private questionservice:QuestionService, private dialog: MatDialog, private snack: MatSnackBar) { }
+  constructor(private questionservice: QuestionService, private dialog: MatDialog, private snack: MatSnackBar) { }
 
-  public questions: Question [] = []
+  public questions: Question[] = []
 
   // public pageSlice = this.questions.slice(0,3);
 
   ngOnInit(): void {
     this.questionservice.getQuestions().
-    subscribe(data => {
-      this.questions = data
-      // this.pageSlice = this.questions.slice(0,3);
-    })
+      subscribe(data => {
+        this.questions = data
+        // this.pageSlice = this.questions.slice(0,3);
+      })
   }
 
-  deleteQuestion(id:string, index:number){
-    this.questionservice.deleteQuestion(id).subscribe(()=>{
+  deleteQuestion(id: string, index: number) {
+    this.questionservice.deleteQuestion(id).subscribe(() => {
       this.questions.splice(index, 1)
-      this.openSnackBar("Question is deleted",2000)
+      this.openSnackBar("Question is deleted", 2000)
       // this.pageSlice = this.questions.slice(0,3);
-    },(error)=>{
+    }, (error) => {
       console.log(error)
-     this.openSnackBar("Something went wrong",2000)
+      this.openSnackBar("Something went wrong", 2000)
     }
     )
   }
 
-  openPutDialog(question: Question){
+  openPutDialog(question: Question) {
     const dialog = this.dialog.open(AddQuestionComponent, {
       data: question,
       width: '50%'
-      })
+    })
 
     dialog.afterClosed().subscribe({
-      next: (result)=>{
-      if(result){
-        this.questions.splice(this.questions.findIndex(x=>x.id==question.id),1,result)
-        this.openSnackBar("Question is updated",2000)
+      next: (result) => {
+        if (result) {
+          this.questions.splice(this.questions.findIndex(x => x.id == question.id), 1, result)
+          this.openSnackBar("Question is updated", 2000)
+        }
+      },
+      error: (error) => {
+        this.openSnackBar("Something went wrong", 2000)
       }
-    },
-     error: (error)=>{
-        this.openSnackBar("Something went wrong",2000)
-         } 
-      })
+    })
   }
 
-  openPostDialog(){
-    const dialog = this.dialog.open(AddQuestionComponent,{
+  openPostDialog() {
+    const dialog = this.dialog.open(AddQuestionComponent, {
       width: '50%'
     })
 
-    dialog.afterClosed().subscribe(result =>{
-      if(result){
-        this.questions.push(result)
-        this.openSnackBar("Question is added",2000)
-        // this.pageSlice = this.questions.slice(0,3);
+    dialog.afterClosed().subscribe({
+      next: (result) => {
+        if (result) {
+          this.questions.push(result)
+          this.openSnackBar("Question is added", 2000)
+          // this.pageSlice = this.questions.slice(0,3);
+        }
+      },
+      error: (error) => {
+        this.openSnackBar("Something went wrong", 2000)
       }
-    },(error)=>{
-      this.openSnackBar("Something went wrong",2000)
-    }
-    )
+    })
   }
-  
-  openSnackBar(message:string, duration:number) {
-    this.snack.open(message,"",{duration:duration});
+
+  openSnackBar(message: string, duration: number) {
+    this.snack.open(message, "", { duration: duration });
   }
 
   // onPageChange( event : PageEvent){
@@ -90,10 +92,10 @@ export class QuestionsComponent implements OnInit {
   //   this.pageSlice = this.questions.slice(startIndex, endIndex)
   // }
 
-  searchValue:string = "";
+  searchValue: string = "";
 
-  onSearchValueInput(x:string){
-    this.searchValue = x ;
+  onSearchValueInput(x: string) {
+    this.searchValue = x;
     console.log(this.searchValue)
   }
 }

@@ -1,7 +1,9 @@
+import { Answer } from './../model/answer';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PostQuestion, Question } from '../model/question';
 import { QuestionService } from '../question.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-question',
@@ -25,6 +27,7 @@ export class AddQuestionComponent implements OnInit {
     ]
   }
 
+  
   ngOnInit(): void {
 
     if (this.data) {
@@ -34,12 +37,27 @@ export class AddQuestionComponent implements OnInit {
 
   }
 
+  PostQuestionForm = new FormGroup({
+    question_text:new FormControl("",[Validators.required]),
+    answer_text0:new FormControl("",[Validators.required]),
+    answer_isCorrect0:new FormControl(""),
+    answer_text1:new FormControl("",[Validators.required]),
+    answer_isCorrect1:new FormControl(""),
+    answer_text2:new FormControl("",[Validators.required]),
+    answer_isCorrect2:new FormControl(""),
+    answer_text3:new FormControl("",[Validators.required]),
+    answer_isCorrect3:new FormControl("")
+  })
+
   saveQuestion() {
-    if (this.isNew) {
+    if (this.isNew && this.PostQuestionForm.invalid==false) {
       this.postQuestion(this.question)
       return
+    } else if (this.PostQuestionForm.invalid==false){
+      this.putQuestion(this.question)
     }
-    this.putQuestion(this.question)
+    console.log(this.PostQuestionForm.value)
+    
   }
 
 

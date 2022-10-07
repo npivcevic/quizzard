@@ -26,7 +26,7 @@ mat-expansion-panel{
 }
 
 .answers>div{
-    width: 300%;
+    width: 40%;
     margin: 10px;
     background-color: rgb(255, 255, 255);
 }

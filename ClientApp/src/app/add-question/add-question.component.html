@@ -1,16 +1,22 @@
-<div class="add-question-form" >
-    <form  #addquestionForm="ngForm" (ngSubmit)="saveQuestion()">
+<div class="add-question-form">
+    <form  [formGroup]="PostQuestionForm" (ngSubmit)="saveQuestion()">
         <mat-form-field appearance="fill">
             <mat-label>Question</mat-label>
-            <input  matInput name="question" [(ngModel)]="question.text" required>
+            <input  matInput name="question" [(ngModel)]="this.question.text" formControlName="question_text">
           </mat-form-field>
           <br>
           <div *ngFor="let answer of question.answers; let i = index">
           <mat-form-field appearance="fill">
             <mat-label>Answer {{i+1}}</mat-label>
-            <input matInput [name]="'a'+i" [(ngModel)]="answer.text" required> 
+            <input matInput [name]="'a'+i" [(ngModel)]="answer.text" [formControlName]="'answer_text'+i"> 
           </mat-form-field>      
-          <mat-slide-toggle name="isCorrect" color="primary" (click)="singleToggle()" [ngModelOptions]="{standalone: true}" [(ngModel)]="answer.isCorrect"></mat-slide-toggle>
+          <mat-slide-toggle 
+          name="isCorrect" 
+          color="primary" 
+          (click)="singleToggle()" 
+          [ngModelOptions]="{standalone: true}" 
+          [(ngModel)]="answer.isCorrect">
+        </mat-slide-toggle>
         </div>
         <div *ngIf="this.isNew==true; else elseBlock" >
           <button mat-raised-button  color="primary" type="submit">Add</button>
