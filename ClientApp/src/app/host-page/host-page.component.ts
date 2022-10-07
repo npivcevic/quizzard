@@ -17,8 +17,12 @@ export class HostPageComponent implements OnInit {
   }
 
   hostForm = new FormGroup({
-    hostCode:new  FormControl("", [Validators.required])
+    hostCode:new  FormControl("", [Validators.minLength(6)])
   })
+
+  get codeValue(){
+    return this.hostForm.get("hostCode")
+  }
 
   host(){
     console.log(this.hostForm.value)

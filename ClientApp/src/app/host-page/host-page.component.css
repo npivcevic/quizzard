@@ -13,7 +13,11 @@ form{
 }
 
 mat-form-field{
-    width: 60%;
+    width: 40%;
+}
+
+button{
+  width: 20%;
 }
 
 input{

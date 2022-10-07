@@ -3,11 +3,11 @@
         <button class="button-85" mat-button type="submit" [disabled]="hostForm.invalid">Host Game</button>
         <br>
         <div class="code-section">
+            <button mat-raised-button (click)="generateCode(6)">Generate Code</button>
             <mat-form-field appearance="outline">
                 <input matInput 
-                (click)="generateCode(6)"
                 type="text" 
-                placeholder="Click here to generate Code" 
+                placeholder="Game Code" 
                 [ngModel]="this.code" 
                 formControlName="hostCode">
             </mat-form-field>
