@@ -1,0 +1,16 @@
+<div class="page">
+    <form [formGroup]="hostForm" (ngSubmit)="host()">
+        <button class="button-85" mat-button type="submit" [disabled]="hostForm.invalid">Host Game</button>
+        <br>
+        <div class="code-section">
+            <mat-form-field appearance="outline">
+                <input matInput 
+                (click)="generateCode(6)"
+                type="text" 
+                placeholder="Click here to generate Code" 
+                [ngModel]="this.code" 
+                formControlName="hostCode">
+            </mat-form-field>
+        </div>
+    </form>
+</div>

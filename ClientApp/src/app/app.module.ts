@@ -18,6 +18,7 @@ import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { HostPageComponent } from './host-page/host-page.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { QuizComponent } from './quiz/quiz.component';
     AddQuestionComponent,
     QuestionsComponent,
     SearchBarComponent,
-    QuizComponent
+    QuizComponent,
+    HostPageComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -41,6 +43,7 @@ import { QuizComponent } from './quiz/quiz.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
+      { path: 'app-host-page', component: HostPageComponent },
       { path: 'app-question', component: QuestionsComponent },
       { path: 'app-quiz', component: QuizComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
