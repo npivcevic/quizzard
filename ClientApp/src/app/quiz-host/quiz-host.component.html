@@ -1,0 +1,28 @@
+<p>quiz-host works!</p>
+<div>
+    ConnectionId: {{signalRService.connectionId}}
+</div>
+<button class="general-buttons" color="primary" mat-raised-button (click)="hostQuiz()">Host Quiz</button>
+<div>
+    Quiz code: {{quizGroupName}}
+</div>
+
+
+<div>
+    <input matInput name="question" [(ngModel)]="inputData" required>
+    <button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToGroup()">Send data to group</button>
+</div>
+
+<div>
+    Messages received:
+    <div *ngFor="let message of signalRService.data">
+        {{message}}
+    </div>
+</div>
+
+<div>
+    Active players:
+    <div *ngFor="let playerName of signalRService.players">
+        {{playerName}}
+    </div>
+</div>

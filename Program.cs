@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
 using quizzard.Data;
 using quizzard.Models;
+using quizzard.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,10 +25,20 @@ builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 builder.Services.AddRazorPages();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+ builder.Services.AddCors(options =>
+ {
+    options.AddPolicy("CorsPolicy", builder => builder
+        .WithOrigins("https://localhost:44400")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials());
+ });
 
 var app = builder.Build();
 
@@ -47,6 +59,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseIdentityServer();
 app.UseAuthorization();
@@ -63,5 +76,7 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = string.Empty;
 });
+
+app.MapHub<QuizHub>("/quizhub");
 
 app.Run();

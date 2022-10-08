@@ -13,10 +13,12 @@ const PROXY_CONFIG = [
       "/connect",
       "/ApplyDatabaseMigrations",
       "/_framework",
-      "/api"
+      "/api",
+      "/quizhub"
    ],
     target: target,
     secure: false,
+    ws: true,
     headers: {
       Connection: 'Keep-Alive'
     }

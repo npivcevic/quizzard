@@ -16,6 +16,8 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
+import { QuizHostComponent } from './quiz-host/quiz-host.component';
+import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { QuestionsComponent } from './questions/questions.component';
     CounterComponent,
     FetchDataComponent,
     AddQuestionComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    QuizHostComponent,
+    QuizPlayerComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -39,6 +43,8 @@ import { QuestionsComponent } from './questions/questions.component';
       { path: 'counter', component: CounterComponent },
       { path: 'app-question', component: QuestionsComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      { path: 'quiz-host', component: QuizHostComponent },
+      { path: 'quiz-player', component: QuizPlayerComponent },
     ]),
     BrowserAnimationsModule
   ],
