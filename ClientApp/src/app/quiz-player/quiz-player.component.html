@@ -1,25 +1,27 @@
 <p>quiz-player works!</p>
 <div>
-    ConnectionId: {{signalRService.connectionId}}
+    ConnectionId: {{quizPlayerService.signalRService.connectionId}}
 </div>
 <div>
     <label>Group name</label>
     <input matInput name="quizGroupName" [(ngModel)]="quizGroupName" required>
-    <br/>
+    <br />
     <label>Player name</label>
     <input matInput name="playerName" [(ngModel)]="playerName" required>
-    <br/>
+    <br />
     <button class="general-buttons" color="primary" mat-raised-button (click)="joinQuiz()">Join Quiz</button>
 </div>
 
 <div>
     <input matInput name="question" [(ngModel)]="inputData" required>
-    <button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToHost()">Send data to host</button>
+    <button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToHost()">
+        Send data to host
+    </button>
 </div>
 
 <div>
     Messages received:
-    <div *ngFor="let message of signalRService.data">
+    <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
         {{message}}
     </div>
 </div>

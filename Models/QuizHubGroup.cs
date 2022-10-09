@@ -11,8 +11,32 @@ public class QuizHubGroup
 
     public string HostConnectionId { get; set; }
 
-    public QuizHubGroup(String name, String connectionId) {
+    List<string> connectionIds = new List<string>();
+
+    public QuizHubGroup(String name, String hostConnectionId)
+    {
         this.Name = name;
-        this.HostConnectionId = connectionId;
+        this.HostConnectionId = hostConnectionId;
+        this.connectionIds.Add(this.HostConnectionId);
+    }
+
+    public void AddConnectionId(String connectionId)
+    {
+        this.connectionIds.Add(connectionId);
+    }
+
+    public void RemoveConnectionId(String connectionId)
+    {
+        this.connectionIds.Remove(connectionId);
+    }
+
+    public bool IsEmpty()
+    {
+        return this.connectionIds.Count == 0;
+    }
+
+    public bool IsConnectionInGroup(String connectionId)
+    {
+        return this.connectionIds.Contains(connectionId);
     }
 }

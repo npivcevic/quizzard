@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SignalrService } from '../services/signalr.service';
 import { Player } from '../model/player';
+import { QuizHostService } from '../services/quiz-host.service';
+import { QuizPlayerService } from '../services/quiz-player.service';
 
 @Component({
   selector: 'app-quiz-host',
@@ -9,49 +10,20 @@ import { Player } from '../model/player';
 })
 export class QuizHostComponent implements OnInit {
 
-  quizGroupName: string;
   inputData: string = "";
 
-  constructor(public signalRService: SignalrService) {
-    this.quizGroupName = ""
-  }
+  constructor(public quizHostService: QuizHostService) { }
 
   ngOnInit(): void {
-    this.signalRService.startConnection();
-    this.signalRService.addTransferDataListener();
-  }
-
-  public hostQuiz() {
-    this.quizGroupName = this.makeid(5);
-    this.signalRService.hostQuiz(this.quizGroupName)
+    this.quizHostService.initialize();
   }
 
   public sendDataToGroup() {
     console.log('input', this.inputData)
-    this.signalRService.sendToGroup(this.quizGroupName, this.inputData);
+    const data = {
+      action: "Message",
+      data: this.inputData
+    }
+    this.quizHostService.sendToGroup(JSON.stringify(data));
   }
-
-  private makeid(length:number) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * 
- charactersLength));
-   }
-   return result;
 }
-
-}
-
-/*
- {
-   action: "PlayerJoined",
-   data: {
-     connectionId: "asdfaf"
-     name: "Nikola"
-   }
- }
-
-
-*/

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Player } from '../model/player';
+import { QuizPlayerService } from '../services/quiz-player.service';
 import { SignalrService } from '../services/signalr.service';
 
 @Component({
@@ -14,21 +15,24 @@ export class QuizPlayerComponent implements OnInit {
   inputData: string = "";
   playerName: string = "";
 
-  constructor(public signalRService: SignalrService) { }
+  constructor(public quizPlayerService: QuizPlayerService) { }
 
   ngOnInit(): void {
-    this.signalRService.startConnection();
-    this.signalRService.addTransferDataListener();
+    this.quizPlayerService.initialize();
   }
 
   public joinQuiz() {
     console.log('join quiz group name', this.quizGroupName)
-    this.signalRService.joinQuiz(this.quizGroupName, this.playerName)
+    this.quizPlayerService.joinQuiz(this.quizGroupName, this.playerName)
   }
 
   public sendDataToHost() {
     console.log('input', this.inputData)
-    this.signalRService.sendToHost(this.inputData);
+    const data = {
+      action: "Message",
+      data: this.inputData
+    }
+    this.quizPlayerService.sendToHost(JSON.stringify(data));
   }
 
 }

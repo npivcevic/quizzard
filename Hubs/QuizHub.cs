@@ -1,60 +1,115 @@
 using Microsoft.AspNetCore.SignalR;
 using quizzard.Models;
+using System.Text.Json;
 
 namespace quizzard.Hubs;
 
 public class QuizHub : Hub
 {
-    List<QuizHubGroup> groups = new List<QuizHubGroup>();
+    static QuizData quizData = new QuizData();
 
     public async Task BroadcastData(String data) =>
             await Clients.All.SendAsync("transferdata", data);
 
-    public string GetConnectionId() {
+    public string GetConnectionId()
+    {
         return Context.ConnectionId;
-    } 
-
-    public async Task HostQuiz(String groupName)
-    {
-        this.groups.Add(new QuizHubGroup(groupName, Context.ConnectionId));
-        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-        await Clients.Group(groupName).SendAsync("transferdata", "Group created:" + groupName);
     }
-    public async Task JoinQuiz(String groupName, String playerName)
+
+    public async Task HostQuiz()
     {
+        string groupName = quizData.CreateGroup(Context.ConnectionId);
         await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         await Clients.Group(groupName).SendAsync("transferdata",
-        $"{{\"action\":\"PlayerJoined\", \"data\":\"{playerName}\"}}");
+            $"{{\"action\":\"{ActionTypes.GroupCreated}\", \"data\":\"{groupName}\"}}");
     }
 
-    public async Task sendToGroup(String groupName, String data)
+    public async Task JoinQuiz(String groupName, String playerName)
     {
-        // QuizHubGroup? group = this.groups.Find(x => x.Name == groupName);
-        // if (group == null || group.HostConnectionId != Context.ConnectionId)
-        // {
-        //     return;
-        // }
-        await Clients.Group(groupName).SendAsync("transferdata", data);
+        QuizHubGroup? group = quizData.FindGroup(groupName);
+        if (group == null)
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorTryingToJoinNonExistingGroup}\", \"data\":\"{groupName}\"}}");
+            return;
+        }
+
+        group.AddConnectionId(Context.ConnectionId);
+        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+        var playerJoinedDTO = new
+        {
+            action = ActionTypes.PlayerJoined,
+            data = new
+            {
+                name = playerName,
+                connectionId = Context.ConnectionId
+            }
+        };
+        await Clients.Client(group.HostConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(playerJoinedDTO));
+
+
+        var succesfullyJoinedGroupDTO = new
+        {
+            action = ActionTypes.SuccesfullyJoinedGroup,
+            data = groupName
+        };
+        await Clients.Client(Context.ConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(succesfullyJoinedGroupDTO));
     }
 
-    public async Task sendToHost(String connectionId, String data)
+    public async Task SendToGroup(String data)
     {
-        // await Clients.All.SendAsync("transferdata", data);
-        await Clients.Client(connectionId).SendAsync("transferdata", data);
+        QuizHubGroup? group = quizData.FindGroupOfConnectionId(Context.ConnectionId);
+        if (group == null || !quizData.IsConnectionHostOfGroup(group.Name, Context.ConnectionId))
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorSendingToGroup}\", \"data\":\"You are either not a part of a group or you are not the host of the group.\"}}");
+            return;
+        }
+        await Clients.Group(group.Name).SendAsync("transferdata", data);
+    }
+
+    public async Task SendToHost(String data)
+    {
+        QuizHubGroup? group = quizData.FindGroupOfConnectionId(Context.ConnectionId);
+        if (group == null)
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorSendingToHost}\", \"data\":\"You are not a part of any group. Please join a group before you can send to a host\"}}");
+            return;
+        }
+        await Clients.Client(group.HostConnectionId).SendAsync("transferdata", data);
+    }
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        QuizHubGroup? group = quizData.FindGroupOfConnectionId(Context.ConnectionId);
+        if (group == null)
+        {
+            return;
+        }
+
+        if (group.HostConnectionId == Context.ConnectionId)
+        {
+            await Clients.Group(group.Name).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.HostDisconnected}\", \"data\":\"Host disconnected. Game is terminated.\"}}");
+        }
+
+        await Clients.Client(group.HostConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.PlayerDisconnected}\", \"data\":\"{Context.ConnectionId}\"}}");
+        await base.OnDisconnectedAsync(exception);
     }
 }
 
-/*
-1. Host se spoji
-2. Host kreira grupu: createQuiz(string code)
-3. Na hostu se prikaze kod kviza za spojit se, i listu igraca
+static class ActionTypes
+{
+    public const string GroupCreated = "GroupCreated";
+    public const string PlayerJoined = "PlayerJoined";
+    public const string PlayerDisconnected = "PlayerDisconnected";
+    public const string ErrorTryingToJoinNonExistingGroup = "ErrorTryingToJoinNonExistingGroup";
+    public const string ErrorSendingToHost = "ErrorSendingToHost";
+    public const string HostDisconnected = "HostDisconnected";
+    public const string SuccesfullyJoinedGroup = "SuccesfullyJoinedGroup";
+    public const string ErrorSendingToGroup = "ErrorSendingToGroup";
 
-4. Player se spoji
-5. Player joina grupu: joinQuiz(string code, string playerName)
-6. To se brodcasta svima u grupi
-7. Host kad primi poruku "PlayerJoined" prikaze igraca na fronendu i posalje svima u grupi svoj connectionId
-
-8. Kad player dobije poruku "HostConnectionId", zapamti konekciju hosta
-
-
-*/
+}
