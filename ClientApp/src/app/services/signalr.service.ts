@@ -22,7 +22,7 @@ export class SignalrService {
 
     await this.getConnectionId()
 
-    this.hubConnection.on('transferdata', (data) => {
+    this.hubConnection.on('transferdata', (data:any) => {
       console.log('data received', data);
       this.dataHistory.push(data)
       this.dataReceived.next(data)
@@ -38,22 +38,22 @@ export class SignalrService {
   public sendToHost = (data: string) => {
     console.log("sending to host", "data", data)
     this.hubConnection.invoke('sendtohost', data)
-      .catch(err => console.error(err));
+      .catch((err:any) => console.error(err));
   }
 
   public sendToGroup = (data: string) => {
     console.log("sending to group", "data", data)
     this.hubConnection.invoke('sendtogroup', data)
-      .catch(err => console.error(err));
+      .catch((err:any) => console.error(err));
   }
 
   public hostQuiz = () => {
     this.hubConnection.invoke('hostquiz')
-      .catch(err => console.error(err));
+      .catch((err:any) => console.error(err));
   }
 
   public joinQuiz = (groupName: string, playerName: string) => {
     this.hubConnection.invoke('joinquiz', groupName, playerName)
-      .catch(err => console.error(err));
+      .catch((err:any) => console.error(err));
   }
 }
