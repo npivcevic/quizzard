@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PostQuestion, Question } from '../model/question';
 import { QuestionService } from '../question.service';
-import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-question',
@@ -32,79 +32,57 @@ export class AddQuestionComponent implements OnInit {
       this.isNew = false
       this.question.setControl("id", new FormControl)
       this.defaultValues();
-      // this.question = JSON.parse(JSON.stringify(this.data))
-      // this.addExistingAnswers();
-      return
     }
-    // this.addNewAnswers()
   }
 
   question = this.fb.group({
-    // id: new FormControl(""),
-    text: new FormControl(""),
+    text: this.fb.control("", [Validators.required]),
     answers: this.fb.array([
       this.fb.group({
-        text: new FormControl(""),
-        isCorrect: new FormControl(false)
+        text: this.fb.control("", [Validators.required]),
+        isCorrect: this.fb.control(true)
       }),
       this.fb.group({
-        text: new FormControl(""),
-        isCorrect: new FormControl(false)
-      }),     
+        text: this.fb.control("", [Validators.required]),
+        isCorrect: this.fb.control(false)
+      }),
       this.fb.group({
-        text: new FormControl(""),
-        isCorrect: new FormControl(false)
-      }),     
+        text: this.fb.control("", [Validators.required]),
+        isCorrect: this.fb.control(false)
+      }),
       this.fb.group({
-        text: new FormControl(""),
-        isCorrect: new FormControl(false)
+        text: this.fb.control("", [Validators.required]),
+        isCorrect: this.fb.control(false)
       })
     ])
   })
 
-  // answer = this.fb.group({
-  //   text: new FormControl(""),
-  //   isCorrect: new FormControl(null)
-  // })
-
-  get answers():FormArray {
+  get answers(): FormArray {
     return this.question.controls["answers"] as FormArray;
   }
-
-  // addExistingAnswers() {
-  //   this.data.answers.forEach((x) =>
-  //     this.answers.push(this.answer)
-  //   )
-
-  // }
-
-  // addNewAnswers() {
-  //   for (let i = 0; i < 4; i++) {
-  //     this.answers.push(this.answer, )
-  //   }
-  // }
 
   submit() {
     console.log(this.question.value)
   }
 
-  defaultValues(){
+  defaultValues() {
     this.question.patchValue({
-      id:this.data.id,
-      text:this.data.text,
+      id: this.data.id,
+      text: this.data.text,
       answers: this.data.answers
     })
   }
 
   saveQuestion(): void {
-    if (this.isNew) {
+    if (this.isNew && this.question.invalid===false) {
       this.postQuestion(this.question.value)
       console.log(this.question.value)
       return
+    }else if(this.isNew===false){
+      this.putQuestion(this.question.value)
+      console.log(this.question.value)
     }
-    this.putQuestion(this.question.value)
-    console.log(this.question.value)
-
+  
   }
 
   postQuestion(question: PostQuestion): void {
@@ -117,11 +95,12 @@ export class AddQuestionComponent implements OnInit {
       .subscribe(() => { this.dialogRef.close(this.question.value) })
   }
 
-  // untoggleAllAnswers(): void {
-  //   this.question.answers.forEach(q => {
-  //     q.isCorrect = false
-  //   });
-  // }
+  untoggleAllAnswers(): void {
+    this.answers.controls.forEach(q => {
+      q.patchValue({
+        isCorrect: false
+      })
+    });
+  }
 
 }
-

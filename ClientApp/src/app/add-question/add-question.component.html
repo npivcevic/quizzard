@@ -1,12 +1,12 @@
 <!-- <div class="add-question-form">
   <form #addquestionForm="ngForm" (ngSubmit)="saveQuestion()">
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
       <mat-label>Question</mat-label>
       <input matInput name="question" [(ngModel)]="question.text" required>
     </mat-form-field>
     <br>
     <div *ngFor="let answer of question.answers; let i = index">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Answer {{i+1}}</mat-label>
         <input matInput [name]="'a'+i" [(ngModel)]="answer.text" required>
       </mat-form-field>
@@ -23,21 +23,26 @@
 
 <div>
   <div [formGroup]="question" >
-    <label >Text: </label>
-    <input type="text" formControlName="text">
+      <mat-form-field appearance="outline">
+        <mat-label >Question</mat-label >
+        <input matInput type="text" formControlName="text">
+      </mat-form-field>
     <br>
 
     <div formArrayName="answers">
-      <div *ngFor="let answer of answers.controls let index = index">
-        <div [formGroupName]="index">
-          <input type="text" formControlName="text">
-          <mat-slide-toggle formControlName="isCorrect"></mat-slide-toggle>
+      <div *ngFor="let answer of answers.controls let i = index">
+        <div [formGroupName]="i">
+          <mat-form-field appearance="outline">
+            <mat-label>Answer{{i+1}}</mat-label>
+            <input matInput type="text" formControlName="text">
+          </mat-form-field>
+          <mat-slide-toggle (click)="untoggleAllAnswers()"  color="primary" formControlName="isCorrect"></mat-slide-toggle>
         </div>
       </div>
     </div>
 
     <br>
-    <button mat-raised-button (click)="saveQuestion()" >as</button>
+    <button mat-raised-button color="primary" (click)="saveQuestion()" >as</button>
   </div>
 </div>
 
