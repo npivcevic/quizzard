@@ -1,0 +1,23 @@
+.main-frame{
+    border-style: solid;
+    border-radius: 50px;
+}
+
+.top-bar{
+    display: flex;
+}
+
+.domain{
+    text-align:center;
+    padding: 10px;
+    width: 20%;
+    font-size: 50px;
+    border-right: solid;
+}
+
+.top-bar-link{
+    padding: 10px;
+    width: 80%;
+    font-size: 50px;
+    text-align:center;
+}
