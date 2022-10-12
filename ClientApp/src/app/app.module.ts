@@ -18,6 +18,7 @@ import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { QuizHostComponent } from './quiz-host/quiz-host.component';
 import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
     AddQuestionComponent,
     QuestionsComponent,
     QuizHostComponent,
-    QuizPlayerComponent
+    QuizPlayerComponent,
+    QuizComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -45,6 +47,7 @@ import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quiz-player', component: QuizPlayerComponent },
+      { path: 'quiz', component: QuizComponent }
     ]),
     BrowserAnimationsModule
   ],
