@@ -3,6 +3,7 @@
 }
 
 .top-bar{
+    background: rgba(255, 235, 205, 0.39);
     display: flex;
     box-shadow: 0 1px 8px #888888;
 }
@@ -29,11 +30,13 @@
 }
 
 .active-players{
-    border: solid;
-    border-radius: 30px;
-    border-color: #888888;
-    padding: 10px;
     width: 20%;
+    padding: 20px;
+    overflow: auto;
+}
+
+.active-players-card{
+    height: 500px;
 }
 
 mat-card{
@@ -42,4 +45,19 @@ mat-card{
 
 .log{
     border: solid;
+    height: 200px;
+    overflow: auto;
+}
+
+.question{
+    width: 80%;
+    padding: 20px; 
+}
+
+.question-card{
+    height: 500px;
+}
+
+.active-player-card{
+
 }

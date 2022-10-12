@@ -1,41 +1,69 @@
 <div class="main-frame">
+
     <div class="top-bar">
+
         <div class="domain">PubKviz.HR</div>
-        <div class="top-bar-link">IGRAJ NA <a href="">pubkviz.hr/carrera</a></div>
+
+        <div class="top-bar-link">IGRAJ NA {{quizHostService.groupName}}</div>
+
     </div>
+
     <div class="body">
+
         <div class="active-players">
-            Active Players:
-            <mat-card *ngFor="let player of quizHostService.players">
-                {{player.name}}
+            <mat-card class="active-players-card">
+                <mat-card-title style="text-align: center;">
+                    <mat-card>
+                        Active Players
+                    </mat-card>
+                </mat-card-title>
+                <mat-card-content *ngFor="let player of quizHostService.players">
+                    <mat-card class="active-player-card">
+                        {{player.name}}
+                    </mat-card>
+                </mat-card-content>
             </mat-card>
         </div>
-        <div>
-            asdasd
+
+        <div class="question">
+            <mat-card class="question-card">
+                <mat-card-title style="text-align: center;">
+                    <mat-card>
+                        Host Your Quiz
+                    </mat-card>
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-card>
+                        <button (click)="generateGroupCode()" mat-stroked-button>Generate Code</button>
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" [(ngModel)]="quizHostService.groupName">
+                        </mat-form-field>
+                    </mat-card>
+                </mat-card-content>
+            </mat-card>
         </div>
+
     </div>
+
     <div class="log">
-        Messages received:
+        Activity Log:
+        <mat-divider></mat-divider>
         <div *ngFor="let message of quizHostService.signalRService.dataHistory">
             {{message}}
         </div>
     </div>
+
 </div>
 
+
 <div>
-    <div>
-        ConnectionId: {{quizHostService.signalRService.connectionId}}
-    </div>
-    <div>
-        Quiz code: {{ quizHostService.groupName }}
-    </div>
-    
-    <div>
-        <input matInput name="question" [(ngModel)]="inputData" required>
-        <button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToGroup()">
-            Send data to group
-        </button>
-    </div>
-    
+    ConnectionId: {{quizHostService.signalRService.connectionId}}
 </div>
+
+<mat-form-field>
+    <input matInput name="question" [(ngModel)]="inputData" required>
+</mat-form-field>
+<button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToGroup()">
+    Send data to group
+</button>
 
