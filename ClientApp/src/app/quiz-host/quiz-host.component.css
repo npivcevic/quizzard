@@ -1,10 +1,10 @@
 .main-frame{
-    border-style: solid;
-    border-radius: 50px;
+    border-style:none;
 }
 
 .top-bar{
     display: flex;
+    box-shadow: 0 1px 8px #888888;
 }
 
 .domain{
@@ -13,6 +13,7 @@
     width: 20%;
     font-size: 50px;
     border-right: solid;
+    border-color:  #888888;
 }
 
 .top-bar-link{
@@ -20,4 +21,25 @@
     width: 80%;
     font-size: 50px;
     text-align:center;
+}
+
+.body{
+    padding-top: 20px;
+    display: flex;
+}
+
+.active-players{
+    border: solid;
+    border-radius: 30px;
+    border-color: #888888;
+    padding: 10px;
+    width: 20%;
+}
+
+mat-card{
+    background: rgba(255, 235, 205, 0.39);
+}
+
+.log{
+    border: solid;
 }
