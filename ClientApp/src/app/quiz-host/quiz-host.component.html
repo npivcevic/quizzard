@@ -14,7 +14,7 @@
             <mat-card class="active-players-card">
                 <mat-card-title style="text-align: center;">
                     <mat-card>
-                        Active Players
+                        Aktivni igrači
                     </mat-card>
                 </mat-card-title>
                 <mat-card-content *ngFor="let player of quizHostService.players">
@@ -29,15 +29,16 @@
             <mat-card class="question-card">
                 <mat-card-title style="text-align: center;">
                     <mat-card>
-                        Host Your Quiz
+                        Kreiraj svoju kviz sobu
                     </mat-card>
                 </mat-card-title>
                 <mat-card-content>
                     <mat-card>
-                        <button (click)="generateGroupCode()" mat-stroked-button>Generate Code</button>
+                        <button (click)="generateGroupCode()" mat-stroked-button>Generiraj kod</button>
                         <mat-form-field appearance="outline">
-                            <input matInput type="text" [(ngModel)]="quizHostService.groupName">
+                            <input matInput type="text" [(ngModel)]="quizHostService.groupName" disabled="">
                         </mat-form-field>
+                        <button style="width: 10%;" mat-raised-button>Pokreni Kviz</button>
                     </mat-card>
                 </mat-card-content>
             </mat-card>
