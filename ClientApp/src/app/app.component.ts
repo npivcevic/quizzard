@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  public componentOpen:[]=[];
+  public hideNav:boolean=false
+
 }
