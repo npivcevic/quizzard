@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
 
-  public componentOpen:[]=[];
-  public hideNav:boolean=false
+  ngOnInit(): void {
+  }
+
+
 
 }

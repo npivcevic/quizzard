@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Player } from '../model/player';
+import { NavBarService } from '../nav-bar.service';
 import { QuizPlayerService } from '../services/quiz-player.service';
 import { SignalrService } from '../services/signalr.service';
 
@@ -8,17 +9,22 @@ import { SignalrService } from '../services/signalr.service';
   templateUrl: './quiz-player.component.html',
   styleUrls: ['./quiz-player.component.css']
 })
-export class QuizPlayerComponent implements OnInit {
+export class QuizPlayerComponent implements OnInit,OnDestroy {
 
   quizGroupName: string = "";
   inputCode: string = "";
   inputData: string = "";
   playerName: string = "";
 
-  constructor(public quizPlayerService: QuizPlayerService) { }
+  constructor(public quizPlayerService: QuizPlayerService, public navbarservice:NavBarService) { }
 
   ngOnInit(): void {
     this.quizPlayerService.initialize();
+    this.navbarservice.visible=false
+  }
+
+  ngOnDestroy(): void {
+    this.navbarservice.visible=true
   }
 
   public joinQuiz() {

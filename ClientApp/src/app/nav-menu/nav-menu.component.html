@@ -1,4 +1,4 @@
-<header>
+<header *ngIf="navbarservice.visible">
   <nav
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
@@ -31,7 +31,6 @@
             class="nav-item"
             [routerLinkActive]="['link-active']"
             [routerLinkActiveOptions]="{ exact: true }"
-            (click)="hideNavFunction(false)"
           >
             <a class="nav-link text-dark" [routerLink]="['/quiz-host']">Host Quiz</a>
           </li>
