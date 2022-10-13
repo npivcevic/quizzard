@@ -57,3 +57,7 @@ mat-card{
 .question-card{
     height: 500px;
 }
+
+.spinner-block{
+    width: 106px;
+}

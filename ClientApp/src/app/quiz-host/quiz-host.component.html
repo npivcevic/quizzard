@@ -28,18 +28,20 @@
         <div class="question">
             <mat-card class="question-card">
                 <mat-card-content style="text-align: center;">
-                    <button *ngIf="!quizStarted; else elseBlock" (click)="startQuiz()" style="width: 80%;height: 100px;"
+                    <button *ngIf="!quizStarted; else elseBlock" (click)="startQuiz();startGroupQuiz()" style="width: 80%;height: 100px;"
                         mat-raised-button>Pokreni Kviz</button>
                     <ng-template #elseBlock>
                         <div>
 
                             <mat-card>
                                 <div>
-                                    <mat-progress-spinner class="example-margin" color="primary" mode="determinate"
+                                    <div class="spinner-block">
+                                        <mat-progress-spinner color="primary" mode="determinate"
                                         [value]="timeLeft">
                                     </mat-progress-spinner>
-                                    <div style="position:absolute; top: 50px; left: 50px;">
-                                        <b>{{x}}</b>
+                                    <span style="position:relative; top: -61px; left: 0px;">
+                                        {{x}}
+                                    </span>
                                     </div>
                                 </div>
                                 <mat-card>

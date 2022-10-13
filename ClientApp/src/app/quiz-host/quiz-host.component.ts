@@ -14,7 +14,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   inputData: string = "";
   quizStarted: boolean = false
-  totalTimePerQuestion: number = 3000
+  totalTimePerQuestion: number = 20000
   timeLeft: number = 100;
   x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
   curentQuestionIndex: number = -1
@@ -63,6 +63,14 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     const data = {
       action: "Message",
       data: this.inputData
+    }
+    this.quizHostService.sendToGroup(JSON.stringify(data));
+  }
+
+  public startGroupQuiz(){
+    const data = {
+      action: "Start quiz",
+      data: true
     }
     this.quizHostService.sendToGroup(JSON.stringify(data));
   }

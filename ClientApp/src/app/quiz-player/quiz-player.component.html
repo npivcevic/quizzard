@@ -9,47 +9,37 @@
 
     <div class="body">
 
-        <div class="join-group-code">
-            <mat-card class="join-group-code-card-title">
-                <mat-card-title style="text-align: center;">
-                    <mat-card>
-                        Prijavi se
-                    </mat-card>
-                </mat-card-title>
-                <mat-card-content>
-                    <mat-card class="enter-credentials-card">
-                        <div>
-                            <mat-form-field style="width: 100%;" appearance="outline">
-                                <input matInput placeholder="Unesi kod" name="quizGroupName" [(ngModel)]="quizGroupName" required>
-                            </mat-form-field>
-                            <br />
-                            <mat-form-field style="width: 100%;" appearance="outline">
-                                <input matInput placeholder="Unesi ime" name="playerName" [(ngModel)]="playerName" required>
-                            </mat-form-field>
-                            <br />
-                            <button class="join-group-button" color="primary" mat-stroked-button (click)="joinQuiz()">Join Quiz</button>
-                        </div>
-                    </mat-card>
-                </mat-card-content>
-            </mat-card>
-        </div>
-
-        <div class="question">
-            <mat-card class="question-card">
-               Sačekajte početak kviza
-            </mat-card>
-        </div>
-
+    <div class="join-group-code">
+        <mat-card class="join-group-code-card-title">
+            <mat-card-title style="text-align: center;">
+                <mat-card>
+                    Prijavi se
+                </mat-card>
+            </mat-card-title>
+            <mat-card-content>
+                <mat-card class="enter-credentials-card">
+                    <div>
+                        <mat-form-field style="width: 100%; text-align: center;" appearance="outline">
+                            <input matInput placeholder="Unesi kod" name="quizGroupName" [(ngModel)]="quizGroupName" required>
+                        </mat-form-field>
+                        <br />
+                        <mat-form-field style="width: 100%; text-align: center;" appearance="outline">
+                            <input matInput placeholder="Unesi ime" name="playerName" [(ngModel)]="playerName" required>
+                        </mat-form-field>
+                        <br />
+                        <button class="join-group-button" color="primary" mat-stroked-button (click)="joinQuiz()">Join Quiz</button>
+                    </div>
+                </mat-card>
+            </mat-card-content>
+        </mat-card>
     </div>
-
-    <div class="log">
-        Activity Log:
-        <mat-divider></mat-divider>
-        <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
-            {{message}}
-        </div>
+</div>
+<div class="log">
+    Activity Log:
+    <mat-divider></mat-divider>
+    <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
+        {{message}}
     </div>
-    
 </div>
 
 
