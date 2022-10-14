@@ -37,6 +37,14 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.nextQuestion();
   }
 
+  sendQuestiontoPlayer(){
+    const data = {
+      action: "QuestionSent",
+      data: this.quizHostService.questions[this.curentQuestionIndex]
+    }
+    this.quizHostService.sendToGroup(JSON.stringify(data));
+  }
+
   showCorrectAnswer() {
     this.showingCorrectAnswer = true
     setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)

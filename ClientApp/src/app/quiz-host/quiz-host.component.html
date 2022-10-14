@@ -28,7 +28,7 @@
         <div class="question">
             <mat-card class="question-card">
                 <mat-card-content style="text-align: center;">
-                    <button *ngIf="!quizStarted; else elseBlock" (click)="startQuiz();startGroupQuiz()" style="width: 80%;height: 100px;"
+                    <button *ngIf="!quizStarted; else elseBlock" (click)="startQuiz()" style="width: 80%;height: 100px;"
                         mat-raised-button>Pokreni Kviz</button>
                     <ng-template #elseBlock>
                         <div>

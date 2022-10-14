@@ -34,6 +34,35 @@
         </mat-card>
     </div>
 </div>
+
+<div *ngIf="quizPlayerService.currentquestion" >
+    <mat-card>
+        {{quizPlayerService.currentquestion.text}}
+    </mat-card>
+    <div style="display: flex; flex-wrap: wrap; ">
+        <div style="width: 50%;">
+            <mat-card>
+                {{quizPlayerService.currentquestion.answers[0].text}}
+            </mat-card>
+        </div>
+        <div style="width: 50%;">
+            <mat-card>
+                {{quizPlayerService.currentquestion.answers[1].text}}
+            </mat-card>
+        </div>
+        <div style="width: 50%;">
+            <mat-card>
+                {{quizPlayerService.currentquestion.answers[2].text}}
+            </mat-card>
+        </div>
+        <div style="width: 50%;">
+            <mat-card>
+                {{quizPlayerService.currentquestion.answers[3].text}}
+            </mat-card>
+        </div>
+
+    </div>
+</div>
 <div class="log">
     Activity Log:
     <mat-divider></mat-divider>

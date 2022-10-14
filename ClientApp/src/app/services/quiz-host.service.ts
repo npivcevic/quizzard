@@ -37,6 +37,9 @@ export class QuizHostService {
     let message = JSON.parse(data)
 
     switch (message.action) {
+      case 'QuestionSent':
+        console.log('question sent to players', message.data) 
+        break;
       case 'GroupCreated':
         console.log('assiging value to group name', message.data)
         this.groupName = message.data
