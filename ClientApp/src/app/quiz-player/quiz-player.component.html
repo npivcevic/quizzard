@@ -40,27 +40,11 @@
         {{quizPlayerService.currentquestion.text}}
     </mat-card>
     <div style="display: flex; flex-wrap: wrap; ">
-        <div style="width: 50%;">
+        <div *ngFor="let answer of quizPlayerService.currentquestion.answers; let i = index" style="width: 50%;">
             <mat-card>
-                {{quizPlayerService.currentquestion.answers[0].text}}
+                {{answer.text}}
             </mat-card>
         </div>
-        <div style="width: 50%;">
-            <mat-card>
-                {{quizPlayerService.currentquestion.answers[1].text}}
-            </mat-card>
-        </div>
-        <div style="width: 50%;">
-            <mat-card>
-                {{quizPlayerService.currentquestion.answers[2].text}}
-            </mat-card>
-        </div>
-        <div style="width: 50%;">
-            <mat-card>
-                {{quizPlayerService.currentquestion.answers[3].text}}
-            </mat-card>
-        </div>
-
     </div>
 </div>
 <div class="log">

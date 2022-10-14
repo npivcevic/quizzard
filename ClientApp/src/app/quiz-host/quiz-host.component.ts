@@ -52,6 +52,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   nextQuestion() {
     this.curentQuestionIndex++
+    this.sendQuestiontoPlayer()
     this.showingCorrectAnswer = false
     this.timeLeft = 100
     let ref = setInterval(() => {
@@ -62,6 +63,9 @@ export class QuizHostComponent implements OnInit, OnDestroy {
         this.showCorrectAnswer()
       }
     }, this.totalTimePerQuestion / (100 * 2));
+    if(this.timeLeft===0){
+      this.nextQuestion()
+    }
 
   }
 
