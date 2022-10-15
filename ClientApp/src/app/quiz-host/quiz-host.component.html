@@ -28,7 +28,7 @@
         <div class="question">
             <mat-card class="question-card">
                 <mat-card-content style="text-align: center;">
-                    <button *ngIf="!quizStarted; else elseBlock" (click)="startQuiz()" style="width: 80%;height: 100px;"
+                    <button *ngIf="!quizHostService.quizStarted; else elseBlock" (click)="startQuiz()" style="width: 80%;height: 100px;"
                         mat-raised-button>Pokreni Kviz</button>
                     <ng-template #elseBlock>
                         <div>
@@ -37,39 +37,39 @@
                                 <div>
                                     <div class="spinner-block">
                                         <mat-progress-spinner color="primary" mode="determinate"
-                                        [value]="timeLeft">
+                                        [value]="quizHostService.timeLeft">
                                     </mat-progress-spinner>
                                     <span style="position:relative; top: -61px; left: 0px;">
-                                        {{x}}
+                                        {{quizHostService.x}}
                                     </span>
                                     </div>
                                 </div>
                                 <mat-card>
-                                    {{quizHostService.questions[curentQuestionIndex].text}}
+                                    {{quizHostService.questions[quizHostService.curentQuestionIndex].text}}
                                 </mat-card>
                                 <div style="display: flex; flex-wrap: wrap; ">
                                     <div style="width: 50%;">
                                         <mat-card
-                                            [ngStyle]="{background:quizHostService.questions[curentQuestionIndex].answers[0].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':'' }">
-                                            {{quizHostService.questions[curentQuestionIndex].answers[0].text}}
+                                            [ngStyle]="{background:quizHostService.questions[quizHostService.curentQuestionIndex].answers[0].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':'' }">
+                                            {{quizHostService.questions[quizHostService.curentQuestionIndex].answers[0].text}}
                                         </mat-card>
                                     </div>
                                     <div style="width: 50%;">
                                         <mat-card
-                                            [ngStyle]="{background:quizHostService.questions[curentQuestionIndex].answers[1].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
-                                            {{quizHostService.questions[curentQuestionIndex].answers[1].text}}
+                                            [ngStyle]="{background:quizHostService.questions[quizHostService.curentQuestionIndex].answers[1].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
+                                            {{quizHostService.questions[quizHostService.curentQuestionIndex].answers[1].text}}
                                         </mat-card>
                                     </div>
                                     <div style="width: 50%;">
                                         <mat-card
-                                            [ngStyle]="{background:quizHostService.questions[curentQuestionIndex].answers[2].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
-                                            {{quizHostService.questions[curentQuestionIndex].answers[2].text}}
+                                            [ngStyle]="{background:quizHostService.questions[quizHostService.curentQuestionIndex].answers[2].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
+                                            {{quizHostService.questions[quizHostService.curentQuestionIndex].answers[2].text}}
                                         </mat-card>
                                     </div>
                                     <div style="width: 50%;">
                                         <mat-card
-                                            [ngStyle]="{background:quizHostService.questions[curentQuestionIndex].answers[3].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
-                                            {{quizHostService.questions[curentQuestionIndex].answers[3].text}}
+                                            [ngStyle]="{background:quizHostService.questions[quizHostService.curentQuestionIndex].answers[3].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
+                                            {{quizHostService.questions[quizHostService.curentQuestionIndex].answers[3].text}}
                                         </mat-card>
                                     </div>
 

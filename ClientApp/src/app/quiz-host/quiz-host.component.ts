@@ -1,8 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Player } from '../model/player';
 import { QuizHostService } from '../services/quiz-host.service';
-import { QuizPlayerService } from '../services/quiz-player.service';
-import { QuestionsComponent } from '../questions/questions.component';
 import { NavBarService } from '../nav-bar.service';
 
 @Component({
@@ -13,13 +10,13 @@ import { NavBarService } from '../nav-bar.service';
 export class QuizHostComponent implements OnInit, OnDestroy {
 
   inputData: string = "";
-  quizStarted: boolean = false
   totalTimePerQuestion: number = 12000
   timeLeft: number = 100;
   x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
   curentQuestionIndex: number = -1
   showingCorrectAnswer: boolean = false
   nextQuestionDelay: number = 2000
+  
 
   constructor(public quizHostService: QuizHostService, public navbarservice: NavBarService) { }
 
@@ -33,42 +30,8 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   }
 
   startQuiz() {
-    this.quizStarted = true
-    this.nextQuestion();
+    this.quizHostService.startQuiz()
   }
-
-  sendQuestiontoPlayer(){
-    const data = {
-      action: "QuestionSent",
-      data: this.quizHostService.questions[this.curentQuestionIndex]
-    }
-    this.quizHostService.sendToGroup(JSON.stringify(data));
-  }
-
-  showCorrectAnswer() {
-    this.showingCorrectAnswer = true
-    setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
-  }
-
-  nextQuestion() {
-    this.curentQuestionIndex++
-    this.sendQuestiontoPlayer()
-    this.showingCorrectAnswer = false
-    this.timeLeft = 100
-    let ref = setInterval(() => {
-      this.timeLeft -= 0.5
-      this.x = Math.ceil(this.totalTimePerQuestion * this.timeLeft / 100000)
-      if (this.timeLeft <= 0) {
-        clearInterval(ref)
-        this.showCorrectAnswer()
-      }
-    }, this.totalTimePerQuestion / (100 * 2));
-    if(this.timeLeft===0){
-      this.nextQuestion()
-    }
-
-  }
-
 
   public sendDataToGroup() {
     console.log('input', this.inputData)
@@ -77,17 +40,5 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       data: this.inputData
     }
     this.quizHostService.sendToGroup(JSON.stringify(data));
-  }
-
-  public startGroupQuiz(){
-    const data = {
-      action: "Start quiz",
-      data: true
-    }
-    this.quizHostService.sendToGroup(JSON.stringify(data));
-  }
-
-  generateGroupCode() {
-    this.quizHostService.initialize()
   }
 }

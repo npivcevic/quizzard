@@ -9,11 +9,12 @@ import { Subject } from 'rxjs';
 export class QuizPlayerService {
 
   public groupName: Subject<string> = new Subject<string>();
-  public players: string[] = [];
   public currentquestion:Question={} as Question;
   public playerJoined:boolean=false;
   public startQuiz:boolean=false;
-  public answerIsCorrect:boolean=false;
+  public selectedAnswerId:string='';
+  public answerIsSelected:boolean=false;
+  public playerId:string='';
 
 
   constructor(public signalRService: SignalrService) { }
@@ -33,23 +34,36 @@ export class QuizPlayerService {
     this.signalRService.sendToHost(data)
   }
 
+  public sendAnswerToHost(id?:string) {
+    this.selectedAnswerId!=id
+    this.answerIsSelected=true
+    console.log(this.selectedAnswerId)
+    const data = {
+      action: "PlayerAnswered",
+      data: {
+        name: this.playerId,
+        answerId: id 
+      }
+    }
+    this.sendToHost(JSON.stringify(data));
+  }
+
   public processMessage(data: string) {
     console.log("processing message", data)
     let message = JSON.parse(data)
     console.log("message", message)
 
-    if (message.action === "SuccesfullyJoinedGroup") {
-      console.log("Successfuly joined group: ", message.data)
-      this.playerJoined=true
-      console.log(this.playerJoined)
+    switch(message.action){
+      case 'SuccesfullyJoinedGroup':
+        this.playerJoined=true
+        break
+      case 'QuestionSent':
+        this.startQuiz=true
+        this.selectedAnswerId="";
+        this.currentquestion=message.data
+        break
+      default:
+        console.log(`Action not implemented: ${message.action}.`);
     }
-
-    if (message.action === "QuestionSent") {
-      console.log("QuestionRecieved: ", message.data)
-      this.answerIsCorrect=false
-      this.startQuiz=true
-      this.currentquestion=message.data
-    }
-
   }
 }
