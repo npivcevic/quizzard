@@ -1,28 +1,106 @@
-<p>quiz-host works!</p>
+<div class="main-frame">
+
+    <div class="top-bar">
+
+        <div class="domain "><a [routerLink]="['/']">PubKviz.HR</a></div>
+
+        <div class="top-bar-link">Otiđi na pubkviz.hr. Šifra kviza je {{quizHostService.groupName}}</div>
+
+    </div>
+
+    <div class="body">
+
+        <div class="active-players">
+            <mat-card class="active-players-card">
+                <mat-card-title style="text-align: center;">
+                    <mat-card>
+                        Aktivni igrači
+                    </mat-card>
+                </mat-card-title>
+                <mat-card-content *ngFor="let player of quizHostService.players">
+                    <mat-card class="active-player-card">
+                        {{player.name}}
+                    </mat-card>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div class="question">
+            <mat-card class="question-card">
+                <mat-card-content style="text-align: center;">
+                    <button *ngIf="!quizHostService.quizStarted; else elseBlock" (click)="startQuiz()" style="width: 80%;height: 100px;"
+                        mat-raised-button>Pokreni Kviz</button>
+                    <ng-template #elseBlock>
+                        <div>
+
+                            <mat-card>
+                                <div>
+                                    <div class="spinner-block">
+                                        <mat-progress-spinner color="primary" mode="determinate"
+                                        [value]="quizHostService.timeLeft">
+                                    </mat-progress-spinner>
+                                    <span style="position:relative; top: -61px; left: 0px;">
+                                        {{quizHostService.x}}
+                                    </span>
+                                    </div>
+                                </div>
+                                <mat-card>
+                                    {{quizHostService.questions[quizHostService.curentQuestionIndex].text}}
+                                </mat-card>
+                                <div style="display: flex; flex-wrap: wrap; ">
+                                    <div style="width: 50%;">
+                                        <mat-card
+                                            [ngStyle]="{background:quizHostService.questions[quizHostService.curentQuestionIndex].answers[0].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':'' }">
+                                            {{quizHostService.questions[quizHostService.curentQuestionIndex].answers[0].text}}
+                                        </mat-card>
+                                    </div>
+                                    <div style="width: 50%;">
+                                        <mat-card
+                                            [ngStyle]="{background:quizHostService.questions[quizHostService.curentQuestionIndex].answers[1].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
+                                            {{quizHostService.questions[quizHostService.curentQuestionIndex].answers[1].text}}
+                                        </mat-card>
+                                    </div>
+                                    <div style="width: 50%;">
+                                        <mat-card
+                                            [ngStyle]="{background:quizHostService.questions[quizHostService.curentQuestionIndex].answers[2].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
+                                            {{quizHostService.questions[quizHostService.curentQuestionIndex].answers[2].text}}
+                                        </mat-card>
+                                    </div>
+                                    <div style="width: 50%;">
+                                        <mat-card
+                                            [ngStyle]="{background:quizHostService.questions[quizHostService.curentQuestionIndex].answers[3].isCorrect==true && showingCorrectAnswer===true ? 'rgb(153, 211, 153)':''}">
+                                            {{quizHostService.questions[quizHostService.curentQuestionIndex].answers[3].text}}
+                                        </mat-card>
+                                    </div>
+
+                                </div>
+                            </mat-card>
+                        </div>
+                    </ng-template>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+    </div>
+
+    <div class="log">
+        Activity Log:
+        <mat-divider></mat-divider>
+        <div *ngFor="let message of quizHostService.signalRService.dataHistory">
+            {{message}}
+        </div>
+    </div>
+
+</div>
+
+
 <div>
     ConnectionId: {{quizHostService.signalRService.connectionId}}
 </div>
-<div>
-    Quiz code: {{ quizHostService.groupName }}
-</div>
 
-<div>
+<mat-form-field>
     <input matInput name="question" [(ngModel)]="inputData" required>
-    <button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToGroup()">
-        Send data to group
-    </button>
-</div>
-
-<div>
-    Messages received:
-    <div *ngFor="let message of quizHostService.signalRService.dataHistory">
-        {{message}}
-    </div>
-</div>
-
-<div>
-    Active players:
-    <div *ngFor="let player of quizHostService.players">
-        {{player.name}}
-    </div>
-</div>
+</mat-form-field>
+<button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToGroup()">
+    Send data to group
+</button>

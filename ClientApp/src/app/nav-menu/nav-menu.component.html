@@ -1,4 +1,4 @@
-<header>
+<header *ngIf="navbarservice.visible">
   <nav
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
@@ -41,6 +41,13 @@
           >
             <a class="nav-link text-dark" [routerLink]="['/quiz-player']">Join Quiz</a>
           </li>
+          <li
+          class="nav-item"
+          [routerLinkActive]="['link-active']"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link text-dark" [routerLink]="['/quiz']">Quiz</a>
+        </li>
           <li
           class="nav-item"
           [routerLinkActive]="['link-active']"

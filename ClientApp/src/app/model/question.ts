@@ -1,4 +1,4 @@
-import { Answer } from "./answer"
+import { Answer, PostAnswer } from "./answer"
 
 export interface Question {
     id: string,
@@ -6,4 +6,8 @@ export interface Question {
     answers: Answer[]
 }
 
-export interface PostQuestion extends Omit<Question, 'id'> { }
+export interface PostQuestion extends Omit<Question, 'id'> { 
+    answers: PostAnswer[]
+}
+
+
