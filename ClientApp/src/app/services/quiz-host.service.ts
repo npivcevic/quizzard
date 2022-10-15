@@ -88,30 +88,28 @@ export class QuizHostService {
 
 
 
-  public processMessage(data: string) {
-    let message = JSON.parse(data)
-
-    switch (message.action) {
+  public processMessage(data: any) {
+    switch (data.action) {
       case 'QuestionSent':
-        console.log('question sent to players', message.data) 
+        console.log('question sent to players', data.data) 
         break;
       case 'PlayerAnswered':
-        console.log('player sent answer', message.data) 
-        this.playerAnswer=message.data.answerId
+        console.log('player sent answer', data.data) 
+        this.playerAnswer=data.data.answerId
         console.log(this.playerAnswer)
         break;
       case 'GroupCreated':
-        console.log('assiging value to group name', message.data)
-        this.groupName = message.data
+        console.log('assiging value to group name', data.data)
+        this.groupName = data.data
         break;
       case 'PlayerJoined':
-        this.players.push(message.data)
+        this.players.push(data.data)
         break;
       case 'PlayerDisconnected':
-        this.players = this.players.filter((p) => p.connectionId != message.data)
+        this.players = this.players.filter((p) => p.connectionId != data.data)
         break;
       default:
-        console.log(`Action not implemented: ${message.action}.`);
+        console.log(`Action not implemented: ${data.action}.`);
     }
   }
 

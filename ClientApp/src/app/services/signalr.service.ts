@@ -8,8 +8,8 @@ import { Subject } from 'rxjs';
 export class SignalrService {
 
   public hubConnection!: signalR.HubConnection
-  public dataHistory: string[] = [];
-  public dataReceived: Subject<string> = new Subject<string>();
+  public dataHistory: any[] = [];
+  public dataReceived: Subject<any> = new Subject<any>();
   public connectionId: string = "";
 
   constructor(@Inject('BASE_URL') private baseUrl: string) { }
@@ -28,27 +28,25 @@ export class SignalrService {
 
     await this.getConnectionId()
 
-    this.hubConnection.on('transferdata', (data:any) => {
-      console.log('data received', data);
-      this.dataHistory.push(data)
-      this.dataReceived.next(data)
+    this.hubConnection.on('transferdata', (data:string, senderConnectionId:string = "") => {
+      let parsedData = JSON.parse(data);
+      parsedData.senderConnectionId = senderConnectionId
+      this.dataHistory.push(JSON.stringify(parsedData))
+      this.dataReceived.next(parsedData)
     });
   }
 
   private async getConnectionId() {
     const data = await this.hubConnection.invoke('getconnectionid')
-    console.log(data);
     this.connectionId = data;
   }
 
   public sendToHost = (data: string) => {
-    console.log("sending to host", "data", data)
     this.hubConnection.invoke('sendtohost', data)
       .catch((err:any) => console.error(err));
   }
 
   public sendToGroup = (data: string) => {
-    console.log("sending to group", "data", data)
     this.hubConnection.invoke('sendtogroup', data)
       .catch((err:any) => console.error(err));
   }

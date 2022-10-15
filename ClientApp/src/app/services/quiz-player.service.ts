@@ -48,12 +48,8 @@ export class QuizPlayerService {
     this.sendToHost(JSON.stringify(data));
   }
 
-  public processMessage(data: string) {
-    console.log("processing message", data)
-    let message = JSON.parse(data)
-    console.log("message", message)
-
-    switch(message.action){
+  public processMessage(data: any) {
+    switch(data.action){
       case 'SuccesfullyJoinedGroup':
         this.playerJoined=true
         break
@@ -61,10 +57,10 @@ export class QuizPlayerService {
         this.startQuiz=true
         this.selectedAnswerId="";
         this.answerIsSelected=false
-        this.currentquestion=message.data
+        this.currentquestion=data.data
         break
       default:
-        console.log(`Action not implemented: ${message.action}.`);
+        console.log(`Action not implemented: ${data.action}.`);
     }
   }
 }

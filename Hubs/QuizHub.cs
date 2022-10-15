@@ -78,7 +78,8 @@ public class QuizHub : Hub
                 $"{{\"action\":\"{ActionTypes.ErrorSendingToHost}\", \"data\":\"You are not a part of any group. Please join a group before you can send to a host\"}}");
             return;
         }
-        await Clients.Client(group.HostConnectionId).SendAsync("transferdata", data);
+
+        await Clients.Client(group.HostConnectionId).SendAsync("transferdata", data, Context.ConnectionId);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
@@ -111,5 +112,4 @@ static class ActionTypes
     public const string HostDisconnected = "HostDisconnected";
     public const string SuccesfullyJoinedGroup = "SuccesfullyJoinedGroup";
     public const string ErrorSendingToGroup = "ErrorSendingToGroup";
-
 }
