@@ -15,8 +15,14 @@ export class SignalrService {
   constructor(@Inject('BASE_URL') private baseUrl: string) { }
 
   public async startConnection() {
+    // if (this.hubConnection && this.hubConnection.state === "Connected") {
+    //   TODO: handle case when connection is already established
+    // }
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${this.baseUrl}quizhub`)
+      .withUrl(`${this.baseUrl}quizhub`, {
+        skipNegotiation: true,
+        transport: signalR.HttpTransportType.WebSockets
+      })
       .build();
     await this.hubConnection.start();
 

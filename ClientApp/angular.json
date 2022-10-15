@@ -74,7 +74,8 @@
             },
             "development": {
               "browserTarget": "quizzard:build:development",
-              "proxyConfig": "proxy.conf.js"
+              "proxyConfig": "proxy.conf.js",
+              "disableHostCheck": true
             }
           },
           "defaultConfiguration": "development"
