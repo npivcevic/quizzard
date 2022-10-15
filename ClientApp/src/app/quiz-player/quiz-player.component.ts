@@ -15,7 +15,6 @@ export class QuizPlayerComponent implements OnInit, OnDestroy {
   inputCode: string = "";
   inputData: string = "";
   playerName: string = "";
-  questionAnswered:boolean=false
 
   constructor(public quizPlayerService: QuizPlayerService, public navbarservice: NavBarService) { }
 

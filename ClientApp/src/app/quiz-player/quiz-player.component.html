@@ -7,46 +7,49 @@
 
     </div>
 
-    <div class="body">
+    <div class="body" *ngIf="quizPlayerService.startQuiz; then thenBlock else elseBlock"></div>
 
-    <div class="join-group-code">
-        <mat-card class="join-group-code-card-title">
-            <mat-card-title style="text-align: center;">
-                <mat-card>
-                    Prijavi se
-                </mat-card>
-            </mat-card-title>
-            <mat-card-content>
-                <mat-card class="enter-credentials-card">
-                    <div>
-                        <mat-form-field style="width: 100%; text-align: center;" appearance="outline">
-                            <input matInput placeholder="Unesi kod" name="quizGroupName" [(ngModel)]="quizGroupName" required>
-                        </mat-form-field>
-                        <br />
-                        <mat-form-field style="width: 100%; text-align: center;" appearance="outline">
-                            <input matInput placeholder="Unesi ime" name="playerName" [(ngModel)]="playerName" required>
-                        </mat-form-field>
-                        <br />
-                        <button class="join-group-button" color="primary" mat-stroked-button (click)="joinQuiz()">Join Quiz</button>
-                    </div>
-                </mat-card>
-            </mat-card-content>
-        </mat-card>
-    </div>
-</div>
-
-<div *ngIf="quizPlayerService.currentquestion" >
-    <mat-card style="text-align: center;">
-        {{quizPlayerService.currentquestion.text}}
-    </mat-card>
-    <div style="display: flex; flex-wrap: wrap; ">
-        <div *ngFor="let answer of quizPlayerService.currentquestion.answers; let i = index" style="width: 50%;">
-            <mat-card [ngStyle]="{background:answer.isCorrect===true && quizPlayerService.answerIsCorrect===true ? 'rgb(153, 211, 153)' :'' }">
-               <button style="width: 100%;" mat-stroked-button (click)="sendAnswerToHost(answer.isCorrect)">{{answer.text}}</button>
+        <ng-template #elseBlock  class="join-group-code">
+            <mat-card class="join-group-code-card-title">
+                <mat-card-title style="text-align: center;">
+                    <mat-card>
+                        Prijavi se
+                    </mat-card>
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-card class="enter-credentials-card">
+                        <div>
+                            <mat-form-field style="width: 100%; text-align: center;" appearance="outline">
+                                <input matInput placeholder="Unesi kod" name="quizGroupName" [(ngModel)]="quizGroupName" required>
+                            </mat-form-field>
+                            <br />
+                            <mat-form-field style="width: 100%; text-align: center;" appearance="outline">
+                                <input matInput placeholder="Unesi ime" name="playerName" [(ngModel)]="playerName" required>
+                            </mat-form-field>
+                            <br />
+                            <button class="join-group-button" color="primary" mat-stroked-button (click)="joinQuiz()">Join Quiz</button>
+                        </div>
+                    </mat-card>
+                </mat-card-content>
             </mat-card>
+        </ng-template>
+
+    <ng-template #thenBlock>
+        <div *ngIf="quizPlayerService.currentquestion" >
+            <mat-card style="text-align: center;">
+                {{quizPlayerService.currentquestion.text}}
+            </mat-card>
+            <div style="display: flex; flex-wrap: wrap; ">
+                <div *ngFor="let answer of quizPlayerService.currentquestion.answers; let i = index" style="width: 50%;">
+                    <mat-card [ngStyle]="{background:answer.isCorrect===true && quizPlayerService.answerIsCorrect===true ? 'rgb(153, 211, 153)' :'' }">
+                       <button style="width: 100%;" mat-stroked-button (click)="sendAnswerToHost(answer.isCorrect)">{{answer.text}}</button>
+                    </mat-card>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </ng-template>
+
+
 <div class="log">
     Activity Log:
     <mat-divider></mat-divider>

@@ -10,8 +10,10 @@ export class QuizPlayerService {
 
   public groupName: Subject<string> = new Subject<string>();
   public players: string[] = [];
-  public currentquestion:Question={} as Question
-  public answerIsCorrect:boolean=false
+  public currentquestion:Question={} as Question;
+  public playerJoined:boolean=false;
+  public startQuiz:boolean=false;
+  public answerIsCorrect:boolean=false;
 
 
   constructor(public signalRService: SignalrService) { }
@@ -38,11 +40,14 @@ export class QuizPlayerService {
 
     if (message.action === "SuccesfullyJoinedGroup") {
       console.log("Successfuly joined group: ", message.data)
+      this.playerJoined=true
+      console.log(this.playerJoined)
     }
 
     if (message.action === "QuestionSent") {
       console.log("QuestionRecieved: ", message.data)
       this.answerIsCorrect=false
+      this.startQuiz=true
       this.currentquestion=message.data
     }
 
