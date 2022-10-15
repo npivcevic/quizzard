@@ -15,6 +15,7 @@ export class QuizPlayerComponent implements OnInit, OnDestroy {
   inputCode: string = "";
   inputData: string = "";
   playerName: string = "";
+  questionAnswered:boolean=false
 
   constructor(public quizPlayerService: QuizPlayerService, public navbarservice: NavBarService) { }
 
@@ -39,6 +40,19 @@ export class QuizPlayerComponent implements OnInit, OnDestroy {
       data: this.inputData
     }
     this.quizPlayerService.sendToHost(JSON.stringify(data));
+  }
+
+  public sendAnswerToHost(isCorrect:boolean) {
+    console.log('input', this.inputData)
+    const data = {
+      action: "PlayerAnswered",
+      data: {
+        name: this.playerName,
+        correctAnswer: isCorrect 
+      }
+    }
+    this.quizPlayerService.sendToHost(JSON.stringify(data));
+    this.quizPlayerService.answerIsCorrect=isCorrect
   }
 
 }

@@ -14,7 +14,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   inputData: string = "";
   quizStarted: boolean = false
-  totalTimePerQuestion: number = 20000
+  totalTimePerQuestion: number = 12000
   timeLeft: number = 100;
   x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
   curentQuestionIndex: number = -1

@@ -11,6 +11,8 @@ export class QuizPlayerService {
   public groupName: Subject<string> = new Subject<string>();
   public players: string[] = [];
   public currentquestion:Question={} as Question
+  public answerIsCorrect:boolean=false
+
 
   constructor(public signalRService: SignalrService) { }
 
@@ -40,6 +42,7 @@ export class QuizPlayerService {
 
     if (message.action === "QuestionSent") {
       console.log("QuestionRecieved: ", message.data)
+      this.answerIsCorrect=false
       this.currentquestion=message.data
     }
 
