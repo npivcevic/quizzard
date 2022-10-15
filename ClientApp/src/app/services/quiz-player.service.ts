@@ -60,6 +60,7 @@ export class QuizPlayerService {
       case 'QuestionSent':
         this.startQuiz=true
         this.selectedAnswerId="";
+        this.answerIsSelected=false
         this.currentquestion=message.data
         break
       default:
