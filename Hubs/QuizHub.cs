@@ -82,6 +82,24 @@ public class QuizHub : Hub
         await Clients.Client(group.HostConnectionId).SendAsync("transferdata", data, Context.ConnectionId);
     }
 
+    public async Task SendToPlayer(String data, String playerConnectionId)
+    {
+        QuizHubGroup? group = quizData.FindGroupOfConnectionId(Context.ConnectionId);
+        if (group == null || !quizData.IsConnectionHostOfGroup(group.Name, Context.ConnectionId))
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorSendingToPlayer}\", \"data\":\"You are either not a part of a group or you are not the host of the group.\"}}");
+            return;
+        }
+        if (!group.IsConnectionInGroup(playerConnectionId)) {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorSendingToPlayer}\", \"data\":\"The player conneciton id doesn't exist or it's not a part of your group.\"}}");
+            return;
+        }
+
+        await Clients.Client(playerConnectionId).SendAsync("transferdata", data);
+    }
+
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         QuizHubGroup? group = quizData.FindGroupOfConnectionId(Context.ConnectionId);
@@ -109,6 +127,7 @@ static class ActionTypes
     public const string PlayerDisconnected = "PlayerDisconnected";
     public const string ErrorTryingToJoinNonExistingGroup = "ErrorTryingToJoinNonExistingGroup";
     public const string ErrorSendingToHost = "ErrorSendingToHost";
+    public const string ErrorSendingToPlayer = "ErrorSendingToPlayer";
     public const string HostDisconnected = "HostDisconnected";
     public const string SuccesfullyJoinedGroup = "SuccesfullyJoinedGroup";
     public const string ErrorSendingToGroup = "ErrorSendingToGroup";

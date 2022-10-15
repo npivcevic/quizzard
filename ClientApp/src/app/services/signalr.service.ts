@@ -46,6 +46,11 @@ export class SignalrService {
       .catch((err:any) => console.error(err));
   }
 
+  public sendToPlayer = (data: string, playerConnectionId: string) => {
+    this.hubConnection.invoke('sendtoplayer', data, playerConnectionId)
+      .catch((err:any) => console.error(err));
+  }
+
   public sendToGroup = (data: string) => {
     this.hubConnection.invoke('sendtogroup', data)
       .catch((err:any) => console.error(err));
