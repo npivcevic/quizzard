@@ -42,7 +42,13 @@
             <div style="display: flex; flex-wrap: wrap; ">
                 <div *ngFor="let answer of quizPlayerService.currentquestion.answers; let i = index" style="width: 50%;">
                     <mat-card>
-                       <button style="width: 100%;" mat-stroked-button [disabled]="quizPlayerService.answerIsSelected" (click)="sendAnswerToHost(answer.id)">{{answer.text}}</button>
+                       <button 
+                       style="width: 100%;" 
+                       [ngStyle]="{background:quizPlayerService.showingCorrectAnswer===true && answer.isCorrect===true ? 'rgb(153, 211, 153)':'' }"
+                       mat-stroked-button [disabled]="quizPlayerService.answerIsSelected" 
+                       (click)="sendAnswerToHost(answer.id)">
+                       {{answer.text}}
+                       </button>
                     </mat-card>
                 </div>
             </div>

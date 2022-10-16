@@ -57,7 +57,6 @@ export class QuizHostService {
   
   sendQuestiontoPlayer(){
     this.currentquestion=Object.assign({},this.questions[this.curentQuestionIndex])
-    // console.log(this.currentquestion,this.questions[this.curentQuestionIndex] )
     this.currentquestion.answers=this.questions[this.curentQuestionIndex].answers.map((answer)=>{
       return {
         id: answer.id,
@@ -88,7 +87,6 @@ export class QuizHostService {
   }
 
   checkAnswerAndAssignPoints(){
-    console.log(this.questions[this.curentQuestionIndex].answers)
     let correctAnswer = this.questions[this.curentQuestionIndex].answers.find((correctAnswer)=>{
       return correctAnswer.isCorrect===true
     })
@@ -96,12 +94,12 @@ export class QuizHostService {
       let x = player.submitedAnswers.find((submitedAsnwer)=>{
         return submitedAsnwer.questionId===this.currentquestion.id
       })
-      console.log("befor if",correctAnswer,x)
 
       if(x && x.answerId===correctAnswer?.id){
         player.score++
       }
     })
+    this.players.sort(function(a,b){return b.score - a.score})
   }
 
   showCorrectAnswer() {
@@ -110,12 +108,9 @@ export class QuizHostService {
     setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
   }
 
-
   public sendToGroup(data: string) {
     this.signalRService.sendToGroup(data)
   }
-
-
 
   public processMessage(data: any) {
     switch (data.action) {
@@ -127,7 +122,6 @@ export class QuizHostService {
         this.playerAnswer=data.data.answerId
         this.playerId=data.senderConnectionId
         this.recordAnswer(this.playerId, this.playerAnswer, this.currentquestion.id)
-        console.log(this.players)
         break;
       case 'GroupCreated':
         console.log('assiging value to group name', data.data)

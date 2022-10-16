@@ -15,6 +15,7 @@ export class QuizPlayerService {
   public selectedAnswerId:string='';
   public answerIsSelected:boolean=false;
   public playerId:string='';
+  public showingCorrectAnswer:boolean=false;
 
 
   constructor(public signalRService: SignalrService) { }
@@ -37,7 +38,6 @@ export class QuizPlayerService {
   public sendAnswerToHost(id?:string) {
     this.selectedAnswerId!=id
     this.answerIsSelected=true
-    console.log(this.selectedAnswerId)
     const data = {
       action: "PlayerAnswered",
       data: {
