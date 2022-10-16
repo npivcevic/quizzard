@@ -32,12 +32,18 @@
 
         <div class="question">
             <mat-card class="question-card">
-                <mat-card-content style="text-align: center;">
-                    <button *ngIf="!quizHostService.quizStarted; else elseBlock" (click)="startQuiz()" style="width: 80%;height: 100px;"
-                        mat-raised-button>Pokreni Kviz</button>
+                <mat-card-content *ngIf="quizHostService.playersJoining; then startQuizButtonBlock"></mat-card-content>
+
+                    <ng-template #startQuizButtonBlock>
+                        <div style="text-align: center;">
+                            <button  (click)="startQuiz()" style="width: 80%;height: 100px;" mat-raised-button>Pokreni Kviz</button>
+                        </div>
+                    </ng-template>
+
+                <mat-card-content *ngIf="quizHostService.quizStarted; then questionBlock"></mat-card-content>
                         
-                    <ng-template #elseBlock>
-                        <div>
+                    <ng-template #questionBlock>
+                        <div style="text-align: center;">
 
                             <mat-card>
                                 <div>
@@ -64,8 +70,22 @@
                             </mat-card>
                         </div>
                     </ng-template>
+                
+                    <mat-card-content *ngIf="quizHostService.quizEnded; then scoreBoardBlock"></mat-card-content>
 
-                </mat-card-content>
+                    <ng-template #scoreBoardBlock>
+                        <div *ngFor="let player of quizHostService.players">
+                            {{player.name}}
+                            {{player.score}}
+                            <div *ngFor="let submitedAnswer of player.submitedAnswers">
+                                <div>
+                                    {{submitedAnswer.questionId}}
+                                    {{submitedAnswer.answerId}}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+
             </mat-card>
         </div>
 

@@ -7,7 +7,8 @@
 
     </div>
 
-    <div class="body" *ngIf="quizPlayerService.startQuiz; then thenBlock else elseBlock"></div>
+    <div class="body" *ngIf="!quizPlayerService.startQuiz; then elseBlock"></div>
+
 
         <ng-template #elseBlock  class="join-group-code">
             <mat-card class="join-group-code-card-title">
@@ -34,27 +35,33 @@
             </mat-card>
         </ng-template>
 
-    <ng-template #thenBlock>
-        <div *ngIf="quizPlayerService.currentquestion" >
-            <mat-card style="text-align: center;">
-                {{quizPlayerService.currentquestion.text}}
-            </mat-card>
-            <div style="display: flex; flex-wrap: wrap; ">
-                <div *ngFor="let answer of quizPlayerService.currentquestion.answers; let i = index" style="width: 50%;">
-                    <mat-card>
-                       <button 
-                       style="width: 100%;" 
-                       [ngStyle]="quizPlayerService.answerStyle(answer.id)"
-                       mat-stroked-button [disabled]="quizPlayerService.answerIsSelected" 
-                       (click)="sendAnswerToHost(answer.id)">
-                       {{answer.text}}
-                       </button>
-                    </mat-card>
+    <div class="body" *ngIf="quizPlayerService.startQuiz; then thenBlock"></div>
+
+        <ng-template #thenBlock>
+            <div *ngIf="quizPlayerService.currentquestion" >
+                <mat-card style="text-align: center;">
+                    {{quizPlayerService.currentquestion.text}}
+                </mat-card>
+                <div style="display: flex; flex-wrap: wrap; ">
+                    <div *ngFor="let answer of quizPlayerService.currentquestion.answers; let i = index" style="width: 50%;">
+                        <mat-card>
+                        <button 
+                        style="width: 100%;" 
+                        [ngStyle]="quizPlayerService.answerStyle(answer.id)"
+                        mat-stroked-button [disabled]="quizPlayerService.answerIsSelected" 
+                        (click)="sendAnswerToHost(answer.id)">
+                        {{answer.text}}
+                        </button>
+                        </mat-card>
+                    </div>
                 </div>
             </div>
-        </div>
-    </ng-template>
+        </ng-template>
 
+    <div class="body" *ngIf="quizPlayerService.endQuiz; then endQuizBlock"></div>
+    <ng-template #endQuizBlock>
+        	quiz ended
+    </ng-template>
 
 <div class="log">
     Activity Log:

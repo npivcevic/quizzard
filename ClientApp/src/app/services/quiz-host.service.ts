@@ -13,15 +13,19 @@ export class QuizHostService {
   public players: Player[] = [];
   public questions:Question[]=[]
   public currentquestion:Question={} as Question;
+  //indicator for start button 
+  public playersJoining:boolean=true
+    //indicator for questions 
   public quizStarted: boolean = false
   public playerAnswer:string="";
   public playerId:string="";
   public curentQuestionIndex: number = -1
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 10000
+  public totalTimePerQuestion: number = 5000
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
   public showingCorrectAnswer: boolean = false
-  public nextQuestionDelay: number = 10000
+  public nextQuestionDelay: number = 2000
+  public quizEnded:boolean=false
 
 
   constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
@@ -40,6 +44,7 @@ export class QuizHostService {
 
   startQuiz() {
     this.quizStarted = true
+    this.playersJoining=false
     this.nextQuestion();
   }
 
@@ -71,19 +76,32 @@ export class QuizHostService {
   }
 
   nextQuestion() {
-    this.curentQuestionIndex++
-    this.sendQuestiontoPlayer()
-    this.showingCorrectAnswer = false
-    this.timeLeft = 100
-    let ref = setInterval(() => {
-      this.timeLeft -= 0.5
-      this.x = Math.ceil(this.totalTimePerQuestion * this.timeLeft / 100000)
-      if (this.timeLeft <= 0) {
-        clearInterval(ref)
-        this.showCorrectAnswer()
+    if(this.curentQuestionIndex+1<this.questions.length){
+      this.curentQuestionIndex++
+      console.log(this.curentQuestionIndex,this.questions.length)
+      this.sendQuestiontoPlayer()
+      this.showingCorrectAnswer = false
+      this.timeLeft = 100
+      let ref = setInterval(() => {
+        this.timeLeft -= 0.5
+        this.x = Math.ceil(this.totalTimePerQuestion * this.timeLeft / 100000)
+        if (this.timeLeft <= 0) {
+          clearInterval(ref)
+          this.showCorrectAnswer()
+        }
+      }, this.totalTimePerQuestion / (100 * 2));
+    }else{
+      const data={
+        action:'QuizEnded',
+        data:true
       }
-    }, this.totalTimePerQuestion / (100 * 2));
-    
+      let quizEndMessage=JSON.stringify(data)
+      this.sendToGroup(quizEndMessage)
+      console.log("quiz ended")
+      this.quizStarted=!this.quizStarted
+      this.quizEnded=!this.quizEnded
+      
+    }
   }
 
   checkAnswerAndAssignPoints(){
@@ -121,16 +139,13 @@ export class QuizHostService {
   public processMessage(data: any) {
     switch (data.action) {
       case 'QuestionSent':
-        console.log('question sent to players', data.data) 
         break;
       case 'PlayerAnswered':
-        console.log('player sent answer', data.data) 
         this.playerAnswer=data.data.answerId
         this.playerId=data.senderConnectionId
         this.recordAnswer(this.playerId, this.playerAnswer, this.currentquestion.id)
         break;
       case 'GroupCreated':
-        console.log('assiging value to group name', data.data)
         this.groupName = data.data
         break;
       case 'PlayerJoined':
