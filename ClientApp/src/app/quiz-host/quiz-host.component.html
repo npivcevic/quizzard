@@ -19,7 +19,7 @@
                 </mat-card-title>
                 <mat-card-content *ngFor="let player of quizHostService.players">
                     <mat-card class="active-player-card">
-                        {{player.name}}
+                        {{player.name}}{{player.score}}
                     </mat-card>
                 </mat-card-content>
             </mat-card>
