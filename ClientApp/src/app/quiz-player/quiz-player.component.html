@@ -44,7 +44,7 @@
                     <mat-card>
                        <button 
                        style="width: 100%;" 
-                       [ngStyle]="{background:quizPlayerService.showingCorrectAnswer===true && answer.isCorrect===true ? 'rgb(153, 211, 153)':'' }"
+                       [ngStyle]="{background:answer.id===quizPlayerService.correctAnswerId ? 'rgb(153, 211, 153)':'' }"
                        mat-stroked-button [disabled]="quizPlayerService.answerIsSelected" 
                        (click)="sendAnswerToHost(answer.id)">
                        {{answer.text}}

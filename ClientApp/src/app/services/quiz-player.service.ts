@@ -15,7 +15,7 @@ export class QuizPlayerService {
   public selectedAnswerId:string='';
   public answerIsSelected:boolean=false;
   public playerId:string='';
-  public showingCorrectAnswer:boolean=false;
+  public correctAnswerId:string='';
 
 
   constructor(public signalRService: SignalrService) { }
@@ -59,6 +59,9 @@ export class QuizPlayerService {
         this.answerIsSelected=false
         this.currentquestion=data.data
         break
+        case 'CorrectAnswer':
+          this.correctAnswerId=data.correctAnswerForPlayer
+          break
       default:
         console.log(`Action not implemented: ${data.action}.`);
     }

@@ -98,6 +98,12 @@ export class QuizHostService {
       if(x && x.answerId===correctAnswer?.id){
         player.score++
       }
+      const data= {
+        action:"CorrectAnswer",
+        correctAnswerForPlayer: correctAnswer?.id
+      }
+      let correctAnswerForPlayer = JSON.stringify(data)
+      this.sendToGroup(correctAnswerForPlayer)
     })
     this.players.sort(function(a,b){return b.score - a.score})
   }
