@@ -18,7 +18,7 @@ export class QuizHostService {
   public playerId:string="";
   public curentQuestionIndex: number = -1
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 5000
+  public totalTimePerQuestion: number = 10000
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
   public showingCorrectAnswer: boolean = false
   public nextQuestionDelay: number = 10000

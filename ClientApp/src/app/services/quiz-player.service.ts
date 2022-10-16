@@ -27,6 +27,20 @@ export class QuizPlayerService {
     })
   }
 
+  public answerStyle(answer:any){
+    let style={}
+    if(this.correctAnswerId===answer){
+      return style = {
+        'background':'rgb(153, 211, 153)'
+      }
+    }else if(this.selectedAnswerId===answer){
+      return style = {
+        'background':'rgb(250, 224, 118)'
+      }
+    }
+    return style
+  }
+
   public joinQuiz(groupName: string, playerName: string) {
     this.signalRService.joinQuiz(groupName, playerName);
   }
@@ -35,8 +49,9 @@ export class QuizPlayerService {
     this.signalRService.sendToHost(data)
   }
 
-  public sendAnswerToHost(id?:string) {
-    this.selectedAnswerId!=id
+  public sendAnswerToHost(id:any) {
+    this.selectedAnswerId=id
+    console.log("this is selectd ansswer id", this.selectedAnswerId)
     this.answerIsSelected=true
     const data = {
       action: "PlayerAnswered",
