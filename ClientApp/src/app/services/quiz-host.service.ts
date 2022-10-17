@@ -149,6 +149,25 @@ export class QuizHostService {
     return answerText
   }
 
+  addStyleToPlayerAnswerOnScoreboard(questionId:string,answerId:string){
+    let style={}
+
+    this.questions.forEach((question)=>{
+      if(question.id===questionId){
+        const A = question.answers.find((answer)=>{
+          return answer.id===answerId
+        })
+        if(A?.isCorrect===true){
+          return style={'background':'rgb(153, 211, 153)'}
+        }else{
+          return style={'background':'rgb(236, 157, 157)'}
+        }
+      }
+      return
+    })
+    return style
+  }
+
   showCorrectAnswer() {
     this.showingCorrectAnswer = true
     this.checkAnswerAndAssignPoints()

@@ -82,7 +82,7 @@
                                 <div style="border: solid;">
                                     <strong>{{quizHostService.findQuestionTextById(submitedAnswer.questionId)}}</strong>
                                 </div>
-                                <div style="border: solid;">
+                                <div [ngStyle]="quizHostService.addStyleToPlayerAnswerOnScoreboard(submitedAnswer.questionId,submitedAnswer.answerId)" style="border: solid;">
                                     <strong>{{quizHostService.findAnswerTextById(submitedAnswer.questionId,submitedAnswer.answerId)}}</strong>
                                 </div>
                             </div>
