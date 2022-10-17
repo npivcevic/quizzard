@@ -21,7 +21,7 @@ export class QuizHostService {
   public playerId:string="";
   public curentQuestionIndex: number = -1
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 5000
+  public totalTimePerQuestion: number = 2000
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
   public showingCorrectAnswer: boolean = false
   public nextQuestionDelay: number = 2000
@@ -124,6 +124,29 @@ export class QuizHostService {
       this.sendToGroup(correctAnswerForPlayer)
     })
     this.players.sort(function(a,b){return b.score - a.score})
+  }
+
+  findQuestionTextById(questionId:string){
+    const Q=this.questions.find((question)=>{
+      return question.id===questionId
+    })
+
+    return Q!.text
+  }
+
+  findAnswerTextById(questionId:string,answerId:string){
+    let answerText='';
+
+    this.questions.forEach((question)=>{
+      if(question.id===questionId){
+        const A = question.answers.find((answer)=>{
+          return answer.id===answerId
+        })
+        return answerText=A!.text
+      }
+      return
+    })
+    return answerText
   }
 
   showCorrectAnswer() {

@@ -73,17 +73,20 @@
                 
                     <mat-card-content *ngIf="quizHostService.quizEnded; then scoreBoardBlock"></mat-card-content>
 
-                    <ng-template #scoreBoardBlock>
-                        <div *ngFor="let player of quizHostService.players">
-                            {{player.name}}
-                            {{player.score}}
-                            <div *ngFor="let submitedAnswer of player.submitedAnswers">
-                                <div>
-                                    {{submitedAnswer.questionId}}
-                                    {{submitedAnswer.answerId}}
+                    <ng-template  #scoreBoardBlock>
+                        <mat-card *ngFor="let player of quizHostService.players">
+                            <div>
+                                <strong>{{player.name}}</strong>
+                            </div>
+                            <div style="display: flex;" *ngFor="let submitedAnswer of player.submitedAnswers">
+                                <div style="border: solid;">
+                                    <strong>{{quizHostService.findQuestionTextById(submitedAnswer.questionId)}}</strong>
+                                </div>
+                                <div style="border: solid;">
+                                    <strong>{{quizHostService.findAnswerTextById(submitedAnswer.questionId,submitedAnswer.answerId)}}</strong>
                                 </div>
                             </div>
-                        </div>
+                        </mat-card>
                     </ng-template>
 
             </mat-card>
