@@ -25,6 +25,7 @@ export class QuizHostService {
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
   public showingCorrectAnswer: boolean = false
   public nextQuestionDelay: number = 2000
+  //indicator for scoreboard
   public quizEnded:boolean=false
 
 
@@ -97,6 +98,9 @@ export class QuizHostService {
       }
       let quizEndMessage=JSON.stringify(data)
       this.sendToGroup(quizEndMessage)
+      this.players.forEach((player)=>{
+        this.sendScoreToPlayer(player.connectionId)
+      })
       console.log("quiz ended")
       this.quizStarted=!this.quizStarted
       this.quizEnded=!this.quizEnded
@@ -172,6 +176,23 @@ export class QuizHostService {
     this.showingCorrectAnswer = true
     this.checkAnswerAndAssignPoints()
     setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
+  }
+
+  sendScoreToPlayer(playerId:string){
+    const player = this.players.find((player)=>{
+      return player.connectionId===playerId
+    })
+    console.log("player data found", player)
+    const data={
+      action:'PlayerScore',
+      data: player
+    }
+    this.sendToPlayer(JSON.stringify(data), playerId)
+    console.log("player data sent", player)
+  }
+
+  public sendToPlayer(data:string, playerConnectionId: string){
+    this.signalRService.sendToPlayer(data,playerConnectionId)
   }
 
   public sendToGroup(data: string) {

@@ -2,6 +2,8 @@ import { Question } from './../model/question';
 import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { Subject } from 'rxjs';
+import { Player } from '../model/player';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class QuizPlayerService {
   public playerId:string='';
   public correctAnswerId:string='';
   public endQuiz:boolean=false;
+  public player: Player[] = [];
 
 
   constructor(public signalRService: SignalrService) { }
@@ -81,6 +84,10 @@ export class QuizPlayerService {
         case 'QuizEnded':
           this.endQuiz=data.data
           break
+          case 'PlayerScore':
+            this.player=data.data
+            console.log("plyer data recieved", this.player)
+            break
       default:
         console.log(`Action not implemented: ${data.action}.`);
     }
