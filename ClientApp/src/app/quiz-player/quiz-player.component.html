@@ -40,6 +40,16 @@
         <ng-template #thenBlock>
             <div *ngIf="quizPlayerService.currentquestion" >
                 <mat-card style="text-align: center;">
+                    <div>
+                        <div class="spinner-block">
+                            <mat-progress-spinner color="primary" mode="determinate"
+                                [value]="quizPlayerService.timeLeft">
+                            </mat-progress-spinner>
+                            <span style="position:relative; top: -61px; left: 0px;">
+                                {{quizPlayerService.x}}
+                            </span>
+                        </div>
+                    </div>
                     {{quizPlayerService.currentquestion.text}}
                 </mat-card>
                 <div style="display: flex; flex-wrap: wrap; ">
@@ -60,8 +70,13 @@
 
     <div class="body" *ngIf="quizPlayerService.endQuiz; then endQuizBlock"></div>
     <ng-template #endQuizBlock>
-        	<div>
-               player scoreboard 
+        	<div style="display: flex;" *ngFor="let answer of quizPlayerService.player.submitedAnswers">
+                <div style="border: solid;">
+                    <strong>{{answer.questionId}}</strong>
+                </div>
+                <div style="border: solid;">
+                    <strong>{{answer.answerId}}</strong>
+                </div>
             </div>
     </ng-template>
 

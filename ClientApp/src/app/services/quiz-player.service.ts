@@ -19,7 +19,11 @@ export class QuizPlayerService {
   public playerId:string='';
   public correctAnswerId:string='';
   public endQuiz:boolean=false;
-  public player: Player[] = [];
+  public player: Player = {} as Player;
+
+  public timeLeft: number = 100;
+  public totalTimePerQuestion: number = 10000
+  public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
 
 
   constructor(public signalRService: SignalrService) { }
@@ -67,6 +71,17 @@ export class QuizPlayerService {
     this.sendToHost(JSON.stringify(data));
   }
 
+  public spinnerControl(){
+    this.timeLeft = 100
+      let ref = setInterval(() => {
+        this.timeLeft -= 0.5
+        this.x = Math.ceil(this.totalTimePerQuestion * this.timeLeft / 100000)
+        if (this.timeLeft <= 0) {
+          clearInterval(ref)
+        }
+      }, this.totalTimePerQuestion / (100 * 2));
+  }
+
   public processMessage(data: any) {
     switch(data.action){
       case 'SuccesfullyJoinedGroup':
@@ -77,6 +92,8 @@ export class QuizPlayerService {
         this.selectedAnswerId="";
         this.answerIsSelected=false
         this.currentquestion=data.data
+        //here start spinning
+        this.spinnerControl()
         break
         case 'CorrectAnswer':
           this.correctAnswerId=data.correctAnswerForPlayer
@@ -85,7 +102,8 @@ export class QuizPlayerService {
           this.endQuiz=data.data
           break
           case 'PlayerScore':
-            this.player=data.data
+            // this.player=data.data
+            Object.assign(this.player,data.data)
             console.log("plyer data recieved", this.player)
             break
       default:

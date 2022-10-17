@@ -1,3 +1,4 @@
+import { SubmitedAnswer } from './../model/submitedAnswer';
 import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { Player } from '../model/player';
@@ -15,18 +16,22 @@ export class QuizHostService {
   public currentquestion:Question={} as Question;
   //indicator for start button 
   public playersJoining:boolean=true
-    //indicator for questions 
+  //indicator for questions 
   public quizStarted: boolean = false
+
   public playerAnswer:string="";
   public playerId:string="";
   public curentQuestionIndex: number = -1
+  //spinner variables
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 2000
+  public totalTimePerQuestion: number = 10000
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
+
   public showingCorrectAnswer: boolean = false
   public nextQuestionDelay: number = 2000
   //indicator for scoreboard
   public quizEnded:boolean=false
+  public playerScoreboard:Player={} as Player
 
 
   constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
@@ -66,7 +71,7 @@ export class QuizHostService {
     this.currentquestion.answers=this.questions[this.curentQuestionIndex].answers.map((answer)=>{
       return {
         id: answer.id,
-        text: answer.text,
+        text: answer.text
       }
     })
     const data = {
@@ -179,13 +184,22 @@ export class QuizHostService {
   }
 
   sendScoreToPlayer(playerId:string){
+    let answerScore=[]
     const player = this.players.find((player)=>{
       return player.connectionId===playerId
     })
     console.log("player data found", player)
+    this.playerScoreboard.name=player!.name
+    this.playerScoreboard.submitedAnswers=[]
+    player?.submitedAnswers.forEach((submitedAnswer)=>{
+      let x:SubmitedAnswer={} as SubmitedAnswer;
+      x.questionId=this.findQuestionTextById(submitedAnswer.questionId)
+      x.answerId=this.findAnswerTextById(submitedAnswer.questionId,submitedAnswer.answerId)
+      this.playerScoreboard.submitedAnswers.push(x)
+    })
     const data={
       action:'PlayerScore',
-      data: player
+      data: this.playerScoreboard
     }
     this.sendToPlayer(JSON.stringify(data), playerId)
     console.log("player data sent", player)
