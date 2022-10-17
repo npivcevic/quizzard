@@ -4,6 +4,7 @@ import { SignalrService } from './signalr.service';
 import { Player } from '../model/player';
 import { QuestionService } from '../question.service';
 import { Question } from '../model/question';
+import { PlayerScore } from '../model/player-score';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class QuizHostService {
   public curentQuestionIndex: number = -1
   //spinner variables
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 10000
+  public totalTimePerQuestion: number = 4000
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
 
   public showingCorrectAnswer: boolean = false
@@ -113,7 +114,7 @@ export class QuizHostService {
     }
   }
 
-  checkAnswerAndAssignPoints() {
+  public checkAnswerAndAssignPoints() {
     let correctAnswer = this.questions[this.curentQuestionIndex].answers.find((correctAnswer) => {
       return correctAnswer.isCorrect === true
     })
@@ -135,14 +136,14 @@ export class QuizHostService {
     this.players.sort(function (a, b) { return b.score - a.score })
   }
 
-  findQuestionTextById(questionId: string) {
+  public findQuestionTextById(questionId: string) {
     const Q = this.questions.find((question) => {
       return question.id === questionId
     })
     return Q!.text
   }
 
-  findAnswerTextById(questionId: string, answerId: string) {
+  public findAnswerTextById(questionId: string, answerId: string) {
     let answerText = '';
     this.questions.forEach((question) => {
       if (question.id === questionId) {
@@ -156,7 +157,7 @@ export class QuizHostService {
     return answerText
   }
 
-  addStyleToPlayerAnswerOnScoreboard(questionId: string, answerId: string) {
+  public addStyleToPlayerAnswerOnScoreboard(questionId: string, answerId: string) {
     let style = {}
 
     this.questions.forEach((question) => {
@@ -175,14 +176,33 @@ export class QuizHostService {
     return style
   }
 
-  showCorrectAnswer() {
+  public showCorrectAnswer() {
     this.showingCorrectAnswer = true
     this.checkAnswerAndAssignPoints()
     setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
   }
 
-  sendScoreToPlayer(playerId: string) {
-    let answerScore:any = []
+  public checkIfAnswerIsCorrect(questionId: string, answerId: string){
+    let x:boolean=false
+    this.questions.forEach(question =>{
+      if(question.id===questionId){
+        const A = question.answers.find(answer=>{
+          return answer.id===answerId
+        })
+        if (A?.isCorrect === true) {
+          return x = true
+        } else {
+          return x = false
+        }
+      }
+      return
+    })
+    return x
+    
+  }
+
+  public sendScoreToPlayer(playerId: string) {
+    let answerScore:PlayerScore[] = []
     const player = this.players.find((player) => {
       return player.connectionId === playerId
     })
@@ -192,15 +212,7 @@ export class QuizHostService {
     player?.submitedAnswers.forEach((submitedAnswer) => {
       let x = this.findQuestionTextById(submitedAnswer.questionId)
       let y = this.findAnswerTextById(submitedAnswer.questionId, submitedAnswer.answerId)
-      let z = this.questions.forEach((question) => {
-        if (question.id === submitedAnswer.questionId) {
-          const A = question.answers.find((answer) => {
-            return answer.id === submitedAnswer.answerId
-          })
-          return A!.isCorrect
-        }
-        return
-      })
+      let z = this.checkIfAnswerIsCorrect(submitedAnswer.questionId, submitedAnswer.answerId)
       answerScore.push({
         questionText:x,
         answerText:y,
@@ -212,7 +224,7 @@ export class QuizHostService {
       data: answerScore
     }
     this.sendToPlayer(JSON.stringify(data), playerId)
-    console.log("player data sent", player)
+    console.log("player data sent", answerScore)
   }
 
   public sendToPlayer(data: string, playerConnectionId: string) {

@@ -76,6 +76,9 @@
                 <mat-card-content *ngIf="quizHostService.quizEnded; then scoreBoardBlock"></mat-card-content>
 
                 <ng-template #scoreBoardBlock>
+                    <div style="text-align: center;"> 
+                        <button mat-raised-button style="width: 80%;height: 100px;">Pokreni novi kviz</button>
+                    </div>
                     <mat-card *ngFor="let player of quizHostService.players">
                         <div>
                             <strong>{{player.name}}</strong>
@@ -97,13 +100,13 @@
 
     </div>
 
-    <div class="log">
+    <!-- <div class="log">
         Activity Log:
         <mat-divider></mat-divider>
         <div *ngFor="let message of quizHostService.signalRService.dataHistory">
             {{message}}
         </div>
-    </div>
+    </div> -->
 
 </div>
 

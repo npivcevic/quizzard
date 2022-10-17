@@ -2,7 +2,7 @@ import { Question } from './../model/question';
 import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { Subject } from 'rxjs';
-import { Player } from '../model/player';
+import { PlayerScore } from '../model/player-score';
 
 
 @Injectable({
@@ -12,17 +12,18 @@ export class QuizPlayerService {
 
   public groupName: Subject<string> = new Subject<string>();
   public currentquestion:Question={} as Question;
-  public playerJoined:boolean=false;
+  public playerJoining:boolean=true;
+  public playerJoined:boolean=false
   public startQuiz:boolean=false;
   public selectedAnswerId:string='';
   public answerIsSelected:boolean=false;
   public playerId:string='';
   public correctAnswerId:string='';
+  //indicates that quiz ended
   public endQuiz:boolean=false;
-  public player: Player = {} as Player;
-
+  public playerScore:PlayerScore[]=[]
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 10000
+  public totalTimePerQuestion: number = 4000
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
 
 
@@ -80,11 +81,13 @@ export class QuizPlayerService {
           clearInterval(ref)
         }
       }, this.totalTimePerQuestion / (100 * 2));
+      
   }
 
   public processMessage(data: any) {
     switch(data.action){
       case 'SuccesfullyJoinedGroup':
+        this.playerJoining=false
         this.playerJoined=true
         break
       case 'QuestionSent':
@@ -95,17 +98,19 @@ export class QuizPlayerService {
         //here start spinning
         this.spinnerControl()
         break
-        case 'CorrectAnswer':
-          this.correctAnswerId=data.correctAnswerForPlayer
-          break
-        case 'QuizEnded':
-          this.endQuiz=data.data
-          break
-          case 'PlayerScore':
-            // this.player=data.data
-            Object.assign(this.player,data.data)
-            console.log("plyer data recieved", this.player)
-            break
+      case 'CorrectAnswer':
+        this.correctAnswerId=data.correctAnswerForPlayer
+        break
+      case 'QuizEnded':
+        this.endQuiz=data.data
+        this.startQuiz=false
+        this.playerJoining=false
+        break
+      case 'PlayerScore':
+        this.playerScore=data.data
+        
+        console.log("plyer data recieved", this.playerScore)
+        break
       default:
         console.log(`Action not implemented: ${data.action}.`);
     }

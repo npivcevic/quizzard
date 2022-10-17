@@ -7,7 +7,7 @@
 
     </div>
 
-    <div class="body" *ngIf="!quizPlayerService.startQuiz; then elseBlock"></div>
+    <div class="body" *ngIf="quizPlayerService.playerJoining; then elseBlock"></div>
 
 
         <ng-template #elseBlock  class="join-group-code">
@@ -31,6 +31,30 @@
                             <button class="join-group-button" color="primary" mat-stroked-button (click)="joinQuiz()">Join Quiz</button>
                         </div>
                     </mat-card>
+                </mat-card-content>
+            </mat-card>
+        </ng-template>
+
+    <div class="body" *ngIf="quizPlayerService.playerJoined && !quizPlayerService.startQuiz; then waitForStatBlock"></div>   
+    
+        <ng-template #waitForStatBlock>
+            <mat-card style="text-align: center;">
+                <mat-card-title>
+                    <strong>
+                        {{playerName}}, hvala ti na <span *ngIf="quizPlayerService.playerJoined && quizPlayerService.endQuiz; then odigranojIgri else prijavi"></span>:) 
+                        <ng-template #prijavi>prijavi</ng-template>
+                        <ng-template #odigranojIgri>odigranoj igri</ng-template>
+                        <br> 
+                        Molim te sačekaj početak <span *ngIf="quizPlayerService.playerJoined && quizPlayerService.endQuiz">nove</span> igre
+                    </strong>
+                </mat-card-title>
+                <mat-card-content>
+                    <div *ngIf="quizPlayerService.playerJoined && quizPlayerService.endQuiz;then odgovoriBlock"></div>
+                    <ng-template #odgovoriBlock>
+                        <mat-card-title>
+                            <strong>Ovdje možeš vidjeti svoje odogovore:</strong>
+                        </mat-card-title>
+                    </ng-template>
                 </mat-card-content>
             </mat-card>
         </ng-template>
@@ -70,23 +94,23 @@
 
     <div class="body" *ngIf="quizPlayerService.endQuiz; then endQuizBlock"></div>
     <ng-template #endQuizBlock>
-        	<div style="display: flex;" *ngFor="let answer of quizPlayerService.player.submitedAnswers">
+        	<div style="display: flex;" *ngFor="let answer of quizPlayerService.playerScore">
                 <div style="border: solid;">
-                    <strong>{{answer.questionId}}</strong>
+                    <strong>{{answer.questionText}}</strong>
                 </div>
-                <div style="border: solid;">
-                    <strong>{{answer.answerId}}</strong>
+                <div style="border: solid;" [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+                    <strong>{{answer.answerText}}</strong>
                 </div>
             </div>
     </ng-template>
 
-<div class="log">
+<!-- <div class="log">
     Activity Log:
     <mat-divider></mat-divider>
     <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
         {{message}}
     </div>
-</div>
+</div> -->
 
 
 <div>
@@ -100,9 +124,9 @@
     </button>
 </div>
 
-<div>
+<!-- <div>
     Messages received:
     <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
         {{message}}
     </div>
-</div>
+</div> -->
