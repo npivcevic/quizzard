@@ -75,6 +75,7 @@ export class QuizHostService {
         text: answer.text
       }
     })
+    this.currentquestion.answers =  this.currentquestion.answers.sort((a,b)=>0.5 -Math.random())
     const data = {
       action: "QuestionSent",
       data: this.currentquestion
