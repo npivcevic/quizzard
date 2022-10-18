@@ -58,11 +58,11 @@
                                 </div>
                             </div>
                             <mat-card>
-                                {{quizHostService.questions[quizHostService.curentQuestionIndex].text}}
+                                {{quizHostService.currentquestion.text}}
                             </mat-card>
                             <div style="display: flex; flex-wrap: wrap;">
                                 <div style="width: 50%;"
-                                    *ngFor="let answer of quizHostService.questions[quizHostService.curentQuestionIndex].answers; let i = index">
+                                    *ngFor="let answer of quizHostService.currentquestion.answers; let i = index">
                                     <mat-card
                                         [ngStyle]="{background:answer.isCorrect===true && quizHostService.showingCorrectAnswer===true ? 'rgb(153, 211, 153)':'' }">
                                         {{answer.text}}
