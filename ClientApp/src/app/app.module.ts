@@ -19,6 +19,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { QuizHostComponent } from './quiz-host/quiz-host.component';
 import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { QuizComponent } from './quiz/quiz.component';
     QuestionsComponent,
     QuizHostComponent,
     QuizPlayerComponent,
-    QuizComponent
+    QuizComponent,
+    SpinnerComponent
   ],
   imports: [
     ReactiveFormsModule,
