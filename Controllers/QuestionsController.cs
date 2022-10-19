@@ -21,6 +21,22 @@ namespace quizzard.Controllers
             _context = context;
         }
 
+        // GET: api/Questions/random
+        [HttpGet("Random")]
+        public async Task<ActionResult<IEnumerable<Question>>> GetRandomQuestions(int size = 20)
+        {
+          if (size > 20) {
+              size = 20;
+          }
+
+          if (_context.Questions == null)
+          {
+              return NotFound();
+          }
+
+          return await _context.Questions.OrderBy(r => EF.Functions.Random()).Take(size).Include(q => q.Answers).ToListAsync();
+        }
+
         // GET: api/Questions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
