@@ -76,13 +76,21 @@ namespace quizzard.Controllers
             {
                 return BadRequest();
             }
-
-
+            
+            if (_context.Questions == null)
+            {
+                return NotFound();
+            }
 
             var dbQuestion = _context.Questions
                 .Include(q => q.Answers)
                 .FirstOrDefault(q => q.ID.Equals(id));
-        
+            
+            if (dbQuestion == null)
+            {
+                return NotFound();
+            }
+
             _context.RemoveRange(dbQuestion.Answers);
 
             dbQuestion.Text = question.Text;
