@@ -8,22 +8,18 @@ import { SignalrService } from '../services/signalr.service';
   templateUrl: './quiz-player.component.html',
   styleUrls: ['./quiz-player.component.css']
 })
-export class QuizPlayerComponent implements OnInit, OnDestroy {
+export class QuizPlayerComponent implements OnInit{
 
   quizGroupName: string = "";
   inputCode: string = "";
   inputData: string = "";
   playerName: string = "";
-  constructor(public quizPlayerService: QuizPlayerService, public navbarservice: NavBarService) { }
+  constructor(public quizPlayerService: QuizPlayerService) { }
 
   ngOnInit(): void {
     this.quizPlayerService.initialize();
-    this.navbarservice.visible = false
   }
 
-  ngOnDestroy(): void {
-    this.navbarservice.visible = true
-  }
 
   public joinQuiz() {
     this.quizPlayerService.joinQuiz(this.quizGroupName, this.playerName)

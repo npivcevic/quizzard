@@ -8,7 +8,6 @@ import { MaterialModule } from './material/material.module';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
@@ -18,7 +17,6 @@ import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { QuizHostComponent } from './quiz-host/quiz-host.component';
 import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
-import { QuizComponent } from './quiz/quiz.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
@@ -26,13 +24,11 @@ import { SpinnerComponent } from './spinner/spinner.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
     FetchDataComponent,
     AddQuestionComponent,
     QuestionsComponent,
     QuizHostComponent,
     QuizPlayerComponent,
-    QuizComponent,
     SpinnerComponent
   ],
   imports: [
@@ -43,13 +39,10 @@ import { SpinnerComponent } from './spinner/spinner.component';
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
+      { path: '', component: QuizPlayerComponent, pathMatch: 'full' },
       { path: 'app-question', component: QuestionsComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'quiz-host', component: QuizHostComponent },
-      { path: 'quiz-player', component: QuizPlayerComponent },
-      { path: 'quiz', component: QuizComponent }
     ]),
     BrowserAnimationsModule
   ],

@@ -1,11 +1,11 @@
 <div class="main-frame">
 
-    <div class="top-bar">
+    <!-- <div class="top-bar">
 
         <div class="domain "><a [routerLink]="['/']">PubKviz.HR</a></div>
 
 
-    </div>
+    </div> -->
 
     <div class="body" *ngIf="quizPlayerService.playerJoining; then elseBlock"></div>
 
@@ -110,7 +110,7 @@
     <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
         {{message}}
     </div>
-</div> -->
+</div>
 
 
 <div>
@@ -124,7 +124,7 @@
     </button>
 </div>
 
-<!-- <div>
+<div>
     Messages received:
     <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
         {{message}}
