@@ -69,7 +69,8 @@ export class QuizHostService {
       if (player.connectionId === playerId) {
         player.submitedAnswers.push({
           questionId,
-          answerId
+          answerId,
+          recordStatus: "Answered"
         })
       }
     })
@@ -126,7 +127,53 @@ export class QuizHostService {
 
     }
   }
+// ==========================================================0
+  public checkIfSubmitedAnswerExists(playerId:string){
+    let submitedAnswerExist:boolean = false
+    const player = this.players.find((player)=>{
+      return player.connectionId===playerId
+    })
+    if(player!.submitedAnswers=[]){
+      return submitedAnswerExist
+    }else{
+      submitedAnswerExist=true
+    }
+    return submitedAnswerExist
+  }
 
+
+  public checkLastSubmitedAnswerState(playerId:string){
+    let x = this.checkIfSubmitedAnswerExists(playerId)
+    let lastSubmitedAnswerState:boolean=false
+    if(x=false){
+      return
+    }else{
+      let player = this.findPlayerByPlayerId(playerId)
+      let lastSubmitedAnswer = player?.submitedAnswers[player.submitedAnswers.length-1]
+      let z = this.checkIfAnswerIsCorrect(lastSubmitedAnswer?.questionId, lastSubmitedAnswer?.answerId)
+      if(z===true){
+        lastSubmitedAnswerState=true
+      }else{
+        lastSubmitedAnswerState=false
+      }
+    }
+    return lastSubmitedAnswerState
+  }
+
+  public addStyleToActivePlayerCard(playerId:string){
+    let style= {}
+    if(this.checkIfSubmitedAnswerExists(playerId)===false){
+      style = {'background': 'rgba(255, 235, 205, 0.39)'}
+    }else{
+      if(this.checkLastSubmitedAnswerState(playerId)===true){
+        style = {'background': 'rgb(153, 211, 153)'}
+      }else{
+        style = {'background': 'rgb(236, 157, 157)'}
+      }
+    }
+    return style
+  }
+// =======================================================
   public checkAnswerAndAssignPoints() {
     let correctAnswer = this.questions[this.curentQuestionIndex].answers.find((correctAnswer) => {
       return correctAnswer.isCorrect === true
@@ -148,7 +195,14 @@ export class QuizHostService {
     })
     this.players.sort(function (a, b) { return b.score - a.score })
   }
-
+// ================================================
+  public findPlayerByPlayerId(playerId:string){
+    const player = this.players.find((player)=>{
+      return player.connectionId===playerId
+    })
+    return player
+  }
+// =======================================================
   public findQuestionTextById(questionId: string) {
     const Q = this.questions.find((question) => {
       return question.id === questionId
@@ -195,7 +249,7 @@ export class QuizHostService {
     setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
   }
 
-  public checkIfAnswerIsCorrect(questionId: string, answerId: any){
+  public checkIfAnswerIsCorrect(questionId: any, answerId: any){
     let x:boolean=false
     this.questions.forEach(question =>{
       if(question.id===questionId){

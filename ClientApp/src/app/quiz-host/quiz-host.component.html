@@ -18,7 +18,7 @@
                     </mat-card>
                 </mat-card-title>
                 <mat-card-content *ngFor="let player of quizHostService.players">
-                    <mat-card  style="display: flex" class="active-player-card">
+                    <mat-card [ngStyle]="quizHostService.addStyleToActivePlayerCard(player.connectionId)"  style="display: flex" class="active-player-card">
                         <div class="player-name">
                             <strong>{{player.name}}</strong>
                         </div>
