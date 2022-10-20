@@ -23,7 +23,7 @@ export class QuizPlayerService {
   public endQuiz:boolean=false;
   public playerScore:PlayerScore[]=[]
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 4000
+  public totalTimePerQuestion: number = 2000
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
 
 
@@ -42,7 +42,7 @@ export class QuizPlayerService {
       return style = {
         'background':'rgb(153, 211, 153)'
       }
-    }else if(this.selectedAnswerId===answer){
+    }else if(this.selectedAnswerId===answer){ 
       return style = {
         'background':'rgb(250, 224, 118)'
       }
@@ -78,6 +78,7 @@ export class QuizPlayerService {
         this.timeLeft -= 0.5
         this.x = Math.ceil(this.totalTimePerQuestion * this.timeLeft / 100000)
         if (this.timeLeft <= 0) {
+          this.answerIsSelected=true
           clearInterval(ref)
         }
       }, this.totalTimePerQuestion / (100 * 2));
@@ -92,9 +93,11 @@ export class QuizPlayerService {
         break
       case 'QuestionSent':
         this.startQuiz=true
+        this.totalTimePerQuestion=data.timer
         this.selectedAnswerId="";
         this.answerIsSelected=false
         this.currentquestion=data.data
+        this.playerScore=[]
         //here start spinning
         this.spinnerControl()
         break

@@ -18,7 +18,7 @@
                     </mat-card>
                 </mat-card-title>
                 <mat-card-content *ngFor="let player of quizHostService.players">
-                    <mat-card style="display: flex" class="active-player-card">
+                    <mat-card  style="display: flex" class="active-player-card">
                         <div class="player-name">
                             <strong>{{player.name}}</strong>
                         </div>
@@ -36,9 +36,12 @@
 
                 <ng-template #startQuizButtonBlock>
                     <div style="text-align: center;">
-                        <button (click)="startQuiz()" style="width: 80%;height: 100px;" mat-raised-button>Pokreni
-                            Kviz</button>
+                        <button (click)="startQuiz()" style="width: 80%;height: 100px;" mat-raised-button>Pokreni Kviz</button>
                     </div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Broj pitanja</mat-label>
+                        <input matInput [(ngModel)]="quizHostService.size" type="number">
+                    </mat-form-field>
                 </ng-template>
 
                 <mat-card-content *ngIf="quizHostService.quizStarted; then questionBlock"></mat-card-content>
@@ -55,6 +58,7 @@
                                     <span style="position:relative; top: -61px; left: 0px;">
                                         {{quizHostService.x}}
                                     </span>
+                                    <app-spinner></app-spinner>
                                 </div>
                             </div>
                             <mat-card>
@@ -64,22 +68,22 @@
                                 <div style="width: 50%;"
                                     *ngFor="let answer of quizHostService.currentquestion.answers; let i = index">
                                     <mat-card
-                                        [ngStyle]="{background:answer.isCorrect===true && quizHostService.showingCorrectAnswer===true ? 'rgb(153, 211, 153)':'' }">
+                                        [ngStyle]="{background:quizHostService.checkIfAnswerIsCorrect(quizHostService.currentquestion.id,answer.id)===true && quizHostService.showingCorrectAnswer===true ? 'rgb(153, 211, 153)':'' }">
                                         {{answer.text}}
                                     </mat-card>
                                 </div>
-                            </div>
+                            </div> 
                         </mat-card>
                     </div>
                 </ng-template>
 
-                <mat-card-content *ngIf="quizHostService.quizEnded; then scoreBoardBlock"></mat-card-content>
+                <mat-card-content *ngIf="quizHostService.quizEnded; then startQuizButtonBlock"></mat-card-content>
 
                 <ng-template #scoreBoardBlock>
                     <div style="text-align: center;"> 
-                        <button mat-raised-button style="width: 80%;height: 100px;">Pokreni novi kviz</button>
+                        <button mat-raised-button style="width: 80%;height: 100px;" (click)="quizHostService.startQuiz()">Pokreni novi kviz</button>
                     </div>
-                    <mat-card *ngFor="let player of quizHostService.players">
+                    <!-- <mat-card *ngFor="let player of quizHostService.players">
                         <div>
                             <strong>{{player.name}}</strong>
                         </div>
@@ -92,7 +96,7 @@
                                 <strong>{{quizHostService.findAnswerTextById(submitedAnswer.questionId,submitedAnswer.answerId)}}</strong>
                             </div>
                         </div>
-                    </mat-card>
+                    </mat-card> -->
                 </ng-template>
 
             </mat-card>

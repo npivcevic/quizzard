@@ -12,4 +12,9 @@ export class SpinnerComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+        public color:string="blue"
+        public mode="determinate"
+        public value = "value"
+    
 }

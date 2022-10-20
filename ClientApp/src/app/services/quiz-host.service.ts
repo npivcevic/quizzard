@@ -13,6 +13,7 @@ export class QuizHostService {
 
   public groupName: string = "";
   public players: Player[] = [];
+  public size:number=1;
   public questions: Question[] = []
   public currentquestion: Question = {} as Question;
   //indicator for start button 
@@ -22,10 +23,10 @@ export class QuizHostService {
 
   public playerAnswer: string = "";
   public playerId: string = "";
-  public curentQuestionIndex: number = -1
+  public curentQuestionIndex: number =0
   //spinner variables
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 4000
+  public totalTimePerQuestion: number = 5000
   public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
 
   public showingCorrectAnswer: boolean = false
@@ -44,15 +45,23 @@ export class QuizHostService {
       next: (data) => this.processMessage(data)
     })
 
-    this.questionservice.getQuestions()
-      .subscribe(data => this.questions = data)
-
   }
 
   startQuiz() {
-    this.quizStarted = true
-    this.playersJoining = false
-    this.nextQuestion();
+    this.questionservice.getRandomQuestions(this.size)
+      .subscribe(data => this.questions = data)
+    
+    setTimeout(()=>{
+      this.players.forEach((player) => {
+        player.score=0
+      })
+      this.quizStarted = true
+      this.quizEnded= false
+      this.curentQuestionIndex=-1
+      this.playersJoining = false
+      this.nextQuestion();
+    }, 50)
+
   }
 
   recordAnswer(playerId: string, answerId: string, questionId: string) {
@@ -78,7 +87,8 @@ export class QuizHostService {
     this.currentquestion.answers =  this.currentquestion.answers.sort((a,b)=>0.5 -Math.random())
     const data = {
       action: "QuestionSent",
-      data: this.currentquestion
+      data: this.currentquestion,
+      timer: this.totalTimePerQuestion
     }
     this.sendToGroup(JSON.stringify(data));
   }
@@ -107,7 +117,9 @@ export class QuizHostService {
       this.sendToGroup(quizEndMessage)
       this.players.forEach((player) => {
         this.sendScoreToPlayer(player.connectionId)
+        player.submitedAnswers=[]
       })
+      
       console.log("quiz ended")
       this.quizStarted = !this.quizStarted
       this.quizEnded = !this.quizEnded
@@ -183,7 +195,7 @@ export class QuizHostService {
     setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
   }
 
-  public checkIfAnswerIsCorrect(questionId: string, answerId: string){
+  public checkIfAnswerIsCorrect(questionId: string, answerId: any){
     let x:boolean=false
     this.questions.forEach(question =>{
       if(question.id===questionId){
