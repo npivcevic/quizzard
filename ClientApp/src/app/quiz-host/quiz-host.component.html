@@ -47,28 +47,19 @@
                 <mat-card-content *ngIf="quizHostService.quizStarted; then questionBlock"></mat-card-content>
 
                 <ng-template #questionBlock>
-                    <div style="text-align: center;">
+                    <div style="text-align: left;">
 
                         <mat-card>
-                            <div>
-                                <div class="spinner-block">
-                                    <mat-progress-spinner color="primary" mode="determinate"
-                                        [value]="quizHostService.timeLeft">
-                                    </mat-progress-spinner>
-                                    <span style="position:relative; top: -61px; left: 0px;">
-                                        {{quizHostService.x}}
-                                    </span>
-                                    <app-spinner 
-                                    [quizStarted]="quizHostService.quizStarted"
-                                    [totalTimePerQuestion]="quizHostService.totalTimePerQuestion"
-                                    [waitingForNewQuestion]="quizHostService.showingCorrectAnswer"
-                                    [nextQuestionFor]="quizHostService.nextQuestionDelay"
-                                    >
+                            <mat-card class="questionTitleCard">
+                                <app-spinner 
+                                [time]="quizHostService.currentSpinnerTimeout"
+                                [text]="quizHostService.currentSpinnerText"
+                                (timeout)="quizHostService.spinnerTimeout()"
+                                >
                                 </app-spinner>
+                                <div class="questionText">
+                                    {{quizHostService.currentquestion.text}}
                                 </div>
-                            </div>
-                            <mat-card>
-                                {{quizHostService.currentquestion.text}}
                             </mat-card>
                             <div style="display: flex; flex-wrap: wrap;">
                                 <div style="width: 50%;"

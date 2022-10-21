@@ -26,16 +26,16 @@ export class QuizHostService {
   public curentQuestionIndex: number =0
   public evaluateanswers:boolean=false;
   //spinner variables
-  public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 7000; 
-  public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft);
+  public totalTimePerQuestion: number = 7000;
+  public nextQuestionDelay: number = 5000
 
   public showingCorrectAnswer: boolean = false
-  public nextQuestionDelay: number = 2000
   //indicator for scoreboard
   public quizEnded: boolean = false
   public playerScoreboard: Player = {} as Player
 
+  public currentSpinnerTimeout = this.totalTimePerQuestion;
+  public currentSpinnerText = "Preostalo vrijeme";
 
   constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
 
@@ -95,46 +95,52 @@ export class QuizHostService {
   }
 
   nextQuestion() {
-    if (this.curentQuestionIndex + 1 < this.questions.length) {
-      this.evaluateanswers=false
-      this.curentQuestionIndex++
-      console.log(this.curentQuestionIndex, this.questions.length)
-      this.sendQuestiontoPlayer()
-      this.showingCorrectAnswer = false
-      this.timeLeft = 100
-      let ref = setInterval(() => {
-        this.timeLeft -= 0.5
-        this.x = Math.ceil(this.totalTimePerQuestion * this.timeLeft / 100000)
-        if (this.timeLeft <= 0) {
-          clearInterval(ref)
-          this.showCorrectAnswer()
-          this.evaluateanswers=true
-        }
-      }, this.totalTimePerQuestion / (100 * 2));
-    } else {
-      const data = {
-        action: 'QuizEnded',
-        data: true
-      }
-      let quizEndMessage = JSON.stringify(data)
-      this.sendToGroup(quizEndMessage)
-      this.players.forEach((player) => {
-        this.sendScoreToPlayer(player.connectionId)
-        player.submitedAnswers=[]
-        console.log(player.name, player.submitedAnswers)
-      })
-      
-      console.log("quiz ended")
-      this.quizStarted = !this.quizStarted
-      this.quizEnded = !this.quizEnded
-
+    if (this.curentQuestionIndex + 1 >= this.questions.length) {
+      this.quizEnd();
+      return
     }
+
+    this.currentSpinnerTimeout = this.totalTimePerQuestion;
+    this.currentSpinnerText = "Preostalo vrijeme";
+    this.evaluateanswers=false
+    this.curentQuestionIndex++
+    console.log(this.curentQuestionIndex, this.questions.length)
+    this.sendQuestiontoPlayer()
+    this.showingCorrectAnswer = false
+  }
+
+  private quizEnd() {
+    const data = {
+      action: 'QuizEnded',
+      data: true
+    }
+    let quizEndMessage = JSON.stringify(data)
+    this.sendToGroup(quizEndMessage)
+    this.players.forEach((player) => {
+      this.sendScoreToPlayer(player.connectionId)
+      player.submitedAnswers=[]
+      console.log(player.name, player.submitedAnswers)
+    })
+    
+    console.log("quiz ended")
+    this.quizStarted = !this.quizStarted
+    this.quizEnded = !this.quizEnded
+  }
+
+  public spinnerTimeout() {
+    if (this.showingCorrectAnswer === true) {
+      this.nextQuestion();
+      return;
+    }
+    this.showCorrectAnswer();
   }
 
   public showCorrectAnswer() {
+    this.currentSpinnerTimeout = this.nextQuestionDelay;
+    this.currentSpinnerText = "Sljedece pitanje";
     this.showingCorrectAnswer = true
+    this.evaluateanswers=true
     this.checkAnswerAndAssignPoints()
-    setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
   }
 // ==========================================================0
   public checkIfSubmitedAnswerExists(playerId:string){

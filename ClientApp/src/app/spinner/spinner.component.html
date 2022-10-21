@@ -1,4 +1,5 @@
-<div>
+<div class="spinner">
+    <h4>{{text}}</h4>
     <mat-progress-spinner
         class="example-margin"
         [color]="color"
@@ -6,6 +7,6 @@
         [value]="timeLeft">
     </mat-progress-spinner>
     <span style="position:relative; top: -61px; left: 0px;">
-        {{x}}
+        {{timeLeftInSeconds}}
     </span>
 </div>
