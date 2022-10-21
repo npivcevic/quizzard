@@ -2,7 +2,10 @@
     <mat-progress-spinner
         class="example-margin"
         [color]="color"
-        mode="indeterminate"
-        value=100>
+        mode="determinate"
+        [value]="timeLeft">
     </mat-progress-spinner>
+    <span style="position:relative; top: -61px; left: 0px;">
+        {{x}}
+    </span>
 </div>

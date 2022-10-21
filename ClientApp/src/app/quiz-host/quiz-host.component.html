@@ -58,7 +58,12 @@
                                     <span style="position:relative; top: -61px; left: 0px;">
                                         {{quizHostService.x}}
                                     </span>
-                                    <app-spinner></app-spinner>
+                                    <app-spinner 
+                                    [quizStartsFor]="10"
+                                    [totalTimePerQuestion]="quizHostService.totalTimePerQuestion"
+                                    [nextQuestionFor]="quizHostService.nextQuestionDelay"
+                                    >
+                                </app-spinner>
                                 </div>
                             </div>
                             <mat-card>

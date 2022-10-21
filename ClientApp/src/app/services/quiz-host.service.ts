@@ -27,8 +27,8 @@ export class QuizHostService {
   public evaluateanswers:boolean=false;
   //spinner variables
   public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 5000
-  public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
+  public totalTimePerQuestion: number = 7000; 
+  public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft);
 
   public showingCorrectAnswer: boolean = false
   public nextQuestionDelay: number = 2000
