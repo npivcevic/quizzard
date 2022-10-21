@@ -24,6 +24,7 @@ export class QuizHostService {
   public playerAnswer: string = "";
   public playerId: string = "";
   public curentQuestionIndex: number =0
+  public evaluateanswers:boolean=false;
   //spinner variables
   public timeLeft: number = 100;
   public totalTimePerQuestion: number = 5000
@@ -49,18 +50,17 @@ export class QuizHostService {
 
   startQuiz() {
     this.questionservice.getRandomQuestions(this.size)
-      .subscribe(data => this.questions = data)
-    
-    setTimeout(()=>{
-      this.players.forEach((player) => {
-        player.score=0
+      .subscribe(data => {
+        this.questions = data
+        this.players.forEach((player) => {
+          player.score=0
+        })
+        this.quizStarted = true
+        this.quizEnded= false
+        this.curentQuestionIndex=-1
+        this.playersJoining = false
+        this.nextQuestion();
       })
-      this.quizStarted = true
-      this.quizEnded= false
-      this.curentQuestionIndex=-1
-      this.playersJoining = false
-      this.nextQuestion();
-    }, 50)
 
   }
 
@@ -96,6 +96,7 @@ export class QuizHostService {
 
   nextQuestion() {
     if (this.curentQuestionIndex + 1 < this.questions.length) {
+      this.evaluateanswers=false
       this.curentQuestionIndex++
       console.log(this.curentQuestionIndex, this.questions.length)
       this.sendQuestiontoPlayer()
@@ -107,6 +108,7 @@ export class QuizHostService {
         if (this.timeLeft <= 0) {
           clearInterval(ref)
           this.showCorrectAnswer()
+          this.evaluateanswers=true
         }
       }, this.totalTimePerQuestion / (100 * 2));
     } else {
@@ -119,6 +121,7 @@ export class QuizHostService {
       this.players.forEach((player) => {
         this.sendScoreToPlayer(player.connectionId)
         player.submitedAnswers=[]
+        console.log(player.name, player.submitedAnswers)
       })
       
       console.log("quiz ended")
@@ -133,7 +136,7 @@ export class QuizHostService {
     const player = this.players.find((player)=>{
       return player.connectionId===playerId
     })
-    if(player!.submitedAnswers=[]){
+    if(player!.submitedAnswers.length===0){
       return submitedAnswerExist
     }else{
       submitedAnswerExist=true
@@ -146,6 +149,8 @@ export class QuizHostService {
     let x = this.checkIfSubmitedAnswerExists(playerId)
     let lastSubmitedAnswerState:boolean=false
     if(x=false){
+      console.log("submited answer is fasle")
+
       return
     }else{
       let player = this.findPlayerByPlayerId(playerId)
@@ -162,13 +167,15 @@ export class QuizHostService {
 
   public addStyleToActivePlayerCard(playerId:string){
     let style= {}
-    if(this.checkIfSubmitedAnswerExists(playerId)===false){
-      style = {'background': 'rgba(255, 235, 205, 0.39)'}
+    if(this.checkIfSubmitedAnswerExists(playerId)===false || this.findPlayerByPlayerId(playerId)?.submitedAnswers.length===this.curentQuestionIndex){
+      style = {'background': ''}
     }else{
-      if(this.checkLastSubmitedAnswerState(playerId)===true){
+      if(this.evaluateanswers===true && this.checkLastSubmitedAnswerState(playerId)===true){
         style = {'background': 'rgb(153, 211, 153)'}
-      }else{
+      }else if (this.evaluateanswers===true && this.checkLastSubmitedAnswerState(playerId)===false){
         style = {'background': 'rgb(236, 157, 157)'}
+      }else if(this.checkIfSubmitedAnswerExists(playerId)===true){
+        style = {'background':'rgb(250, 224, 118)'}
       }
     }
     return style
