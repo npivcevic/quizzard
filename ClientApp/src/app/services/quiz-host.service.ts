@@ -171,20 +171,42 @@ export class QuizHostService {
     return lastSubmitedAnswerState
   }
 
-  public addStyleToActivePlayerCard(playerId:string){
-    let style= {}
-    if(this.checkIfSubmitedAnswerExists(playerId)===false || this.findPlayerByPlayerId(playerId)?.submitedAnswers.length===this.curentQuestionIndex){
-      style = {'background': ''}
-    }else{
-      if(this.evaluateanswers===true && this.checkLastSubmitedAnswerState(playerId)===true){
-        style = {'background': 'rgb(153, 211, 153)'}
-      }else if (this.evaluateanswers===true && this.checkLastSubmitedAnswerState(playerId)===false){
-        style = {'background': 'rgb(236, 157, 157)'}
-      }else if(this.checkIfSubmitedAnswerExists(playerId)===true){
-        style = {'background':'rgb(250, 224, 118)'}
-      }
+  private playerAnsweredCurrentQuestion(playerId: string) {
+    let player = this.findPlayerByPlayerId(playerId);
+    let answerIndex = player?.submitedAnswers.findIndex(a => a.questionId === this.currentquestion.id)
+    if (answerIndex === -1) {
+      return false;
     }
-    return style
+    return true;
+  }
+
+  private playerAnsweredCurrentQuestionCorrectlly (playerId: string): Boolean
+  {
+    let player = this.findPlayerByPlayerId(playerId);
+    let answer = player?.submitedAnswers.find(a => a.questionId === this.currentquestion.id)
+    if (answer === undefined) {
+      return false;
+    }
+    return this.checkIfAnswerIsCorrect(answer.questionId, answer.answerId)
+  }
+
+  public addStyleToActivePlayerCard(playerId:string){
+    if (!this.evaluateanswers) {
+      if (!this.playerAnsweredCurrentQuestion(playerId)) {
+        return {'background': ''}
+      }
+      return {'background':'rgb(250, 224, 118)'} //zuta
+    }
+
+    if (!this.playerAnsweredCurrentQuestion(playerId)) {
+      return {'background': ''}
+    }
+
+    if (this.playerAnsweredCurrentQuestionCorrectlly(playerId)) {
+      return {'background': 'rgb(153, 211, 153)'} //zelena
+    }
+
+    return {'background': 'rgb(236, 157, 157)'} //crvena
   }
 // =======================================================
   public checkAnswerAndAssignPoints() {
