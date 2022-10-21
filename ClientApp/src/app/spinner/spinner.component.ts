@@ -9,14 +9,14 @@ export class SpinnerComponent implements OnInit {
 
   //indicator for: igra pocinje za ?
   @Input() quizCountDownStarted:boolean=false
-  @Input() quizStartsFor:number = 0
+  @Input() quizStartsFor!:number
   //indicator for: vrijeme za odgovor ?
-  @Input() quizStarted:boolean=false
-  @Input() totalTimePerQuestion:number =0
+  @Input() quizStarted!:boolean
+  @Input() totalTimePerQuestion!:number
   @Input() timeLeft:number=100
   //indicator for: novo pitanje za ?
   @Input() waitingForNewQuestion:boolean=false
-  @Input() nextQuestionFor:number = 0
+  @Input() nextQuestionFor!:number
   //indicator for: kviz je gotov ?
   @Input() quizEnded:boolean=false
 
@@ -27,20 +27,28 @@ export class SpinnerComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
+
     
-    this.spinnerControl(this.timePeriod)    
+    this.spinnerControl()    
 
   }
 
-  public spinnerControl(timePeriod:number){
+  public spinnerControl(){
 
+    if(this.quizStarted===true && this.waitingForNewQuestion===false){
+      this.timePeriod=this.totalTimePerQuestion
+    }
+    this.timeLeft = 100
     let ref = setInterval(()=>{
       this.timeLeft -= 0.5
-      this.x = Math.ceil(this.totalTimePerQuestion*this.timeLeft/100000)
+      this.x = Math.ceil(this.timePeriod*this.timeLeft/100000)
       if(this.timeLeft <= 0){
         clearInterval(ref)
+        setTimeout(() => this.spinnerControl() , this.nextQuestionFor)
+
       }
-    }, this.totalTimePerQuestion/(100*2))
+    }, this.timePeriod/(100*2)) 
   }
 
 

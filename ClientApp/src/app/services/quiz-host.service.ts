@@ -130,6 +130,12 @@ export class QuizHostService {
 
     }
   }
+
+  public showCorrectAnswer() {
+    this.showingCorrectAnswer = true
+    this.checkAnswerAndAssignPoints()
+    setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
+  }
 // ==========================================================0
   public checkIfSubmitedAnswerExists(playerId:string){
     let submitedAnswerExist:boolean = false
@@ -250,11 +256,6 @@ export class QuizHostService {
     return style
   }
 
-  public showCorrectAnswer() {
-    this.showingCorrectAnswer = true
-    this.checkAnswerAndAssignPoints()
-    setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
-  }
 
   public checkIfAnswerIsCorrect(questionId: any, answerId: any){
     let x:boolean=false

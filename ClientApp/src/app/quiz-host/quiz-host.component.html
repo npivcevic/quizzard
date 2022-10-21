@@ -59,8 +59,9 @@
                                         {{quizHostService.x}}
                                     </span>
                                     <app-spinner 
-                                    [quizStartsFor]="10"
+                                    [quizStarted]="quizHostService.quizStarted"
                                     [totalTimePerQuestion]="quizHostService.totalTimePerQuestion"
+                                    [waitingForNewQuestion]="quizHostService.showingCorrectAnswer"
                                     [nextQuestionFor]="quizHostService.nextQuestionDelay"
                                     >
                                 </app-spinner>
