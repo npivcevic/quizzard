@@ -19,7 +19,6 @@ const PROXY_CONFIG = [
    ],
     target: target,
     secure: false,
-    changeOrigin: true,
     headers: {
       Connection: 'Keep-Alive'
     }
