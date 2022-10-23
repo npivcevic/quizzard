@@ -34,8 +34,8 @@ export class QuizHostService {
   public quizEnded: boolean = false
   public playerScoreboard: Player = {} as Player
 
-  public currentSpinnerTimeout = this.totalTimePerQuestion;
-  public currentSpinnerText = "Preostalo vrijeme";
+  public currentSpinnerTimeout=0
+  public currentSpinnerText = "";
 
   constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
 
@@ -88,9 +88,14 @@ export class QuizHostService {
     this.currentquestion.answers =  this.currentquestion.answers.sort((a,b)=>0.5 -Math.random())
     const data = {
       action: "QuestionSent",
-      data: this.currentquestion,
+      data: [
+        this.currentquestion,
+        this.currentSpinnerText,
+        this.currentSpinnerTimeout
+            ],
       timer: this.totalTimePerQuestion
     }
+    console.log(data)
     this.sendToGroup(JSON.stringify(data));
   }
 
@@ -104,9 +109,34 @@ export class QuizHostService {
     this.currentSpinnerText = "Preostalo vrijeme";
     this.evaluateanswers=false
     this.curentQuestionIndex++
-    console.log(this.curentQuestionIndex, this.questions.length)
     this.sendQuestiontoPlayer()
     this.showingCorrectAnswer = false
+  }
+
+  public showCorrectAnswer() {
+    this.currentSpinnerTimeout = this.nextQuestionDelay;
+    if(this.curentQuestionIndex+1<this.questions.length){  
+      this.currentSpinnerText = "Sljedece pitanje";
+      const data = {
+        action: "EvaluatingAnswers",
+        text: this.currentSpinnerText,
+        timer: this.currentSpinnerTimeout
+      }
+      console.log("next question pack", data)
+      this.sendToGroup(JSON.stringify(data)) }
+
+    if(this.curentQuestionIndex+1===this.questions.length){    
+      this.currentSpinnerText = "Kviz gotov za";}
+    this.showingCorrectAnswer = true
+    this.evaluateanswers=true
+    const data = {
+      action: "EvaluatingAnswers",
+      text: this.currentSpinnerText,
+      timer: this.currentSpinnerTimeout
+    }
+    console.log("quiz end question pack", data)
+    this.sendToGroup(JSON.stringify(data)) 
+    this.checkAnswerAndAssignPoints()
   }
 
   private quizEnd() {
@@ -119,10 +149,7 @@ export class QuizHostService {
     this.players.forEach((player) => {
       this.sendScoreToPlayer(player.connectionId)
       player.submitedAnswers=[]
-      console.log(player.name, player.submitedAnswers)
     })
-    
-    console.log("quiz ended")
     this.quizStarted = !this.quizStarted
     this.quizEnded = !this.quizEnded
   }
@@ -133,18 +160,6 @@ export class QuizHostService {
       return;
     }
     this.showCorrectAnswer();
-  }
-
-  public showCorrectAnswer() {
-    this.currentSpinnerTimeout = this.nextQuestionDelay;
-    if(this.curentQuestionIndex+1<this.questions.length){    
-      this.currentSpinnerText = "Sljedece pitanje";}
-
-    if(this.curentQuestionIndex+1===this.questions.length){    
-      this.currentSpinnerText = "Kviz gotov za";}
-    this.showingCorrectAnswer = true
-    this.evaluateanswers=true
-    this.checkAnswerAndAssignPoints()
   }
 
   private playerAnsweredCurrentQuestion(playerId: string) {
@@ -184,7 +199,7 @@ export class QuizHostService {
 
     return {'background': 'rgb(236, 157, 157)'} //crvena
   }
-// =======================================================
+
   public checkAnswerAndAssignPoints() {
     let correctAnswer = this.questions[this.curentQuestionIndex].answers.find((correctAnswer) => {
       return correctAnswer.isCorrect === true
@@ -206,14 +221,14 @@ export class QuizHostService {
     })
     this.players.sort(function (a, b) { return b.score - a.score })
   }
-// ================================================
+
   public findPlayerByPlayerId(playerId:string){
     const player = this.players.find((player)=>{
       return player.connectionId===playerId
     })
     return player
   }
-// =======================================================
+
   public findQuestionTextById(questionId: string) {
     const Q = this.questions.find((question) => {
       return question.id === questionId
@@ -253,7 +268,6 @@ export class QuizHostService {
     })
     return style
   }
-
 
   public checkIfAnswerIsCorrect(questionId: any, answerId: any){
     let x:boolean=false

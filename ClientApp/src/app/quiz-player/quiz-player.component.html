@@ -62,20 +62,16 @@
     <div class="body" *ngIf="quizPlayerService.startQuiz; then thenBlock"></div>
 
         <ng-template #thenBlock>
-            <div *ngIf="quizPlayerService.currentquestion" >
-                <mat-card style="text-align: center;">
-                    <div>
-                        <div class="spinner-block">
-                            <mat-progress-spinner color="primary" mode="determinate"
-                                [value]="quizPlayerService.timeLeft">
-                            </mat-progress-spinner>
-                            <span style="position:relative; top: -61px; left: 0px;">
-                                {{quizPlayerService.x}}
-                            </span>
-                            <app-spinner></app-spinner>
-                        </div>
+            <mat-card *ngIf="quizPlayerService.currentquestion" >
+                <mat-card class="questionTitleCard">
+                    <app-spinner
+                    [time]="quizPlayerService.currentSpinnerTimeout"
+                    [text]="quizPlayerService.currentSpinnerText"
+                    >
+                    </app-spinner>
+                    <div class="questionText">
+                        {{quizPlayerService.currentquestion.text}}
                     </div>
-                    {{quizPlayerService.currentquestion.text}}
                 </mat-card>
                 <div style="display: flex; flex-wrap: wrap; ">
                     <div *ngFor="let answer of quizPlayerService.currentquestion.answers; let i = index" style="width: 50%;">
@@ -90,7 +86,7 @@
                         </mat-card>
                     </div>
                 </div>
-            </div>
+            </mat-card>
         </ng-template>
 
     <div class="body" *ngIf="quizPlayerService.endQuiz; then endQuizBlock"></div>

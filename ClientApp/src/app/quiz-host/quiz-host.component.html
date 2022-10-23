@@ -46,55 +46,53 @@
 
                 <mat-card-content *ngIf="quizHostService.quizStarted; then questionBlock"></mat-card-content>
 
-                <ng-template #questionBlock>
-                    <div style="text-align: left;">
+            <ng-template #questionBlock>
+                <div style="text-align: left;">
 
-                        <mat-card>
-                            <mat-card class="questionTitleCard">
-                                <app-spinner 
-                                [time]="quizHostService.currentSpinnerTimeout"
-                                [text]="quizHostService.currentSpinnerText"
-                                (timeout)="quizHostService.spinnerTimeout()"
-                                >
-                                </app-spinner>
-                                <div class="questionText">
-                                    {{quizHostService.currentquestion.text}}
-                                </div>
-                            </mat-card>
-                            <div style="display: flex; flex-wrap: wrap;">
-                                <div style="width: 50%;"
-                                    *ngFor="let answer of quizHostService.currentquestion.answers; let i = index">
-                                    <mat-card
-                                        [ngStyle]="{background:quizHostService.checkIfAnswerIsCorrect(quizHostService.currentquestion.id,answer.id)===true && quizHostService.showingCorrectAnswer===true ? 'rgb(153, 211, 153)':'' }">
-                                        {{answer.text}}
-                                    </mat-card>
-                                </div>
-                            </div> 
+                        <mat-card class="questionTitleCard">
+                            <app-spinner 
+                            [time]="quizHostService.currentSpinnerTimeout"
+                            [text]="quizHostService.currentSpinnerText"
+                            (timeout)="quizHostService.spinnerTimeout()"
+                            >
+                            </app-spinner>
+                            <div class="questionText">
+                                {{quizHostService.currentquestion.text}}
+                            </div>
                         </mat-card>
-                    </div>
-                </ng-template>
-
-                <mat-card-content *ngIf="quizHostService.quizEnded; then startQuizButtonBlock"></mat-card-content>
-
-                <ng-template #scoreBoardBlock>
-                    <div style="text-align: center;"> 
-                        <button mat-raised-button style="width: 80%;height: 100px;" (click)="quizHostService.startQuiz()">Pokreni novi kviz</button>
-                    </div>
-                    <!-- <mat-card *ngFor="let player of quizHostService.players">
-                        <div>
-                            <strong>{{player.name}}</strong>
-                        </div>
-                        <div style="display: flex;" *ngFor="let submitedAnswer of player.submitedAnswers">
-                            <div style="border: solid;">
-                                <strong>{{quizHostService.findQuestionTextById(submitedAnswer.questionId)}}</strong>
-                            </div>
-                            <div [ngStyle]="quizHostService.addStyleToPlayerAnswerOnScoreboard(submitedAnswer.questionId,submitedAnswer.answerId)"
-                                style="border: solid;">
-                                <strong>{{quizHostService.findAnswerTextById(submitedAnswer.questionId,submitedAnswer.answerId)}}</strong>
+                        <div style="display: flex; flex-wrap: wrap;">
+                            <div style="width: 50%;"
+                                *ngFor="let answer of quizHostService.currentquestion.answers; let i = index">
+                                <mat-card
+                                    [ngStyle]="{background:quizHostService.checkIfAnswerIsCorrect(quizHostService.currentquestion.id,answer.id)===true && quizHostService.showingCorrectAnswer===true ? 'rgb(153, 211, 153)':'' }">
+                                    {{answer.text}}
+                                </mat-card>
                             </div>
                         </div>
-                    </mat-card> -->
-                </ng-template>
+                </div>
+            </ng-template>
+
+            <mat-card-content *ngIf="quizHostService.quizEnded; then startQuizButtonBlock"></mat-card-content>
+
+            <ng-template #scoreBoardBlock>
+                <div style="text-align: center;"> 
+                    <button mat-raised-button style="width: 80%;height: 100px;" (click)="quizHostService.startQuiz()">Pokreni novi kviz</button>
+                </div>
+                <!-- <mat-card *ngFor="let player of quizHostService.players">
+                    <div>
+                        <strong>{{player.name}}</strong>
+                    </div>
+                    <div style="display: flex;" *ngFor="let submitedAnswer of player.submitedAnswers">
+                        <div style="border: solid;">
+                            <strong>{{quizHostService.findQuestionTextById(submitedAnswer.questionId)}}</strong>
+                        </div>
+                        <div [ngStyle]="quizHostService.addStyleToPlayerAnswerOnScoreboard(submitedAnswer.questionId,submitedAnswer.answerId)"
+                            style="border: solid;">
+                            <strong>{{quizHostService.findAnswerTextById(submitedAnswer.questionId,submitedAnswer.answerId)}}</strong>
+                        </div>
+                    </div>
+                </mat-card> -->
+            </ng-template>
 
             </mat-card>
         </div>

@@ -65,6 +65,14 @@ input::placeholder{
     text-align: center;
 }
 
-.spinner-block{
-    width: 106px;
+.questionTitleCard {
+    display: flex;
+}
+
+.questionText {
+    display: inline-block;
+    text-align: center;
+    font-size: 32px;
+    margin: auto !important;
+    padding: 15px;
 }

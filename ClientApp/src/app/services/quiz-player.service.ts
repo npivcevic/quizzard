@@ -22,9 +22,10 @@ export class QuizPlayerService {
   //indicates that quiz ended
   public endQuiz:boolean=false;
   public playerScore:PlayerScore[]=[]
-  public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 2000
-  public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
+
+
+  public currentSpinnerTimeout=0
+  public currentSpinnerText = "";
 
 
   constructor(public signalRService: SignalrService) { }
@@ -39,13 +40,9 @@ export class QuizPlayerService {
   public answerStyle(answer:any){
     let style={}
     if(this.correctAnswerId===answer){
-      return style = {
-        'background':'rgb(153, 211, 153)'
-      }
+      return style = {'background':'rgb(153, 211, 153)'}
     }else if(this.selectedAnswerId===answer){ 
-      return style = {
-        'background':'rgb(250, 224, 118)'
-      }
+      return style = {'background':'rgb(250, 224, 118)'}
     }
     return style
   }
@@ -72,18 +69,6 @@ export class QuizPlayerService {
     this.sendToHost(JSON.stringify(data));
   }
 
-  public spinnerControl(){
-    this.timeLeft = 100
-      let ref = setInterval(() => {
-        this.timeLeft -= 0.5
-        this.x = Math.ceil(this.totalTimePerQuestion * this.timeLeft / 100000)
-        if (this.timeLeft <= 0) {
-          this.answerIsSelected=true
-          clearInterval(ref)
-        }
-      }, this.totalTimePerQuestion / (100 * 2));
-      
-  }
 
   public processMessage(data: any) {
     switch(data.action){
@@ -93,13 +78,18 @@ export class QuizPlayerService {
         break
       case 'QuestionSent':
         this.startQuiz=true
-        this.totalTimePerQuestion=data.timer
         this.selectedAnswerId="";
         this.answerIsSelected=false
-        this.currentquestion=data.data
+        this.currentquestion=data.data[0]
         this.playerScore=[]
         //here start spinning
-        this.spinnerControl()
+        this.currentSpinnerText=data.data[1]
+        this.currentSpinnerTimeout=data.data[2]
+        break
+      case 'EvaluatingAnswers':
+        console.log(data)
+        this.currentSpinnerText=data.text
+        this.currentSpinnerTimeout=data.timer
         break
       case 'CorrectAnswer':
         this.correctAnswerId=data.correctAnswerForPlayer
