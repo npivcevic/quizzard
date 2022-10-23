@@ -40,7 +40,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: QuizPlayerComponent, pathMatch: 'full' },
-      { path: 'app-question', component: QuestionsComponent },
+      { path: 'app-question', component: QuestionsComponent, canActivate: [AuthorizeGuard]  },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'quiz-host', component: QuizHostComponent },
     ]),

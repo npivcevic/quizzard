@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using quizzard.Data;
 using quizzard.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace quizzard.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionsController : ControllerBase
@@ -17,6 +19,7 @@ namespace quizzard.Controllers
         }
 
         // GET: api/Questions/random
+        [AllowAnonymous]
         [HttpGet("Random")]
         public async Task<ActionResult<IEnumerable<Question>>> GetRandomQuestions(int size = 20)
         {
