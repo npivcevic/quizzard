@@ -137,44 +137,14 @@ export class QuizHostService {
 
   public showCorrectAnswer() {
     this.currentSpinnerTimeout = this.nextQuestionDelay;
-    this.currentSpinnerText = "Sljedece pitanje";
+    if(this.curentQuestionIndex+1<this.questions.length){    
+      this.currentSpinnerText = "Sljedece pitanje";}
+
+    if(this.curentQuestionIndex+1===this.questions.length){    
+      this.currentSpinnerText = "Kviz gotov za";}
     this.showingCorrectAnswer = true
     this.evaluateanswers=true
     this.checkAnswerAndAssignPoints()
-  }
-// ==========================================================0
-  public checkIfSubmitedAnswerExists(playerId:string){
-    let submitedAnswerExist:boolean = false
-    const player = this.players.find((player)=>{
-      return player.connectionId===playerId
-    })
-    if(player!.submitedAnswers.length===0){
-      return submitedAnswerExist
-    }else{
-      submitedAnswerExist=true
-    }
-    return submitedAnswerExist
-  }
-
-
-  public checkLastSubmitedAnswerState(playerId:string){
-    let x = this.checkIfSubmitedAnswerExists(playerId)
-    let lastSubmitedAnswerState:boolean=false
-    if(x=false){
-      console.log("submited answer is fasle")
-
-      return
-    }else{
-      let player = this.findPlayerByPlayerId(playerId)
-      let lastSubmitedAnswer = player?.submitedAnswers[player.submitedAnswers.length-1]
-      let z = this.checkIfAnswerIsCorrect(lastSubmitedAnswer?.questionId, lastSubmitedAnswer?.answerId)
-      if(z===true){
-        lastSubmitedAnswerState=true
-      }else{
-        lastSubmitedAnswerState=false
-      }
-    }
-    return lastSubmitedAnswerState
   }
 
   private playerAnsweredCurrentQuestion(playerId: string) {
@@ -292,9 +262,10 @@ export class QuizHostService {
         const A = question.answers.find(answer=>{
           return answer.id===answerId
         })
-        if (A?.isCorrect === true) {
+        if (A?.isCorrect) {
           return x = true
-        } else {
+        } 
+        if(!A?.isCorrect) {
           return x = false
         }
       }
@@ -306,20 +277,13 @@ export class QuizHostService {
 
   public sendScoreToPlayer(playerId: string) {
     let answerScore:PlayerScore[] = []
-    const player = this.players.find((player) => {
-      return player.connectionId === playerId
-    })
-    console.log("player data found", player)
-    this.playerScoreboard.name = player!.name
-    this.playerScoreboard.submitedAnswers = []
+    const player = this.findPlayerByPlayerId(playerId)
     player?.submitedAnswers.forEach((submitedAnswer) => {
       let x = this.findQuestionTextById(submitedAnswer.questionId)
       let y = this.findAnswerTextById(submitedAnswer.questionId, submitedAnswer.answerId)
       let z = this.checkIfAnswerIsCorrect(submitedAnswer.questionId, submitedAnswer.answerId)
       answerScore.push({
-        questionText:x,
-        answerText:y,
-        isCorrect:z
+        questionText:x,answerText:y,isCorrect:z
       })
     })
     const data = {
@@ -327,7 +291,6 @@ export class QuizHostService {
       data: answerScore
     }
     this.sendToPlayer(JSON.stringify(data), playerId)
-    console.log("player data sent", answerScore)
   }
 
   public sendToPlayer(data: string, playerConnectionId: string) {
