@@ -31,17 +31,27 @@
         </div>
 
         <div class="question">
-            <mat-card class="question-card">
+            <mat-card >
                 <mat-card-content *ngIf="quizHostService.playersJoining; then startQuizButtonBlock"></mat-card-content>
 
-                <ng-template #startQuizButtonBlock>
-                    <div style="text-align: center;">
-                        <button (click)="startQuiz()" style="width: 80%;height: 100px;" mat-raised-button>Pokreni Kviz</button>
-                    </div>
+                <ng-template [formGroup]="quizHostService.quizSetup"  #startQuizButtonBlock>
                     <mat-form-field appearance="outline">
                         <mat-label>Broj pitanja</mat-label>
-                        <input matInput [(ngModel)]="quizHostService.size" type="number">
+                        <input matInput formControlName="questionsNo" type="number" >
                     </mat-form-field>
+                    <br>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vrijeme za odgovor</mat-label>
+                        <input matInput formControlName="answerTime" type="number">
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vrijeme između pitanja</mat-label>
+                        <input matInput formControlName="questionDelay" type="number">
+                    </mat-form-field>
+                    <div style="text-align: center;">
+                        <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-raised-button [disabled]="!quizHostService.quizSetup.valid">Pokreni Kviz</button>
+                    </div>
                 </ng-template>
 
                 <mat-card-content *ngIf="quizHostService.quizStarted; then questionBlock"></mat-card-content>

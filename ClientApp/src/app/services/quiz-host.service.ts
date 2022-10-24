@@ -5,6 +5,7 @@ import { Player } from '../model/player';
 import { QuestionService } from '../question.service';
 import { Question } from '../model/question';
 import { PlayerScore } from '../model/player-score';
+import { FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class QuizHostService {
 
   public groupName: string = "";
   public players: Player[] = [];
-  public size:number=1;
+  public size!:number;
   public questions: Question[] = []
   public currentquestion: Question = {} as Question;
   //indicator for start button 
@@ -26,7 +27,7 @@ export class QuizHostService {
   public curentQuestionIndex: number =0
   public evaluateanswers:boolean=false;
   //spinner variables
-  public totalTimePerQuestion: number = 7000;
+  public totalTimePerQuestion!: number;
   public nextQuestionDelay: number = 5000
 
   public showingCorrectAnswer: boolean = false
@@ -37,7 +38,7 @@ export class QuizHostService {
   public currentSpinnerTimeout=0
   public currentSpinnerText = "";
 
-  constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
+  constructor(public signalRService: SignalrService, public questionservice: QuestionService, public fb:FormBuilder) { }
 
   public async initialize() {
     await this.signalRService.startConnection();
@@ -48,19 +49,57 @@ export class QuizHostService {
 
   }
 
-  startQuiz() {
-    this.questionservice.getRandomQuestions(this.size)
-      .subscribe(data => {
-        this.questions = data
-        this.players.forEach((player) => {
-          player.score=0
-        })
-        this.quizStarted = true
-        this.quizEnded= false
-        this.curentQuestionIndex=-1
-        this.playersJoining = false
-        this.nextQuestion();
+  onChange(x:any){
+    console.log(x)
+    if(x.key==="-" || x.key==="0" || x.key==="." || x.key==="e"){
+      x.preventDefault();
+    }
+  }
+
+  quizSetup=this.fb.group({
+    questionsNo : this.fb.control("",[Validators.required,Validators.min(1)]),
+    answerTime : this.fb.control("", [Validators.required, Validators.min(1)]),
+    questionDelay : this.fb.control("",[Validators.required, Validators.min(1)])
+  })
+
+  public onlyPositiveInt(x:number){
+    let int!:number
+    if(x<=0){
+      this.quizSetup.patchValue({
+        questtionsNo:"0"
       })
+      console.log(this.quizSetup.value.questionsNo)
+      int = x
+    }
+    if(x>0){
+      int = x
+    }
+    console.log("actived", int)
+    return int
+  }
+
+  startQuiz() {
+    if(this.quizSetup.valid===true){
+      this.size=this.quizSetup.value.questionsNo
+      this.totalTimePerQuestion=this.quizSetup.value.answerTime*1000
+      this.nextQuestionDelay=this.quizSetup.value.questionDelay*1000
+      console.log("time for question", this.totalTimePerQuestion)
+      this.questionservice.getRandomQuestions(this.size)
+        .subscribe(data => {
+          this.questions = data
+          this.players.forEach((player) => {
+            player.score=0
+          })
+          this.quizStarted = true
+          this.quizEnded= false
+          this.curentQuestionIndex=-1
+          this.playersJoining = false
+          this.nextQuestion();
+        })
+    }
+    if(this.quizSetup.valid===false){
+      console.log("invalid form")
+    }
 
   }
 

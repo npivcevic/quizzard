@@ -52,6 +52,7 @@ mat-card{
 .question{
     width: 80%;
     padding: 20px; 
+    height: 1000px;
 }
 
 .question-card{

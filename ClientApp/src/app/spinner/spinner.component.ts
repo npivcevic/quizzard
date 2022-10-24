@@ -6,8 +6,8 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
   styleUrls: ['./spinner.component.css']
 })
 export class SpinnerComponent implements OnInit, OnChanges {
-  @Input() time: number = 0
-  @Input() text: string = ""
+  @Input() time!: number
+  @Input() text!: string
   @Output() timeout = new EventEmitter<string>();
 
   public color:string="blue"
