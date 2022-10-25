@@ -5,7 +5,7 @@ import { Player } from '../model/player';
 import { QuestionService } from '../question.service';
 import { Question } from '../model/question';
 import { PlayerScore } from '../model/player-score';
-import { FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -49,41 +49,17 @@ export class QuizHostService {
 
   }
 
-  onChange(x:any){
-    console.log(x)
-    if(x.key==="-" || x.key==="0" || x.key==="." || x.key==="e"){
-      x.preventDefault();
-    }
-  }
-
   quizSetup=this.fb.group({
-    questionsNo : this.fb.control("",[Validators.required,Validators.min(1)]),
-    answerTime : this.fb.control("", [Validators.required, Validators.min(1)]),
-    questionDelay : this.fb.control("",[Validators.required, Validators.min(1)])
+    questionsNo : this.fb.control(1,[Validators.required,Validators.min(1)]),
+    answerTime : this.fb.control(1, [Validators.required, Validators.min(1)]),
+    questionDelay : this.fb.control(1,[Validators.required, Validators.min(1)])
   })
-
-  public onlyPositiveInt(x:number){
-    let int!:number
-    if(x<=0){
-      this.quizSetup.patchValue({
-        questtionsNo:"0"
-      })
-      console.log(this.quizSetup.value.questionsNo)
-      int = x
-    }
-    if(x>0){
-      int = x
-    }
-    console.log("actived", int)
-    return int
-  }
 
   startQuiz() {
     if(this.quizSetup.valid===true){
       this.size=this.quizSetup.value.questionsNo
       this.totalTimePerQuestion=this.quizSetup.value.answerTime*1000
       this.nextQuestionDelay=this.quizSetup.value.questionDelay*1000
-      console.log("time for question", this.totalTimePerQuestion)
       this.questionservice.getRandomQuestions(this.size)
         .subscribe(data => {
           this.questions = data
