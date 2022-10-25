@@ -57,9 +57,9 @@ export class QuizHostService {
 
   startQuiz() {
     if(this.quizSetup.valid===true){
-      this.size=this.quizSetup.value.questionsNo
-      this.totalTimePerQuestion=this.quizSetup.value.answerTime*1000
-      this.nextQuestionDelay=this.quizSetup.value.questionDelay*1000
+      this.size=this.quizSetup.value.questionsNo!
+      this.totalTimePerQuestion=this.quizSetup.value.answerTime!*1000
+      this.nextQuestionDelay=this.quizSetup.value.questionDelay!*1000
       this.questionservice.getRandomQuestions(this.size)
         .subscribe(data => {
           this.questions = data
