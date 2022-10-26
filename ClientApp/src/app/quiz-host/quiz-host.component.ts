@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
+import { QuizState } from '../classes/QuizHostData';
 
 @Component({
   selector: 'app-quiz-host',
@@ -31,6 +32,18 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   startQuiz() {
     this.quizHostService.startQuiz()
+  }
+
+  isShowingAnswers() {
+    return this.quizHostService.quizData.quizState === QuizState.AnswersShowing
+  }
+
+  isShowingQuestion() {
+    return this.quizHostService.quizData.quizState === QuizState.QuestionShowing
+  }
+
+  isIdle() {
+    return this.quizHostService.quizData.quizState === QuizState.Idle
   }
 
   public sendDataToGroup() {

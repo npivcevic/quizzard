@@ -1,5 +1,5 @@
 export interface SubmitedAnswer {
     questionId: string
     answerId: string
-    recordStatus:string
+    isCorrect: boolean
 }
