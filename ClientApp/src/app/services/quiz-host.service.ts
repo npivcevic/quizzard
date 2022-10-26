@@ -2,25 +2,17 @@ import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { Player } from '../classes/Player';
 import { QuestionService } from '../question.service';
-import { FormBuilder, Validators } from '@angular/forms';
 import { QuizHostData, QuizState } from '../classes/QuizHostData';
+import { QuizSettings } from '../model/QuizSettings';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizHostService {
-
   public quizData!: QuizHostData
+  public quizSettings!: QuizSettings
 
-  public size!: number;
-
-  //spinner variables
-  public totalTimePerQuestion!: number;
-  public nextQuestionDelay: number = 5000
-  public currentSpinnerTimeout = 0
-  public currentSpinnerText = "";
-
-  constructor(public signalRService: SignalrService, public questionservice: QuestionService, public fb: FormBuilder) { }
+  constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
 
   public async initialize() {
     this.quizData = new QuizHostData()
@@ -29,44 +21,16 @@ export class QuizHostService {
     this.signalRService.dataReceived.subscribe({
       next: (data) => this.processMessage(data)
     })
-
   }
 
-  quizSetup = this.fb.group({
-    questionsNo: this.fb.control(1, [Validators.required, Validators.min(1)]),
-    answerTime: this.fb.control(1, [Validators.required, Validators.min(1)]),
-    questionDelay: this.fb.control(1, [Validators.required, Validators.min(1)])
-  })
-
-  startQuiz() {
-    if (this.quizSetup.valid === true) {
-      this.size = this.quizSetup.value.questionsNo!
-      this.totalTimePerQuestion = this.quizSetup.value.answerTime! * 1000
-      this.nextQuestionDelay = this.quizSetup.value.questionDelay! * 1000
-      this.questionservice.getRandomQuestions(this.size)
-        .subscribe(data => {
-          this.quizData.reset();
-          this.quizData.questions = data
-          this.nextQuestion();
-        })
-    }
-    if (this.quizSetup.valid === false) {
-      console.log("invalid form")
-    }
-
-  }
-
-  sendQuestiontoPlayer() {
-    const data = {
-      action: "QuestionSent",
-      data: [
-        this.quizData.currentQuestionWithoutIsCorrect(),
-        this.currentSpinnerText,
-        this.currentSpinnerTimeout
-      ],
-      timer: this.totalTimePerQuestion
-    }
-    this.sendToGroup(JSON.stringify(data));
+  startQuiz(quizSettings: QuizSettings) {
+    this.quizSettings = quizSettings
+    this.questionservice.getRandomQuestions(this.quizSettings.numberOfQuestions)
+      .subscribe(data => {
+        this.quizData.reset();
+        this.quizData.questions = data
+        this.nextQuestion();
+      })
   }
 
   nextQuestion() {
@@ -76,77 +40,60 @@ export class QuizHostService {
     }
 
     this.quizData.nextQuestion()
-
-    this.currentSpinnerTimeout = this.totalTimePerQuestion;
-    this.currentSpinnerText = "Preostalo vrijeme";
-
-    this.sendQuestiontoPlayer()
+    this.sendQuestiontoGroup()
   }
 
   public showCorrectAnswer() {
     this.quizData.quizState = QuizState.AnswersShowing
-    this.checkAnswerAndAssignPoints()
-
-    this.currentSpinnerTimeout = this.nextQuestionDelay;
-    this.currentSpinnerText = this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje"
-
-    const data = {
-      action: "EvaluatingAnswers",
-      text: this.currentSpinnerText,
-      timer: this.currentSpinnerTimeout
-    }
-    this.sendToGroup(JSON.stringify(data))
+    this.quizData.checkAnswersAndAssignPoints()
+    this.sendCorrectAnswerToGroup()
+    this.sendEvaluatingAnswersToGroup()
   }
 
   private quizEnd() {
     this.quizData.quizState = QuizState.Idle
-    const data = {
-      action: 'QuizEnded',
-      data: true
-    }
-    let quizEndMessage = JSON.stringify(data)
-    this.sendToGroup(quizEndMessage)
-
+    this.sendQuizEndedToGroup()
     this.quizData.players.forEach((player) => {
       this.sendScoreToPlayer(player)
     })
   }
 
-  public spinnerTimeout() {
-    if (this.quizData.quizState === QuizState.AnswersShowing) {
-      this.nextQuestion();
-      return;
+  public sendQuestiontoGroup() {
+    const data = {
+      action: "QuestionSent",
+      data: [
+        this.quizData.currentQuestionWithoutIsCorrect(),
+        "Preostalo vrijeme",
+        this.quizSettings.totalTimePerQuestion
+      ],
+      timer: this.quizSettings.totalTimePerQuestion
     }
-    this.showCorrectAnswer();
+    this.sendToGroup(JSON.stringify(data));
   }
 
-  public addStyleToActivePlayerCard(player: Player) {
-    if (this.quizData.quizState !== QuizState.AnswersShowing) {
-      if (!player.hasAnswered(this.quizData.currentQuestion?.id)) {
-        return { 'background': '' }
-      }
-      return { 'background': 'rgb(250, 224, 118)' } //zuta
+  public sendEvaluatingAnswersToGroup() {
+    const data = {
+      action: "EvaluatingAnswers",
+      text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
+      timer: this.quizSettings.nextQuestionDelay
     }
-
-    if (!player.hasAnswered(this.quizData.currentQuestion.id)) {
-      return { 'background': '' }
-    }
-
-    if (player.hasAnsweredCorrectly(this.quizData.currentQuestion.id)) {
-      return { 'background': 'rgb(153, 211, 153)' } //zelena
-    }
-
-    return { 'background': 'rgb(236, 157, 157)' } //crvena
+    this.sendToGroup(JSON.stringify(data))
   }
 
-  public checkAnswerAndAssignPoints() {
-    this.quizData.checkAnswersAndAssignPoints()
+  public sendQuizEndedToGroup() {
+    const data = {
+      action: 'QuizEnded',
+      data: true
+    }
+    this.sendToGroup(JSON.stringify(data))
+  }
+
+  public sendCorrectAnswerToGroup() {
     const data = {
       action: "CorrectAnswer",
       correctAnswerForPlayer: this.quizData.getCorrectAnswerToCurrentQuestion()?.id
     }
-    let correctAnswerForPlayer = JSON.stringify(data)
-    this.sendToGroup(correctAnswerForPlayer)
+    this.sendToGroup(JSON.stringify(data))
   }
 
   public sendScoreToPlayer(player: Player) {
@@ -170,9 +117,7 @@ export class QuizHostService {
       case 'QuestionSent':
         break;
       case 'PlayerAnswered':
-        const playerConnectionId = data.senderConnectionId
-        const answerId = data.data.answerId
-        this.quizData.recordAnswer(playerConnectionId, answerId)
+        this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId)
         break;
       case 'GroupCreated':
         this.quizData.groupName = data.data
@@ -187,5 +132,4 @@ export class QuizHostService {
         console.log(`Action not implemented: ${data.action}.`);
     }
   }
-
 }

@@ -70,13 +70,19 @@ button{
     font-size: 30px; 
 }
 
+.active-player-card {
+    display: flex;
+}
+
+mat-card{
+    background: rgba(255, 235, 205, 0.39);
+}
+
 .log{
     border: solid;
     height: 200px;
     overflow: auto;
 }
-
-
 
 .question-card{
     height: 500px;
@@ -96,4 +102,14 @@ button{
     font-size: 32px;
     margin: auto !important;
     padding: 15px;
+}
+
+.correct {
+    background-color: rgb(153, 211, 153);
+}
+.incorrect {
+    background-color: rgb(236, 157, 157);
+}
+.answered {
+    background-color: rgb(250, 224, 118);
 }

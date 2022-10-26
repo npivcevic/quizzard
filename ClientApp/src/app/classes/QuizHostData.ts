@@ -70,7 +70,7 @@ export class QuizHostData {
 
     currentQuestionWithoutIsCorrect() {
         let qCopy = Object.assign({}, this.currentQuestion)
-        qCopy.answers = this.questions[this.currentQuestionIndex].answers.map((answer) => {
+        qCopy.answers = this.currentQuestion.answers.map((answer) => {
             return {
                 id: answer.id,
                 text: answer.text

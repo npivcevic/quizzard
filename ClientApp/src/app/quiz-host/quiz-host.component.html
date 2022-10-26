@@ -15,7 +15,7 @@
                 <strong>Aktivni igrači</strong>
             </div>
             <div *ngFor="let player of quizHostService.quizData.players">
-                <div [ngStyle]="quizHostService.addStyleToActivePlayerCard(player)" class="active-player-card">
+                <div [class]="playerCardClass(player)" class="active-player-card">
                     <div class="player-name">
                         <strong>{{player.name}}</strong>
                     </div>
@@ -40,13 +40,12 @@
                     <strong>3</strong>
                 </div>
             </div>
-        
         </div>
 
             <div class="quiz">
                 <div *ngIf="isIdle(); then startQuizButtonBlock"></div>
 
-                <ng-template [formGroup]="quizHostService.quizSetup"  #startQuizButtonBlock>
+                <ng-template [formGroup]="quizSetup"  #startQuizButtonBlock>
                     <mat-form-field appearance="outline">
                         <mat-label>Broj pitanja</mat-label>
                         <input matInput formControlName="questionsNo" type="number" >
@@ -62,7 +61,7 @@
                         <input matInput formControlName="questionDelay" type="number">
                     </mat-form-field>
                     <div style="text-align: center;">
-                        <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-stroked-button [disabled]="!quizHostService.quizSetup.valid">Pokreni Kviz</button>
+                        <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-raised-button [disabled]="!quizSetup.valid">Pokreni Kviz</button>
                     </div>
                 </ng-template>
 
@@ -73,9 +72,9 @@
 
                         <mat-card class="questionTitleCard">
                             <app-spinner 
-                            [time]="quizHostService.currentSpinnerTimeout"
-                            [text]="quizHostService.currentSpinnerText"
-                            (timeout)="quizHostService.spinnerTimeout()"
+                                [time]="currentSpinnerTimeout"
+                                [text]="currentSpinnerText"
+                                (timeout)="spinnerTimeout()"
                             >
                             </app-spinner>
                             <div class="questionText">
@@ -85,8 +84,7 @@
                         <div style="display: flex; flex-wrap: wrap;">
                             <div style="width: 50%;"
                                 *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index">
-                                <mat-card
-                                    [ngStyle]="{background:answer.isCorrect && isShowingAnswers() ? 'rgb(153, 211, 153)':'' }">
+                                <mat-card [class.correct]="answer.isCorrect && isShowingAnswers()">
                                     {{answer.text}}
                                 </mat-card>
                             </div>
@@ -96,7 +94,7 @@
 
             <ng-template #scoreBoardBlock>
                 <div style="text-align: center;"> 
-                    <button mat-raised-button style="width: 80%;height: 100px;" (click)="quizHostService.startQuiz()">Pokreni novi kviz</button>
+                    <button mat-raised-button style="width: 80%;height: 100px;" (click)="startQuiz()">Pokreni novi kviz</button>
                 </div>
             </ng-template>
 
