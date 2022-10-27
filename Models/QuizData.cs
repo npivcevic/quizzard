@@ -33,6 +33,11 @@ public class QuizData
         return groupName;
     }
 
+    public void DeleteGroup(String groupName)
+    {
+        this.groups.Remove(groupName);
+    }
+
     public bool AddConnectionToGroup(String groupName, String connectionId)
     {
         QuizHubGroup group;

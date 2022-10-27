@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using quizzard.Data;
 using quizzard.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace quizzard.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionsController : ControllerBase
@@ -21,27 +18,45 @@ namespace quizzard.Controllers
             _context = context;
         }
 
+        // GET: api/Questions/random
+        [AllowAnonymous]
+        [HttpGet("Random")]
+        public async Task<ActionResult<IEnumerable<Question>>> GetRandomQuestions(int size = 20)
+        {
+            if (size > 20)
+            {
+                size = 20;
+            }
+
+            if (_context.Questions == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Questions.OrderBy(r => EF.Functions.Random()).Take(size).Include(q => q.Answers).ToListAsync();
+        }
+
         // GET: api/Questions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
-          if (_context.Questions == null)
-          {
-              return NotFound();
-          }
+            if (_context.Questions == null)
+            {
+                return NotFound();
+            }
 
-          return await _context.Questions.Include(q => q.Answers).ToListAsync();
+            return await _context.Questions.Include(q => q.Answers).ToListAsync();
         }
 
         // GET: api/Questions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Question>> GetQuestion(Guid id)
         {
-          if (_context.Questions == null)
-          {
-              return NotFound();
-          }
-            var question = await _context.Questions.FindAsync(id);
+            if (_context.Questions == null)
+            {
+                return NotFound();
+            }
+            var question = await _context.Questions.Include(q => q.Answers).FirstOrDefaultAsync(q => q.ID.Equals(id));
 
             if (question == null)
             {
@@ -61,12 +76,20 @@ namespace quizzard.Controllers
                 return BadRequest();
             }
 
-
+            if (_context.Questions == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Questions'  is null.");
+            }
 
             var dbQuestion = _context.Questions
                 .Include(q => q.Answers)
                 .FirstOrDefault(q => q.ID.Equals(id));
-        
+
+            if (dbQuestion == null)
+            {
+                return NotFound();
+            }
+
             _context.RemoveRange(dbQuestion.Answers);
 
             dbQuestion.Text = question.Text;
@@ -96,10 +119,10 @@ namespace quizzard.Controllers
         [HttpPost]
         public async Task<ActionResult<Question>> PostQuestion(Question question)
         {
-          if (_context.Questions == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Questions'  is null.");
-          }
+            if (_context.Questions == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Questions'  is null.");
+            }
             _context.Questions.Add(question);
             await _context.SaveChangesAsync();
 

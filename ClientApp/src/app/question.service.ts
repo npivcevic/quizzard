@@ -18,6 +18,10 @@ export class QuestionService {
     return this.http.get<Question[]>(this.baseUrl + "api/Questions")
   }
 
+  getRandomQuestions(size:any): Observable<Question[]> {
+    return this.http.get<Question[]>(this.baseUrl + "api/Questions/Random?size="+size)
+  }
+
   deleteQuestion(id: string): Observable<null> {
     return this.http.delete<null>(this.baseUrl + "api/Questions/" + id)
   }

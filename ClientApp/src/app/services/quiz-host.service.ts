@@ -1,149 +1,136 @@
 import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
-import { Player } from '../model/player';
+import { Player } from '../classes/Player';
 import { QuestionService } from '../question.service';
-import { Question } from '../model/question';
+import { QuizHostData, QuizState } from '../classes/QuizHostData';
+import { QuizSettings } from '../model/QuizSettings';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizHostService {
-
-  public groupName: string = "";
-  public players: Player[] = [];
-  public questions:Question[]=[]
-  public currentquestion:Question={} as Question;
-  public quizStarted: boolean = false
-  public playerAnswer:string="";
-  public playerId:string="";
-  public curentQuestionIndex: number = -1
-  public timeLeft: number = 100;
-  public totalTimePerQuestion: number = 5000
-  public x: number = Math.ceil(this.totalTimePerQuestion / this.timeLeft)
-  public showingCorrectAnswer: boolean = false
-  public nextQuestionDelay: number = 10000
-
+  public quizData!: QuizHostData
+  public quizSettings!: QuizSettings
 
   constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
 
   public async initialize() {
+    this.quizData = new QuizHostData()
     await this.signalRService.startConnection();
     this.signalRService.hostQuiz();
     this.signalRService.dataReceived.subscribe({
       next: (data) => this.processMessage(data)
     })
-
-    this.questionservice.getQuestions()
-    .subscribe(data => this.questions=data)
-
   }
 
-  startQuiz() {
-    this.quizStarted = true
-    this.nextQuestion();
+  startQuiz(quizSettings: QuizSettings) {
+    this.quizSettings = quizSettings
+    this.questionservice.getRandomQuestions(this.quizSettings.numberOfQuestions)
+      .subscribe(data => {
+        this.quizData.reset();
+        this.quizData.questions = data
+        this.nextQuestion();
+      })
   }
 
-  recordAnswer(playerId:string, answerId:string, questionId:string){
-    this.players.forEach((player)=>{
-      if(player.connectionId===playerId){
-        player.submitedAnswers.push({
-          questionId,
-          answerId
-        })
-      }
+  nextQuestion() {
+    if (this.quizData.isLastQuestion()) {
+      this.quizEnd()
+      return
+    }
+
+    this.quizData.nextQuestion()
+    this.sendQuestiontoGroup()
+  }
+
+  public showCorrectAnswer() {
+    this.quizData.quizState = QuizState.AnswersShowing
+    this.quizData.checkAnswersAndAssignPoints()
+    this.sendCorrectAnswerToGroup()
+    this.sendEvaluatingAnswersToGroup()
+  }
+
+  private quizEnd() {
+    this.quizData.quizState = QuizState.Idle
+    this.sendQuizEndedToGroup()
+    this.quizData.players.forEach((player) => {
+      this.sendScoreToPlayer(player)
     })
-    
   }
-  
-  sendQuestiontoPlayer(){
-    this.currentquestion=Object.assign({},this.questions[this.curentQuestionIndex])
-    // console.log(this.currentquestion,this.questions[this.curentQuestionIndex] )
-    this.currentquestion.answers=this.questions[this.curentQuestionIndex].answers.map((answer)=>{
-      return {
-        id: answer.id,
-        text: answer.text,
-      }
-    })
+
+  public sendQuestiontoGroup() {
     const data = {
       action: "QuestionSent",
-      data: this.currentquestion
+      data: {
+        question : this.quizData.currentQuestionWithoutIsCorrect(),
+        text : "Preostalo vrijeme",
+        timer : this.quizSettings.totalTimePerQuestion
+      }
     }
     this.sendToGroup(JSON.stringify(data));
   }
 
-  nextQuestion() {
-    this.curentQuestionIndex++
-    this.sendQuestiontoPlayer()
-    this.showingCorrectAnswer = false
-    this.timeLeft = 100
-    let ref = setInterval(() => {
-      this.timeLeft -= 0.5
-      this.x = Math.ceil(this.totalTimePerQuestion * this.timeLeft / 100000)
-      if (this.timeLeft <= 0) {
-        clearInterval(ref)
-        this.showCorrectAnswer()
+  public sendEvaluatingAnswersToGroup() {
+    const data = {
+      action: "EvaluatingAnswers",
+      data : {
+        text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
+        timer: this.quizSettings.nextQuestionDelay
       }
-    }, this.totalTimePerQuestion / (100 * 2));
-    
+    }
+    this.sendToGroup(JSON.stringify(data))
   }
 
-  checkAnswerAndAssignPoints(){
-    console.log(this.questions[this.curentQuestionIndex].answers)
-    let correctAnswer = this.questions[this.curentQuestionIndex].answers.find((correctAnswer)=>{
-      return correctAnswer.isCorrect===true
-    })
-    this.players.forEach((player)=>{
-      let x = player.submitedAnswers.find((submitedAsnwer)=>{
-        return submitedAsnwer.questionId===this.currentquestion.id
-      })
-      console.log("befor if",correctAnswer,x)
-
-      if(x && x.answerId===correctAnswer?.id){
-        player.score++
-      }
-    })
+  public sendQuizEndedToGroup() {
+    const data = {
+      action: 'QuizEnded',
+      data: true
+    }
+    this.sendToGroup(JSON.stringify(data))
   }
 
-  showCorrectAnswer() {
-    this.showingCorrectAnswer = true
-    this.checkAnswerAndAssignPoints()
-    setTimeout(() => this.nextQuestion(), this.nextQuestionDelay)
+  public sendCorrectAnswerToGroup() {
+    const data = {
+      action: "CorrectAnswer",
+      correctAnswerForPlayer: this.quizData.getCorrectAnswerToCurrentQuestion()?.id
+    }
+    this.sendToGroup(JSON.stringify(data))
   }
 
+  public sendScoreToPlayer(player: Player) {
+    const data = {
+      action: 'PlayerScore',
+      data: player.getQuizReviewBoard(this.quizData.questions)
+    }
+    this.sendToPlayer(JSON.stringify(data), player.connectionId)
+  }
+
+  public sendToPlayer(data: string, playerConnectionId: string) {
+    this.signalRService.sendToPlayer(data, playerConnectionId)
+  }
 
   public sendToGroup(data: string) {
     this.signalRService.sendToGroup(data)
   }
 
-
-
   public processMessage(data: any) {
     switch (data.action) {
       case 'QuestionSent':
-        console.log('question sent to players', data.data) 
         break;
       case 'PlayerAnswered':
-        console.log('player sent answer', data.data) 
-        this.playerAnswer=data.data.answerId
-        this.playerId=data.senderConnectionId
-        this.recordAnswer(this.playerId, this.playerAnswer, this.currentquestion.id)
-        console.log(this.players)
+        this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId)
         break;
       case 'GroupCreated':
-        console.log('assiging value to group name', data.data)
-        this.groupName = data.data
+        this.quizData.groupName = data.data
         break;
       case 'PlayerJoined':
-        data.data.submitedAnswers=[]
-        data.data.score=0
-        this.players.push(data.data)
+        this.quizData.playerConnected(data.data.connectionId, data.data.name)
         break;
       case 'PlayerDisconnected':
-        this.players = this.players.filter((p) => p.connectionId != data.data)
+        this.quizData.playerDisconnected(data.data)
         break;
       default:
         console.log(`Action not implemented: ${data.action}.`);
     }
   }
-
 }

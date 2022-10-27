@@ -110,6 +110,7 @@ public class QuizHub : Hub
 
         if (group.HostConnectionId == Context.ConnectionId)
         {
+            quizData.DeleteGroup(group.Name);
             await Clients.Group(group.Name).SendAsync("transferdata",
                 $"{{\"action\":\"{ActionTypes.HostDisconnected}\", \"data\":\"Host disconnected. Game is terminated.\"}}");
         }
