@@ -1,46 +1,73 @@
 .main-frame{
     border-style:none;
+    background-color: #9f825b;
+
 }
 
 .top-bar{
-    background: rgba(255, 235, 205, 0.39);
     display: flex;
-    box-shadow: 0 1px 8px #888888;
+    box-shadow: 0 5px 5px #f4ce26;
+    color:white;
+    background-color: #0a1d36 ;
 }
 
 .domain{
     text-align:center;
-    padding: 10px;
     width: 20%;
-    font-size: 50px;
+    font-size: 30px;
     border-right: solid;
     border-color:  #888888;
+    position: relative;
+}
+
+.domain-link{
+    position: absolute;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .top-bar-link{
     padding: 10px;
     width: 80%;
-    font-size: 50px;
+    font-size: 30px;
     text-align:center;
 }
 
 .body{
-    padding-top: 20px;
     display: flex;
+    height: 93vh;
 }
 
 .active-players{
     width: 20%;
-    padding: 20px;
+    padding-top: 20px;
     overflow: auto;
 }
 
 .active-players-card{
-    height: 500px;
+    border: solid #0a1d36;
+    color: #0a1d36 ;
 }
 
-mat-card{
-    background: rgba(255, 235, 205, 0.39);
+.active-player-card{
+    display: flex;
+    border: solid;
+    position: relative;
+}
+
+.quiz{
+    padding: 20px;
+    width: 80%;
+}
+button{
+    color: white;
+    background-color: #0a1d36;
+    border-color: #f4ce26 !important;
+    border-style:solid ; 
+    border-width: 3px;
+    font-size: 30px; 
 }
 
 .log{
@@ -49,11 +76,7 @@ mat-card{
     overflow: auto;
 }
 
-.question{
-    width: 80%;
-    padding: 20px; 
-    height: 1000px;
-}
+
 
 .question-card{
     height: 500px;

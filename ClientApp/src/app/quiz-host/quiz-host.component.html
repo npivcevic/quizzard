@@ -2,7 +2,7 @@
 
     <div class="top-bar">
 
-        <div class="domain "><a [routerLink]="['/']">PubKviz.HR</a></div>
+        <div class="domain "><a class="domain-link" [routerLink]="['/']">PubKviz.HR</a></div>
 
         <div class="top-bar-link">Otiđi na pubkviz.hr. Šifra kviza je {{quizHostService.quizData.groupName}}</div>
 
@@ -11,28 +11,40 @@
     <div class="body">
 
         <div class="active-players">
-            <mat-card class="active-players-card">
-                <mat-card-title style="text-align: center;">
-                    <mat-card>
-                        Aktivni igrači
-                    </mat-card>
-                </mat-card-title>
-                <mat-card-content *ngFor="let player of quizHostService.quizData.players">
-                    <mat-card [ngStyle]="quizHostService.addStyleToActivePlayerCard(player)"  style="display: flex" class="active-player-card">
-                        <div class="player-name">
-                            <strong>{{player.name}}</strong>
-                        </div>
-                        <div style="position: absolute; right: 10px" class="player-score">
-                            <strong>{{player.score}}</strong>
-                        </div>
-                    </mat-card>
-                </mat-card-content>
-            </mat-card>
+            <div class="active-players-card">
+                <strong>Aktivni igrači</strong>
+            </div>
+            <div *ngFor="let player of quizHostService.quizData.players">
+                <div [ngStyle]="quizHostService.addStyleToActivePlayerCard(player)" class="active-player-card">
+                    <div class="player-name">
+                        <strong>{{player.name}}</strong>
+                    </div>
+                    <div class="player-score">
+                        <strong>{{player.score}}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="active-player-card">
+                <div class="player-name">
+                    <strong>Mile</strong>
+                </div>
+                <div class="player-score">
+                    <strong>2</strong>
+                </div>
+            </div>
+            <div class="active-player-card">
+                <div class="player-name">
+                    <strong>Dea</strong>
+                </div>
+                <div class="player-score">
+                    <strong>3</strong>
+                </div>
+            </div>
+        
         </div>
 
-        <div class="question">
-            <mat-card >
-                <mat-card-content *ngIf="isIdle(); then startQuizButtonBlock"></mat-card-content>
+            <div class="quiz">
+                <div *ngIf="isIdle(); then startQuizButtonBlock"></div>
 
                 <ng-template [formGroup]="quizHostService.quizSetup"  #startQuizButtonBlock>
                     <mat-form-field appearance="outline">
@@ -50,11 +62,11 @@
                         <input matInput formControlName="questionDelay" type="number">
                     </mat-form-field>
                     <div style="text-align: center;">
-                        <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-raised-button [disabled]="!quizHostService.quizSetup.valid">Pokreni Kviz</button>
+                        <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-stroked-button [disabled]="!quizHostService.quizSetup.valid">Pokreni Kviz</button>
                     </div>
                 </ng-template>
 
-                <mat-card-content *ngIf="!isIdle(); then questionBlock"></mat-card-content>
+                <div *ngIf="!isIdle(); then questionBlock"></div>
 
             <ng-template #questionBlock>
                 <div style="text-align: left;">
@@ -88,8 +100,7 @@
                 </div>
             </ng-template>
 
-            </mat-card>
-        </div>
+            </div>
 
     </div>
 
