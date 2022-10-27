@@ -80,16 +80,16 @@ export class QuizPlayerService {
         this.startQuiz=true
         this.selectedAnswerId="";
         this.answerIsSelected=false
-        this.currentquestion=data.data[0]
+        this.currentquestion=data.data.question
         this.playerScore=[]
         //here start spinning
-        this.currentSpinnerText=data.data[1]
-        this.currentSpinnerTimeout=data.data[2]
+        this.currentSpinnerText=data.data.text
+        this.currentSpinnerTimeout=data.data.timer
         break
       case 'EvaluatingAnswers':
         console.log(data)
-        this.currentSpinnerText=data.text
-        this.currentSpinnerTimeout=data.timer
+        this.currentSpinnerText=data.data.text
+        this.currentSpinnerTimeout=data.data.timer
         break
       case 'CorrectAnswer':
         this.correctAnswerId=data.correctAnswerForPlayer

@@ -61,12 +61,11 @@ export class QuizHostService {
   public sendQuestiontoGroup() {
     const data = {
       action: "QuestionSent",
-      data: [
-        this.quizData.currentQuestionWithoutIsCorrect(),
-        "Preostalo vrijeme",
-        this.quizSettings.totalTimePerQuestion
-      ],
-      timer: this.quizSettings.totalTimePerQuestion
+      data: {
+        question : this.quizData.currentQuestionWithoutIsCorrect(),
+        text : "Preostalo vrijeme",
+        timer : this.quizSettings.totalTimePerQuestion
+      }
     }
     this.sendToGroup(JSON.stringify(data));
   }
@@ -74,8 +73,10 @@ export class QuizHostService {
   public sendEvaluatingAnswersToGroup() {
     const data = {
       action: "EvaluatingAnswers",
-      text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
-      timer: this.quizSettings.nextQuestionDelay
+      data : {
+        text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
+        timer: this.quizSettings.nextQuestionDelay
+      }
     }
     this.sendToGroup(JSON.stringify(data))
   }
