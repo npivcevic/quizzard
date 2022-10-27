@@ -12,7 +12,7 @@
 
         <div class="active-players">
             <div class="active-players-card">
-                <strong>Aktivni igrači</strong>
+                <div>Aktivni igrači</div>
             </div>
             <div *ngFor="let player of quizHostService.quizData.players">
                 <div [class]="playerCardClass(player)" class="active-player-card">
@@ -20,24 +20,8 @@
                         <strong>{{player.name}}</strong>
                     </div>
                     <div class="player-score">
-                        <strong>{{player.score}}</strong>
+                       <div>{{player.score}}</div>
                     </div>
-                </div>
-            </div>
-            <div class="active-player-card">
-                <div class="player-name">
-                    <strong>Mile</strong>
-                </div>
-                <div class="player-score">
-                    <strong>2</strong>
-                </div>
-            </div>
-            <div class="active-player-card">
-                <div class="player-name">
-                    <strong>Dea</strong>
-                </div>
-                <div class="player-score">
-                    <strong>3</strong>
                 </div>
             </div>
         </div>
