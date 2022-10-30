@@ -1,48 +1,56 @@
 .main-frame{
     border-style:none;
-    background-color: #9f825b;
+    background-color: lig;
+    height: 100;
+}
 
+body{
+    height: 100%;
 }
 
 .top-bar{
     display: flex;
     border-bottom-style:solid;
     border-color: #f4ce26;
-    color:#f4ce26;
+    color:whitesmoke;
     background-color: #0a1d36 ;
 }
 
 .domain{
     text-align:center;
     width: 15%;
-    font-size: 30px;
-    border-right: solid;
-    border-color:  #888888;
+    font-size: 40px;
     position: relative;
 }
 
 .domain-link{
     position: absolute;
-    color: #f4ce26;
+    color: whitesmoke;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 10px;
+    text-decoration: none;
+    transform: translateY(-50%);
 }
 
 .top-bar-link{
+    margin-left:auto;
+    margin-right: 10px;
     padding: 10px;
     width: 80%;
-    font-size: 30px;
-    text-align:center;
+    font-size: 40px;
+    text-align:right;
 }
 
 .body{
     display: flex;
-    height: 93vh;
+    position: absolute;
+    top: 83px;
+    bottom: 0;
+    width: 100%; 
 }
 
 .active-players{
-    width: 15%;
+    width: 20%;
     border-right: solid;
     border-color:  #888888;
     background-color: #0a1d36;
@@ -50,30 +58,37 @@
 }
 
 .active-players-card{
-    height: 5vh;
     font-size: 30px;
     border-bottom: 2px ridge #f4ce26;
     background-color: #0a1d36;
-    color: #f4ce26 ;
+    color: whitesmoke ;
+    padding: 10px 5px;
+
 }
+
 
 .active-player-card{
     display: flex;
-    height: 5vh;
-    color: #9f825b;
+    color: whitesmoke;
     border-bottom: 2px ridge #f4ce26;
     border-width: 2px;
-    font-size: 20px;
+    font-size: 30px;
     background-color: #0a1d36;
+    padding: 10px 5px;
+
 }
 
-
 .player-name{
-    padding: 10px;
+    margin-left: 10px;
 }
 
 .player-score{
-    padding: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.score-value{
+    color: #f4ce26;
 }
 
 .quiz{
@@ -81,7 +96,7 @@
     width: 80%;
 }
 button{
-    color: #f4ce26;
+    color: whitesmoke;
     background-color: #0a1d36;
     border-color: #f4ce26 !important;
     border-style:solid ; 
@@ -116,6 +131,7 @@ mat-card{
 
 .questionTitleCard {
     display: flex;
+    margin: 5px;
 }
 
 .questionText {
@@ -126,6 +142,11 @@ mat-card{
     padding: 15px;
 }
 
+.answer-card{
+    margin: 5px;
+    text-align: center;
+}
+
 .correct {
     background-color: rgb(153, 211, 153);
 }
@@ -134,4 +155,9 @@ mat-card{
 }
 .answered {
     background-color: rgb(250, 224, 118);
+}
+
+.logoKviz {
+    color:#f4ce26;
+    display: contents;
 }

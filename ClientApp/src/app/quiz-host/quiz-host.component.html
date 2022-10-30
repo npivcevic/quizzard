@@ -2,9 +2,9 @@
 
     <div class="top-bar">
 
-        <div class="domain "><a class="domain-link" [routerLink]="['/']">PubKviz.HR</a></div>
+        <div class="domain "><a class="domain-link" [routerLink]="['/']">Pub<span class="logoKviz">Kviz</span>.hr</a></div>
 
-        <div class="top-bar-link">Otiđi na pubkviz.hr. Šifra kviza je {{quizHostService.quizData.groupName}}</div>
+        <div class="top-bar-link">Šifra<span class="logoKviz">Kviza</span>: {{quizHostService.quizData.groupName}}</div>
 
     </div>
 
@@ -12,15 +12,15 @@
 
         <div class="active-players">
             <div class="active-players-card">
-                <div>Aktivni igrači</div>
+                Aktivni igrači
             </div>
             <div *ngFor="let player of quizHostService.quizData.players">
                 <div [class]="playerCardClass(player)" class="active-player-card">
                     <div class="player-name">
-                        <strong>{{player.name}}</strong>
+                        {{player.name}}
                     </div>
                     <div class="player-score">
-                       <div>{{player.score}}</div>
+                        <span class="score-value">{{player.score}}</span>{{player.score}}
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                         <div style="display: flex; flex-wrap: wrap;">
                             <div style="width: 50%;"
                                 *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index">
-                                <mat-card [class.correct]="answer.isCorrect && isShowingAnswers()">
+                                <mat-card class="answer-card" [class.correct]="answer.isCorrect && isShowingAnswers()">
                                     {{answer.text}}
                                 </mat-card>
                             </div>
