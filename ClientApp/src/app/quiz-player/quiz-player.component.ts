@@ -16,10 +16,12 @@ export class QuizPlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.quizPlayerService.initialize();
+    this.playerNameInput = localStorage.getItem('playerName') || ""
   }
 
   public joinQuiz() {
     this.quizPlayerService.joinQuiz(this.quizGroupNameInput, this.playerNameInput)
+    localStorage.setItem('playerName', this.playerNameInput)
   }
 
   public isConnectedToQuiz() {
