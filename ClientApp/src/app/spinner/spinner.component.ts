@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-spinner',
@@ -6,6 +6,9 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
   styleUrls: ['./spinner.component.css']
 })
 export class SpinnerComponent implements OnInit, OnChanges {
+
+  private intervalRef: any
+
   @Input() time!: number
   @Input() text!: string
   @Output() timeout = new EventEmitter<string>();
@@ -23,19 +26,19 @@ export class SpinnerComponent implements OnInit, OnChanges {
   }
 
   public spinnerControl(){
+    clearInterval(this.intervalRef)
     this.timeLeft = 100
-    let ref = setInterval(()=>{
+    this.intervalRef = setInterval(()=>{
       this.timeLeft -= 0.5
       this.timeLeftInSeconds = Math.ceil(this.time*this.timeLeft/100000)
       if(this.timeLeft <= 0){
-        clearInterval(ref)
+        clearInterval(this.intervalRef)
         this.timeout.emit();
       }
     }, this.time/(100*2)) 
   }
 
   ngOnChanges() {
-    console.log('changes detected')
     this.spinnerControl();
   }
 }

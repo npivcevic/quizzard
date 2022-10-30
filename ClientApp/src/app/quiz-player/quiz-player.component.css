@@ -76,3 +76,15 @@ input::placeholder{
     margin: auto !important;
     padding: 15px;
 }
+
+.correct {
+    background-color: rgb(153, 211, 153);
+}
+
+.incorrect {
+    background-color: rgb(230, 88, 88);
+}
+
+.answered {
+    background-color: rgb(250, 224, 118);
+}

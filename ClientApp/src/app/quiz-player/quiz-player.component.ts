@@ -1,40 +1,60 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavBarService } from '../nav-bar.service';
+import { Component, OnInit } from '@angular/core';
+import { QuizPlayerState } from '../classes/QuizPlayerData';
 import { QuizPlayerService } from '../services/quiz-player.service';
-import { SignalrService } from '../services/signalr.service';
 
 @Component({
   selector: 'app-quiz-player',
   templateUrl: './quiz-player.component.html',
   styleUrls: ['./quiz-player.component.css']
 })
-export class QuizPlayerComponent implements OnInit{
+export class QuizPlayerComponent implements OnInit {
 
-  quizGroupName: string = "";
-  inputCode: string = "";
-  inputData: string = "";
-  playerName: string = "";
+  quizGroupNameInput: string = "";
+  playerNameInput: string = "";
+
   constructor(public quizPlayerService: QuizPlayerService) { }
 
   ngOnInit(): void {
     this.quizPlayerService.initialize();
   }
 
-
   public joinQuiz() {
-    this.quizPlayerService.joinQuiz(this.quizGroupName, this.playerName)
+    this.quizPlayerService.joinQuiz(this.quizGroupNameInput, this.playerNameInput)
   }
 
-  public sendDataToHost() {
-    const data = {
-      action: "Message",
-      data: this.inputData
+  public isConnectedToQuiz() {
+    return this.quizPlayerService.quizData.quizState != QuizPlayerState.Disconnected
+  }
+
+  public isWaitingForStart() {
+    return this.quizPlayerService.quizData.quizState === QuizPlayerState.WaitingForStart
+  }
+
+  public isQuizInProgress() {
+    return this.quizPlayerService.quizData.quizState === QuizPlayerState.QuestionShowing
+      || this.quizPlayerService.quizData.quizState === QuizPlayerState.AnswersShowing
+  }
+
+  public isQuizEnd() {
+    return this.quizPlayerService.quizData.quizState === QuizPlayerState.End
+  }
+
+  public answerStyle(answerId: string) {
+    if (this.quizPlayerService.quizData.currentCorrectAnswerId === answerId) {
+      return 'correct'
     }
-    this.quizPlayerService.sendToHost(JSON.stringify(data));
+    if (this.quizPlayerService.quizData.currentAnswerId === answerId) {
+      return 'answered'
+    }
+    return ''
   }
 
-  public sendAnswerToHost(id?:string) {
-    this.quizPlayerService.sendAnswerToHost(id)
+  public isPossibleToAnswer(): Boolean {
+    return this.quizPlayerService.quizData.currentAnswerId === ""
+      && this.quizPlayerService.quizData.quizState === QuizPlayerState.QuestionShowing
   }
 
+  public sendAnswerToHost(id?: string) {
+    this.quizPlayerService.questionAnswered(id!)
+  }
 }
