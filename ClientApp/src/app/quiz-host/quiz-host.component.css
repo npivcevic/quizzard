@@ -41,6 +41,15 @@ body{
     text-align:right;
 }
 
+.groupname-clipboard-button{
+    margin: auto;
+    border: none;
+}
+
+.succesfull-groupname-copy{
+    color:  rgb(153, 211, 153);
+}
+
 .body{
     display: flex;
     position: absolute;

@@ -16,7 +16,6 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   currentSpinnerTimeout!: number
   currentSpinnerText!: string
-  
   quizSettings: QuizSettings = new QuizSettings()
   
   quizSetup = this.fb.group({
@@ -30,6 +29,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.navbarservice.visible = false
     this.quizHostService.initialize();
+
   }
 
   ngOnDestroy(): void {

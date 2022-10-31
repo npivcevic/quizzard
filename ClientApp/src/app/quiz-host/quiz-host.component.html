@@ -4,7 +4,24 @@
 
         <div class="domain "><a class="domain-link" [routerLink]="['/']">Pub<span class="logoKviz">Kviz</span>.hr</a></div>
 
-        <div class="top-bar-link">Šifra<span class="logoKviz">Kviza</span>: {{quizHostService.quizData.groupName}}</div>
+        <div class="top-bar-link">
+            Šifra<span class="logoKviz">Kviza</span>: 
+            {{quizHostService.quizData.groupName}}
+            <span  class="groupname-clipboard">
+                <span *ngIf="!quizHostService.quizData.copyedToCLipboard;then copyBlock else doneBlock"></span>
+                <ng-template #copyBlock>
+                    <button  
+                        class="groupname-clipboard-button" 
+                        [cdkCopyToClipboard]="quizHostService.quizData.groupName" 
+                        (click)="quizHostService.quizData.copyedToCLipboard=true">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                </ng-template>
+                <ng-template #doneBlock>
+                    <mat-icon class="succesfull-groupname-copy">done_all</mat-icon>
+                </ng-template>
+            </span>
+        </div>
 
     </div>
 

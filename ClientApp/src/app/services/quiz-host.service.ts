@@ -11,7 +11,6 @@ import { QuizSettings } from '../model/QuizSettings';
 export class QuizHostService {
   public quizData!: QuizHostData
   public quizSettings!: QuizSettings
-  
 
   constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
 
