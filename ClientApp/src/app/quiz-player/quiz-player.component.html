@@ -3,11 +3,6 @@
 
         <div *ngIf="!isConnectedToQuiz()" class="join-group-code">
             <div class="join-group-code-card-title" [formGroup]="logInForm">
-                <!-- <div style="text-align: center;">
-                    <div>
-                        Prijavi se
-                    </div>
-                </div> -->
                 
                 <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
                     <input matInput placeholder="Unesi kod" formControlName="groupName">
@@ -18,7 +13,7 @@
                 </mat-form-field>
                 <br />
                 <button class="join-group-button" color="primary" mat-stroked-button
-                    (click)="joinQuiz()" type="submit">Join Quiz</button>
+                    (click)="joinQuiz()" type="submit" [disabled]="this.logInForm.invalid">Join Quiz</button>
             </div>
         </div>
 
