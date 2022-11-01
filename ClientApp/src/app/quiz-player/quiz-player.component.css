@@ -29,18 +29,16 @@
 }
 
 .join-group-code{
-    width: 100%;
-    padding: 20px;
-    overflow: auto;
+    width: 200px;
+    margin: auto;
 }
 
 .join-group-code-card-title{
-    height: 500px;
+    width: 100%;
+    margin: auto;
+    text-align: center;
 }
 
-mat-card{
-    background: rgba(255, 235, 205, 0.39);
-}
 
 .log{
     border: solid;
@@ -63,6 +61,8 @@ mat-card{
 
 input::placeholder{
     text-align: center;
+    color: #0a1d36;
+    font-family: 'Arvo';
 }
 
 .questionTitleCard {

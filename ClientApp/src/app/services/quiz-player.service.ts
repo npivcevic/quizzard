@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { QuizPlayerData, QuizPlayerState } from '../classes/QuizPlayerData';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class QuizPlayerService {
 
   public currentSpinnerTimeout = 0
   public currentSpinnerText = ""
-
-  constructor(public signalRService: SignalrService) { }
+  
+  constructor(public signalRService: SignalrService, public fb : FormBuilder) { }
 
   public async initialize() {
     await this.signalRService.startConnection();

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuizPlayerState } from '../classes/QuizPlayerData';
 import { QuizPlayerService } from '../services/quiz-player.service';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-quiz-player',
@@ -12,16 +13,22 @@ export class QuizPlayerComponent implements OnInit {
   quizGroupNameInput: string = "";
   playerNameInput: string = "";
 
-  constructor(public quizPlayerService: QuizPlayerService) { }
+  logInForm = this.fb.group({
+    groupName : this.fb.control('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
+    playerName : this.fb.control(localStorage.getItem('playerName') || "", [Validators.required, Validators.minLength(2), Validators.maxLength(12)])
+  })
+
+
+  constructor(public quizPlayerService: QuizPlayerService, public fb : FormBuilder ) { }
 
   ngOnInit(): void {
     this.quizPlayerService.initialize();
-    this.playerNameInput = localStorage.getItem('playerName') || ""
   }
 
   public joinQuiz() {
-    this.quizPlayerService.joinQuiz(this.quizGroupNameInput, this.playerNameInput)
-    localStorage.setItem('playerName', this.playerNameInput)
+    console.log(this.logInForm.value.groupName)
+    this.quizPlayerService.joinQuiz(this.logInForm.value.groupName, this.logInForm.value.playerName)
+    localStorage.setItem('playerName', this.logInForm.value.playerName)
   }
 
   public isConnectedToQuiz() {

@@ -2,7 +2,18 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  color: whitesmoke !important;
+
 }
+
+.navbar{
+  background-color: #0a1d36 !important;
+  border-bottom: solid #f4ce26 5px !important;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 2px;
+} 
 
 html {
   font-size: 14px;
