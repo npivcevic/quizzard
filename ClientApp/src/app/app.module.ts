@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material/material.module';
 
-import {ClipboardModule} from '@angular/cdk/clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -20,7 +20,8 @@ import { QuestionsComponent } from './questions/questions.component';
 import { QuizHostComponent } from './quiz-host/quiz-host.component';
 import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component';
+import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component'
+import { LogoComponent } from './logo/logo.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { HostDisconnectedComponent } from './host-disconnected/host-disconnected
     QuizPlayerComponent,
     SpinnerComponent,
     HostDisconnectedComponent,
+    LogoComponent,
   ],
   imports: [
     ClipboardModule,
@@ -45,7 +47,7 @@ import { HostDisconnectedComponent } from './host-disconnected/host-disconnected
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: QuizPlayerComponent, pathMatch: 'full' },
-      { path: 'app-question', component: QuestionsComponent, canActivate: [AuthorizeGuard]  },
+      { path: 'app-question', component: QuestionsComponent, canActivate: [AuthorizeGuard] },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'quiz-host', component: QuizHostComponent },
     ]),
