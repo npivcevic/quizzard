@@ -1,34 +1,19 @@
-import { Question } from './../model/question';
 import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
-import { Subject } from 'rxjs';
-import { PlayerScore } from '../model/player-score';
-
+import { QuizPlayerData, QuizPlayerState } from '../classes/QuizPlayerData';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizPlayerService {
 
-  public groupName: Subject<string> = new Subject<string>();
-  public currentquestion:Question={} as Question;
-  public playerJoining:boolean=true;
-  public playerJoined:boolean=false
-  public startQuiz:boolean=false;
-  public selectedAnswerId:string='';
-  public answerIsSelected:boolean=false;
-  public playerId:string='';
-  public correctAnswerId:string='';
-  //indicates that quiz ended
-  public endQuiz:boolean=false;
-  public playerScore:PlayerScore[]=[]
+  public quizData: QuizPlayerData = new QuizPlayerData()
 
-
-  public currentSpinnerTimeout=0
-  public currentSpinnerText = "";
-
-
-  constructor(public signalRService: SignalrService) { }
+  public currentSpinnerTimeout = 0
+  public currentSpinnerText = ""
+  
+  constructor(public signalRService: SignalrService, public fb : FormBuilder) { }
 
   public async initialize() {
     await this.signalRService.startConnection();
@@ -37,75 +22,57 @@ export class QuizPlayerService {
     })
   }
 
-  public answerStyle(answer:any){
-    let style={}
-    if(this.correctAnswerId===answer){
-      return style = {'background':'rgb(153, 211, 153)'}
-    }else if(this.selectedAnswerId===answer){ 
-      return style = {'background':'rgb(250, 224, 118)'}
-    }
-    return style
+  public joinQuiz(groupName: string, playerName: string) {
+    this.quizData.groupName = groupName
+    this.quizData.playerName = playerName
+    this.signalRService.joinQuiz(groupName, playerName)
   }
 
-  public joinQuiz(groupName: string, playerName: string) {
-    this.signalRService.joinQuiz(groupName, playerName);
+  public questionAnswered(answerId: string) {
+    this.quizData.currentAnswerId = answerId
+    this.sendAnswerToHost()
+  }
+
+  public sendAnswerToHost() {
+    const data = {
+      action: "PlayerAnswered",
+      data: {
+        answerId: this.quizData.currentAnswerId
+      }
+    }
+    this.sendToHost(JSON.stringify(data))
   }
 
   public sendToHost(data: string) {
     this.signalRService.sendToHost(data)
   }
 
-  public sendAnswerToHost(id:any) {
-    this.selectedAnswerId=id
-    console.log("this is selectd ansswer id", this.selectedAnswerId)
-    this.answerIsSelected=true
-    const data = {
-      action: "PlayerAnswered",
-      data: {
-        name: this.playerId,
-        answerId: id 
-      }
-    }
-    this.sendToHost(JSON.stringify(data));
-  }
-
-
   public processMessage(data: any) {
-    switch(data.action){
+    switch (data.action) {
       case 'SuccesfullyJoinedGroup':
-        this.playerJoining=false
-        this.playerJoined=true
+        this.quizData.quizState = QuizPlayerState.WaitingForStart
         break
       case 'QuestionSent':
-        this.startQuiz=true
-        this.selectedAnswerId="";
-        this.answerIsSelected=false
-        this.currentquestion=data.data.question
-        this.playerScore=[]
-        //here start spinning
-        this.currentSpinnerText=data.data.text
-        this.currentSpinnerTimeout=data.data.timer
-        break
-      case 'EvaluatingAnswers':
-        console.log(data)
-        this.currentSpinnerText=data.data.text
-        this.currentSpinnerTimeout=data.data.timer
+        this.quizData.questionReceived(data.data.question)
+        this.quizData.quizState = QuizPlayerState.QuestionShowing
+
+        this.currentSpinnerText = data.data.text
+        this.currentSpinnerTimeout = data.data.timer
         break
       case 'CorrectAnswer':
-        this.correctAnswerId=data.correctAnswerForPlayer
+        this.quizData.quizState = QuizPlayerState.AnswersShowing
+        this.quizData.currentCorrectAnswerId = data.data.correctAnswerId
+        this.currentSpinnerText = data.data.spinnerText
+        this.currentSpinnerTimeout = data.data.spinnerTimer
         break
       case 'QuizEnded':
-        this.endQuiz=data.data
-        this.startQuiz=false
-        this.playerJoining=false
+        this.quizData.quizState = QuizPlayerState.End
         break
       case 'PlayerScore':
-        this.playerScore=data.data
-        
-        console.log("plyer data recieved", this.playerScore)
+        this.quizData.playerScore = data.data
         break
       default:
-        console.log(`Action not implemented: ${data.action}.`);
+        console.log(`Action not implemented: ${data.action}.`)
     }
   }
 }

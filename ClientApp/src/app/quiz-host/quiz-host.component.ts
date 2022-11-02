@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
 import { QuizState } from '../classes/QuizHostData';
 import { Player } from '../classes/Player';
 import { FormBuilder, Validators } from '@angular/forms';
 import { QuizSettings } from '../model/QuizSettings';
+
 
 @Component({
   selector: 'app-quiz-host',
@@ -15,7 +16,6 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   currentSpinnerTimeout!: number
   currentSpinnerText!: string
-
   quizSettings: QuizSettings = new QuizSettings()
   
   quizSetup = this.fb.group({
@@ -29,6 +29,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.navbarservice.visible = false
     this.quizHostService.initialize();
+
   }
 
   ngOnDestroy(): void {
@@ -40,8 +41,8 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       return
     }
     this.quizSettings.numberOfQuestions = this.quizSetup.value.questionsNo!
-    this.quizSettings.nextQuestionDelay = this.quizSetup.value.answerTime! * 1000
-    this.quizSettings.totalTimePerQuestion = this.quizSetup.value.questionDelay! * 1000
+    this.quizSettings.nextQuestionDelay = this.quizSetup.value.questionDelay! * 1000
+    this.quizSettings.totalTimePerQuestion = this.quizSetup.value.answerTime! * 1000
     this.quizHostService.startQuiz(this.quizSettings)
 
     this.currentSpinnerText = "Preostalo vrijeme"

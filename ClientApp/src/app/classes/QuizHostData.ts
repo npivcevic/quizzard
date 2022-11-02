@@ -11,6 +11,7 @@ export class QuizHostData {
     private currentQuestionIndex:number = -1;
     currentQuestion!: Question
     currentCorrectAnswer!: Answer | undefined
+    copyedToCLipboard:boolean=false
 
     constructor() {
     }

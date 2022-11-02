@@ -1,129 +1,82 @@
 <div class="main-frame">
+    <div class="body">
 
-    <!-- <div class="top-bar">
+        <div *ngIf="!isConnectedToQuiz()" class="join-group-code">
+            <div class="join-group-code-card-title" [formGroup]="logInForm">
+                
+                <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
+                    <input matInput placeholder="Unesi kod" formControlName="groupName">
+                </mat-form-field>
+                <br />
+                <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
+                    <input matInput placeholder="Unesi ime" formControlName="playerName">
+                </mat-form-field>
+                <br />
+                <button class="join-group-button" color="primary" mat-stroked-button
+                    (click)="joinQuiz()" type="submit" [disabled]="this.logInForm.invalid">Join Quiz</button>
+            </div>
+        </div>
 
-        <div class="domain "><a [routerLink]="['/']">PubKviz.HR</a></div>
-
-
-    </div> -->
-
-    <div class="body" *ngIf="quizPlayerService.playerJoining; then elseBlock"></div>
-
-
-        <ng-template #elseBlock  class="join-group-code">
-            <mat-card class="join-group-code-card-title">
-                <mat-card-title style="text-align: center;">
-                    <mat-card>
-                        Prijavi se
-                    </mat-card>
-                </mat-card-title>
-                <mat-card-content>
-                    <mat-card class="enter-credentials-card">
-                        <div>
-                            <mat-form-field style="width: 100%; text-align: center;" appearance="outline">
-                                <input matInput placeholder="Unesi kod" name="quizGroupName" [(ngModel)]="quizGroupName" required>
-                            </mat-form-field>
-                            <br />
-                            <mat-form-field style="width: 100%; text-align: center;" appearance="outline">
-                                <input matInput placeholder="Unesi ime" name="playerName" [(ngModel)]="playerName" required>
-                            </mat-form-field>
-                            <br />
-                            <button class="join-group-button" color="primary" mat-stroked-button (click)="joinQuiz()">Join Quiz</button>
-                        </div>
-                    </mat-card>
-                </mat-card-content>
-            </mat-card>
-        </ng-template>
-
-    <div class="body" *ngIf="quizPlayerService.playerJoined && !quizPlayerService.startQuiz; then waitForStatBlock"></div>   
-    
-        <ng-template #waitForStatBlock>
-            <mat-card style="text-align: center;">
+        <div *ngIf="isWaitingForStart()">
+            <mat-card style="text-align: center">
                 <mat-card-title>
                     <strong>
-                        {{playerName}}, hvala ti na <span *ngIf="quizPlayerService.playerJoined && quizPlayerService.endQuiz; then odigranojIgri else prijavi"></span>:) 
-                        <ng-template #prijavi>prijavi</ng-template>
-                        <ng-template #odigranojIgri>odigranoj igri</ng-template>
-                        <br> 
-                        Molim te sačekaj početak <span *ngIf="quizPlayerService.playerJoined && quizPlayerService.endQuiz">nove</span> igre
+                        {{ quizPlayerService.quizData.playerName }}, hvala ti na prijavi
+                        <br>
+                        Molim te sačekaj početak igre
                     </strong>
                 </mat-card-title>
-                <mat-card-content>
-                    <div *ngIf="quizPlayerService.playerJoined && quizPlayerService.endQuiz;then odgovoriBlock"></div>
-                    <ng-template #odgovoriBlock>
-                        <mat-card-title>
-                            <strong>Ovdje možeš vidjeti svoje odogovore:</strong>
-                        </mat-card-title>
-                    </ng-template>
-                </mat-card-content>
             </mat-card>
-        </ng-template>
+        </div>
 
-    <div class="body" *ngIf="quizPlayerService.startQuiz; then thenBlock"></div>
-
-        <ng-template #thenBlock>
-            <mat-card *ngIf="quizPlayerService.currentquestion" >
+        <div *ngIf="isQuizInProgress()">
+            <mat-card *ngIf="quizPlayerService.quizData.currentQuestion">
                 <mat-card class="questionTitleCard">
-                    <app-spinner
-                    [time]="quizPlayerService.currentSpinnerTimeout"
-                    [text]="quizPlayerService.currentSpinnerText"
-                    >
+                    <app-spinner [time]="quizPlayerService.currentSpinnerTimeout"
+                        [text]="quizPlayerService.currentSpinnerText">
                     </app-spinner>
                     <div class="questionText">
-                        {{quizPlayerService.currentquestion.text}}
+                        {{quizPlayerService.quizData.currentQuestion.text}}
                     </div>
                 </mat-card>
                 <div style="display: flex; flex-wrap: wrap; ">
-                    <div *ngFor="let answer of quizPlayerService.currentquestion.answers; let i = index" style="width: 50%;">
+                    <div *ngFor="let answer of quizPlayerService.quizData.currentQuestion.answers; let i = index"
+                        style="width: 50%;">
                         <mat-card>
-                        <button 
-                        style="width: 100%;" 
-                        [ngStyle]="quizPlayerService.answerStyle(answer.id)"
-                        mat-stroked-button [disabled]="quizPlayerService.answerIsSelected" 
-                        (click)="sendAnswerToHost(answer.id)">
-                        {{answer.text}}
-                        </button>
+                            <button style="width: 100%;" [class]="answerStyle(answer.id!)" mat-stroked-button
+                                [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost(answer.id)">
+                                {{answer.text}}
+                            </button>
                         </mat-card>
                     </div>
                 </div>
             </mat-card>
-        </ng-template>
+        </div>
 
-    <div class="body" *ngIf="quizPlayerService.endQuiz; then endQuizBlock"></div>
-    <ng-template #endQuizBlock>
-        	<div style="display: flex;" *ngFor="let answer of quizPlayerService.playerScore">
-                <div style="border: solid;">
-                    <strong>{{answer.questionText}}</strong>
-                </div>
-                <div style="border: solid;" [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
-                    <strong>{{answer.answerText}}</strong>
-                </div>
-            </div>
-    </ng-template>
+        <div *ngIf="isQuizEnd()">
+            <mat-card style="text-align: center;">
+                <mat-card-title>
+                    <strong>
+                        {{ quizPlayerService.quizData.playerName }}, hvala ti na odigranoj igri
+                        <br>
+                        Molim te sačekaj početak nove igre
+                    </strong>
+                </mat-card-title>
+                <mat-card-content *ngIf="quizPlayerService.quizData.playerScore">
+                    <strong>Ovdje možeš vidjeti svoje odogovore:</strong>
+                    <br />
+                    <div style="display: flex;" *ngFor="let answer of quizPlayerService.quizData.playerScore">
+                        <div style="border: solid;">
+                            <strong>{{answer.questionText}}</strong>
+                        </div>
+                        <div style="border: solid;"
+                            [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+                            <strong>{{answer.answerText}}</strong>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
 
-<!-- <div class="log">
-    Activity Log:
-    <mat-divider></mat-divider>
-    <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
-        {{message}}
     </div>
 </div>
-
-
-<div>
-    ConnectionId: {{quizPlayerService.signalRService.connectionId}}
-</div>
-
-<div>
-    <input matInput name="question" [(ngModel)]="inputData" required>
-    <button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToHost()">
-        Send data to host
-    </button>
-</div>
-
-<div>
-    Messages received:
-    <div *ngFor="let message of quizPlayerService.signalRService.dataHistory">
-        {{message}}
-    </div>
-</div> -->

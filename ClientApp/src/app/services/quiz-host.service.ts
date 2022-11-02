@@ -47,7 +47,6 @@ export class QuizHostService {
     this.quizData.quizState = QuizState.AnswersShowing
     this.quizData.checkAnswersAndAssignPoints()
     this.sendCorrectAnswerToGroup()
-    this.sendEvaluatingAnswersToGroup()
   }
 
   private quizEnd() {
@@ -92,7 +91,11 @@ export class QuizHostService {
   public sendCorrectAnswerToGroup() {
     const data = {
       action: "CorrectAnswer",
-      correctAnswerForPlayer: this.quizData.getCorrectAnswerToCurrentQuestion()?.id
+      data: {
+        correctAnswerId: this.quizData.getCorrectAnswerToCurrentQuestion()?.id,
+        spinnerText: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
+        spinnerTimer: this.quizSettings.nextQuestionDelay
+      }
     }
     this.sendToGroup(JSON.stringify(data))
   }

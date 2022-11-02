@@ -5,6 +5,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material/material.module';
 
+import {ClipboardModule} from '@angular/cdk/clipboard';
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -29,9 +31,10 @@ import { SpinnerComponent } from './spinner/spinner.component';
     QuestionsComponent,
     QuizHostComponent,
     QuizPlayerComponent,
-    SpinnerComponent
+    SpinnerComponent,
   ],
   imports: [
+    ClipboardModule,
     ReactiveFormsModule,
     MaterialModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

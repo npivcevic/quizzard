@@ -2,9 +2,26 @@
 
     <div class="top-bar">
 
-        <div class="domain "><a class="domain-link" [routerLink]="['/']">PubKviz.HR</a></div>
+        <div class="domain "><a class="domain-link" [routerLink]="['/']">Pub<span class="logoKviz">Kviz</span>.hr</a></div>
 
-        <div class="top-bar-link">Otiđi na pubkviz.hr. Šifra kviza je {{quizHostService.quizData.groupName}}</div>
+        <div class="top-bar-link">
+            Šifra<span class="logoKviz">Kviza</span>: 
+            {{quizHostService.quizData.groupName}}
+            <span  class="groupname-clipboard">
+                <span *ngIf="!quizHostService.quizData.copyedToCLipboard;then copyBlock else doneBlock"></span>
+                <ng-template #copyBlock>
+                    <button  
+                        class="groupname-clipboard-button" 
+                        [cdkCopyToClipboard]="quizHostService.quizData.groupName" 
+                        (click)="quizHostService.quizData.copyedToCLipboard=true">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                </ng-template>
+                <ng-template #doneBlock>
+                    <mat-icon class="succesfull-groupname-copy">done_all</mat-icon>
+                </ng-template>
+            </span>
+        </div>
 
     </div>
 
@@ -12,32 +29,16 @@
 
         <div class="active-players">
             <div class="active-players-card">
-                <strong>Aktivni igrači</strong>
+                Aktivni igrači
             </div>
             <div *ngFor="let player of quizHostService.quizData.players">
                 <div [class]="playerCardClass(player)" class="active-player-card">
                     <div class="player-name">
-                        <strong>{{player.name}}</strong>
+                        {{player.name}}
                     </div>
                     <div class="player-score">
-                        <strong>{{player.score}}</strong>
+                        <span class="score-value">{{player.score}}</span>{{player.score}}
                     </div>
-                </div>
-            </div>
-            <div class="active-player-card">
-                <div class="player-name">
-                    <strong>Mile</strong>
-                </div>
-                <div class="player-score">
-                    <strong>2</strong>
-                </div>
-            </div>
-            <div class="active-player-card">
-                <div class="player-name">
-                    <strong>Dea</strong>
-                </div>
-                <div class="player-score">
-                    <strong>3</strong>
                 </div>
             </div>
         </div>
@@ -84,7 +85,7 @@
                         <div style="display: flex; flex-wrap: wrap;">
                             <div style="width: 50%;"
                                 *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index">
-                                <mat-card [class.correct]="answer.isCorrect && isShowingAnswers()">
+                                <mat-card class="answer-card" [class.correct]="answer.isCorrect && isShowingAnswers()">
                                     {{answer.text}}
                                 </mat-card>
                             </div>
