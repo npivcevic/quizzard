@@ -11,32 +11,43 @@ public class QuizHubGroup
 
     public string HostConnectionId { get; set; }
 
-    List<string> connectionIds = new List<string>();
+    List<Player> players = new List<Player>();
 
     public QuizHubGroup(String name, String hostConnectionId)
     {
         this.Name = name;
         this.HostConnectionId = hostConnectionId;
-        this.connectionIds.Add(this.HostConnectionId);
+        this.players.Add(new Player(hostConnectionId));
     }
 
     public void AddConnectionId(String connectionId)
     {
-        this.connectionIds.Add(connectionId);
+        this.players.Add(new Player(connectionId));
     }
 
-    public void RemoveConnectionId(String connectionId)
+    public void DeactivateConnectionId(String connectionId)
     {
-        this.connectionIds.Remove(connectionId);
+        Player? player = this.players.Find(p => p.connectionId == connectionId);
+        if (player == null) {
+            return;
+        }
+        player.Deactivate();
     }
 
-    public bool IsEmpty()
-    {
-        return this.connectionIds.Count == 0;
+    public Player? FindPlayer(String connectionId) {
+        return this.players.Find(p => p.connectionId == connectionId);
+    }
+
+    public void ReconnectConnectionId(String newConnectionId, String oldConnectionId) {
+        Player? player = this.players.Find(p => p.connectionId == oldConnectionId);
+        if (player == null) {
+            return;
+        }
+        player.Reconnect(newConnectionId);
     }
 
     public bool IsConnectionInGroup(String connectionId)
     {
-        return this.connectionIds.Contains(connectionId);
+        return this.players.Exists(p => p.connectionId == connectionId);
     }
 }

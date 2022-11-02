@@ -6,6 +6,7 @@ export class Player {
     name: string = ""
     score:number = 0
     submitedAnswers:SubmitedAnswer[] = []
+    isActive: Boolean = true
 
     constructor(connectionId: string, name: string) {
         this.connectionId = connectionId

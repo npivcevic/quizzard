@@ -5,11 +5,14 @@ export class QuizPlayerData {
 
     groupName: string = ""
     playerName: string = ""
-    quizState: QuizPlayerState = QuizPlayerState.Disconnected
+    quizState: QuizPlayerState = QuizPlayerState.Loading
     currentQuestion!: Question
     currentAnswerId: string = ""
     currentCorrectAnswerId: string = ""
     playerScore:PlayerScore[]=[]
+    reconnectPossible: Boolean = false;
+    oldClientConnected: Boolean = false;
+    reconnected: Boolean = false;
 
     constructor() {
     }
@@ -26,6 +29,7 @@ export class QuizPlayerData {
 }
 
 export enum QuizPlayerState {
+    Loading,
     Disconnected,
     WaitingForStart,
     QuestionShowing,

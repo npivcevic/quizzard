@@ -1,29 +1,77 @@
 <div class="main-frame">
     <div class="body">
 
-        <div *ngIf="!isConnectedToQuiz()" class="join-group-code">
+        <div *ngIf="isLoading()" class="join-group-code">
+            <div class="join-group-code-card-title">
+                <mat-card-title style="text-align: center;">
+                    <mat-card>
+                        Učitavanje...
+                    </mat-card>
+                </mat-card-title>
+            </div>
+        </div>
+
+        <div *ngIf="isDisconnected()" class="join-group-code">
             <div class="join-group-code-card-title" [formGroup]="logInForm">
-                
-                <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
-                    <input matInput placeholder="Unesi kod" formControlName="groupName">
-                </mat-form-field>
-                <br />
-                <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
-                    <input matInput placeholder="Unesi ime" formControlName="playerName">
-                </mat-form-field>
-                <br />
-                <button class="join-group-button" color="primary" mat-stroked-button
-                    (click)="joinQuiz()" type="submit" [disabled]="this.logInForm.invalid">Join Quiz</button>
+
+                <fieldset [disabled]="quizPlayerService.quizData.reconnectPossible">
+                    <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
+                        <input
+                            matInput
+                            placeholder="Unesi kod"
+                            formControlName="groupName">
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
+                        <input
+                            matInput
+                            placeholder="Unesi ime"
+                            formControlName="playerName">
+                    </mat-form-field>
+                    <br />
+                </fieldset>
+                <button
+                    *ngIf="!quizPlayerService.quizData.reconnectPossible"
+                    class="join-group-button"
+                    color="primary"
+                    mat-stroked-button
+                    (click)="joinQuiz()"
+                    type="submit"
+                    [disabled]="this.logInForm.invalid">
+                    Igraj
+                </button>
+
+                <div *ngIf="quizPlayerService.quizData.reconnectPossible">
+                    <span *ngIf="!quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz, klikom na 'vrati se u igru' mozete nastaviti.</span>
+                    <span *ngIf="quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz u nekom drugom tab-u. Klikom na vrati se mozete nastaviti kviz igrati ovdje.</span>
+                    
+                    <button
+                        class="join-group-button"
+                        color="primary"
+                        mat-stroked-button
+                        (click)="reconnectToQuiz()"
+                        type="submit"
+                        [disabled]="this.logInForm.invalid">
+                        Vrati se u igru
+                    </button>
+                </div>
             </div>
         </div>
 
         <div *ngIf="isWaitingForStart()">
-            <mat-card style="text-align: center">
-                <mat-card-title>
+            <mat-card style="text-align: center;">
+                <mat-card-title *ngIf="!quizPlayerService.quizData.reconnected">
                     <strong>
-                        {{ quizPlayerService.quizData.playerName }}, hvala ti na prijavi
+                        Pozdrav {{ quizPlayerService.quizData.playerName }}, hvala ti na prijavi!
                         <br>
-                        Molim te sačekaj početak igre
+                        Molim te sačekaj početak igre.
+                    </strong>
+                </mat-card-title>
+                <mat-card-title *ngIf="quizPlayerService.quizData.reconnected">
+                    <strong>
+                        Pozdrav {{ quizPlayerService.quizData.playerName }}, dobrodosao natrag!
+                        <br>
+                        Molim te sačekaj početak novog pitanja.
                     </strong>
                 </mat-card-title>
             </mat-card>

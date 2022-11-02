@@ -26,16 +26,25 @@ export class QuizHostData {
 
     playerConnected(connectionId: string, playerName: string) {
         this.players.push(new Player(connectionId, playerName))
-        console.log(this.players)
     }
 
     playerDisconnected(connectionId: string) {
-        this.players = this.players.filter((p) => p.connectionId != connectionId)
+        let player = this.players.find((p) => p.connectionId === connectionId)
+        if (player) {
+            player.isActive = false;
+        }
+    }
+
+    playerReconnected(newConnectionId: string, oldConnectionId: string) {
+        let player = this.players.find((p) => p.connectionId === oldConnectionId)
+        if (player) {
+            player.connectionId = newConnectionId
+            player.isActive = true;
+        }
     }
 
     recordAnswer(playerConnectionId: string, answerId: string) {
         if (this.quizState !== QuizState.QuestionShowing) {
-            console.log('question submited too late')
             return
         }
         const player = this.findPlayerByConnectionId(playerConnectionId)

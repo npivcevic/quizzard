@@ -53,7 +53,7 @@ public class QuizData
         return true;
     }
 
-    public bool RemoveConnectionFromGroup(String groupName, String connectionId)
+    public bool DeactivateConnectionFromGroup(String groupName, String connectionId)
     {
         QuizHubGroup group;
         try
@@ -64,7 +64,7 @@ public class QuizData
         {
             return false;
         }
-        group.RemoveConnectionId(connectionId);
+        group.DeactivateConnectionId(connectionId);
         return true;
     }
 
