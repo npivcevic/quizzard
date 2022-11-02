@@ -1,0 +1,126 @@
+<div class="main-frame">
+
+    <div class="top-bar">
+
+        <div class="domain "><a class="domain-link" [routerLink]="['/']">Pub<span class="logoKviz">Kviz</span>.hr</a></div>
+
+        <div class="top-bar-link">
+            Šifra<span class="logoKviz">Kviza</span>: 
+            {{quizHostService.quizData.groupName}}
+            <span  class="groupname-clipboard">
+                <span *ngIf="!quizHostService.quizData.copyedToCLipboard;then copyBlock else doneBlock"></span>
+                <ng-template #copyBlock>
+                    <button  
+                        class="groupname-clipboard-button" 
+                        [cdkCopyToClipboard]="quizHostService.quizData.groupName" 
+                        (click)="quizHostService.quizData.copyedToCLipboard=true">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                </ng-template>
+                <ng-template #doneBlock>
+                    <mat-icon class="succesfull-groupname-copy">done_all</mat-icon>
+                </ng-template>
+            </span>
+        </div>
+
+    </div>
+
+    <div class="body">
+
+        <div class="active-players">
+            <div class="active-players-card">
+                Aktivni igrači
+            </div>
+            <div *ngFor="let player of quizHostService.quizData.players">
+                <div [class]="playerCardClass(player)" class="active-player-card">
+                    <div class="player-name">
+                        {{player.name}}
+                    </div>
+                    <div class="player-score">
+                        <span class="score-value">{{player.score}}</span>{{player.score}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div class="quiz">
+                <div *ngIf="isIdle(); then startQuizButtonBlock"></div>
+
+                <ng-template [formGroup]="quizSetup"  #startQuizButtonBlock>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Broj pitanja</mat-label>
+                        <input matInput formControlName="questionsNo" type="number" >
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vrijeme za odgovor</mat-label>
+                        <input matInput formControlName="answerTime" type="number">
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vrijeme između pitanja</mat-label>
+                        <input matInput formControlName="questionDelay" type="number">
+                    </mat-form-field>
+                    <div style="text-align: center;">
+                        <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-raised-button [disabled]="!quizSetup.valid">Pokreni Kviz</button>
+                    </div>
+                </ng-template>
+
+                <div *ngIf="!isIdle(); then questionBlock"></div>
+
+            <ng-template #questionBlock>
+                <div style="text-align: left;">
+
+                        <mat-card class="questionTitleCard">
+                            <app-spinner 
+                                [time]="currentSpinnerTimeout"
+                                [text]="currentSpinnerText"
+                                (timeout)="spinnerTimeout()"
+                            >
+                            </app-spinner>
+                            <div class="questionText">
+                                {{quizHostService.quizData.currentQuestion.text}}
+                            </div>
+                        </mat-card>
+                        <div style="display: flex; flex-wrap: wrap;">
+                            <div style="width: 50%;"
+                                *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index">
+                                <mat-card class="answer-card" [class.correct]="answer.isCorrect && isShowingAnswers()">
+                                    {{answer.text}}
+                                </mat-card>
+                            </div>
+                        </div>
+                </div>
+            </ng-template>
+
+            <ng-template #scoreBoardBlock>
+                <div style="text-align: center;"> 
+                    <button mat-raised-button style="width: 80%;height: 100px;" (click)="startQuiz()">Pokreni novi kviz</button>
+                </div>
+            </ng-template>
+
+            </div>
+
+    </div>
+
+    <!-- <div class="log">
+        Activity Log:
+        <mat-divider></mat-divider>
+        <div *ngFor="let message of quizHostService.signalRService.dataHistory">
+            {{message}}
+        </div>
+    </div>
+
+</div>
+
+
+<div>
+    ConnectionId: {{quizHostService.signalRService.connectionId}}
+</div>
+
+<mat-form-field>
+    <input matInput name="question" [(ngModel)]="inputData" required>
+</mat-form-field>
+<button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToGroup()">
+    Send data to group
+</button> -->

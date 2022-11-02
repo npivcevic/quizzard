@@ -1,0 +1,90 @@
+.main-frame{
+    border-style:none;
+}
+
+.top-bar{
+    background: rgba(255, 235, 205, 0.39);
+    display: flex;
+    box-shadow: 0 1px 8px #888888;
+}
+
+.domain{
+    text-align:center;
+    padding: 10px;
+    width: 100%;
+    font-size: 50px;
+    border: solid;
+    border-color:  #888888;
+}
+
+.top-bar-link{
+    padding: 10px;
+    width: 80%;
+    font-size: 50px;
+    text-align:center;
+}
+
+.body{
+    padding-top: 20px;
+}
+
+.join-group-code{
+    width: 200px;
+    margin: auto;
+}
+
+.join-group-code-card-title{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+
+.log{
+    border: solid;
+    height: 200px;
+    overflow: auto;
+}
+
+.question{
+    width: 80%;
+    padding: 20px; 
+}
+
+.question-card{
+    height: 500px;
+}
+
+.join-group-button{
+    width: 100%;
+}
+
+input::placeholder{
+    text-align: center;
+    color: #0a1d36;
+    font-family: 'Arvo';
+}
+
+.questionTitleCard {
+    display: flex;
+}
+
+.questionText {
+    display: inline-block;
+    text-align: center;
+    font-size: 32px;
+    margin: auto !important;
+    padding: 15px;
+}
+
+.correct {
+    background-color: rgb(153, 211, 153);
+}
+
+.incorrect {
+    background-color: rgb(230, 88, 88);
+}
+
+.answered {
+    background-color: rgb(250, 224, 118);
+}

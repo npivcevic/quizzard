@@ -27,6 +27,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/fonts.css",
               "src/custom-theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
@@ -74,7 +75,8 @@
             },
             "development": {
               "browserTarget": "quizzard:build:development",
-              "proxyConfig": "proxy.conf.js"
+              "proxyConfig": "proxy.conf.js",
+              "disableHostCheck": true
             }
           },
           "defaultConfiguration": "development"

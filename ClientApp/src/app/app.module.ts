@@ -5,10 +5,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material/material.module';
 
+import {ClipboardModule} from '@angular/cdk/clipboard';
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
@@ -16,18 +17,24 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
+import { QuizHostComponent } from './quiz-host/quiz-host.component';
+import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
     FetchDataComponent,
     AddQuestionComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    QuizHostComponent,
+    QuizPlayerComponent,
+    SpinnerComponent,
   ],
   imports: [
+    ClipboardModule,
     ReactiveFormsModule,
     MaterialModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -35,10 +42,10 @@ import { QuestionsComponent } from './questions/questions.component';
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'app-question', component: QuestionsComponent },
+      { path: '', component: QuizPlayerComponent, pathMatch: 'full' },
+      { path: 'app-question', component: QuestionsComponent, canActivate: [AuthorizeGuard]  },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      { path: 'quiz-host', component: QuizHostComponent },
     ]),
     BrowserAnimationsModule
   ],
