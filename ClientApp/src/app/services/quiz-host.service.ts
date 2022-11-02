@@ -132,6 +132,9 @@ export class QuizHostService {
       case 'PlayerDisconnected':
         this.quizData.playerDisconnected(data.data)
         break;
+      case 'PlayerReconnected':
+        this.quizData.playerReconnected(data.data.connectionId, data.data.oldConnectionId)
+        break;
       default:
         console.log(`Action not implemented: ${data.action}.`);
     }

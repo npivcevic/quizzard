@@ -119,6 +119,9 @@ button{
 .player-score{
     position: relative;
 }
+.disconnected{
+    opacity: 0.5;
+}
 
 mat-card{
     background: rgba(255, 235, 205, 0.39);

@@ -65,4 +65,20 @@ export class SignalrService {
     this.hubConnection.invoke('joinquiz', groupName, playerName)
       .catch((err:any) => console.error(err));
   }
+
+  public async reconnectCheck (groupName: string, playerName: string, oldConnectionId: string) {
+    try {
+      let result = await this.hubConnection.invoke('reconnectcheck', groupName, playerName, oldConnectionId);
+      let parsedData = JSON.parse(result);
+      this.dataHistory.push(result)
+      this.dataReceived.next(parsedData)
+    } catch (err: any) {
+      console.error(err)
+    }
+  }
+
+  public reconnect = (groupName: string, playerName: string, oldConnectionId: string) => {
+    this.hubConnection.invoke('reconnect', groupName, playerName, oldConnectionId)
+      .catch((err:any) => console.error(err));
+  }
 }

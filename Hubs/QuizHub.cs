@@ -113,11 +113,85 @@ public class QuizHub : Hub
             quizData.DeleteGroup(group.Name);
             await Clients.Group(group.Name).SendAsync("transferdata",
                 $"{{\"action\":\"{ActionTypes.HostDisconnected}\", \"data\":\"Host disconnected. Game is terminated.\"}}");
+        } else {
+            quizData.DeactivateConnectionFromGroup(group.Name, Context.ConnectionId);
+            await Clients.Client(group.HostConnectionId).SendAsync("transferdata",
+                    $"{{\"action\":\"{ActionTypes.PlayerDisconnected}\", \"data\":\"{Context.ConnectionId}\"}}");
         }
 
-        await Clients.Client(group.HostConnectionId).SendAsync("transferdata",
-                $"{{\"action\":\"{ActionTypes.PlayerDisconnected}\", \"data\":\"{Context.ConnectionId}\"}}");
         await base.OnDisconnectedAsync(exception);
+    }
+
+    public string ReconnectCheck(String groupName, String playerName, String oldConnectionId)
+    {
+        QuizHubGroup? group = quizData.FindGroup(groupName);
+        if (group == null)
+        {
+            return $"{{\"action\":\"{ActionTypes.ReconnectNotPossible}\", \"data\":\"Group not found\"}}";
+        }
+
+        Player? player = group.FindPlayer(oldConnectionId);
+
+        if (player == null) {
+            return $"{{\"action\":\"{ActionTypes.ReconnectNotPossible}\", \"data\":\"ConnectionId not found in group\"}}";
+        }
+
+        if (player.isActive) {
+            return $"{{\"action\":\"{ActionTypes.ReconnectPossibleOldClientConnected}\", \"data\":\"Player not found in group\"}}";
+        }
+
+        return $"{{\"action\":\"{ActionTypes.ReconnectPossibleOldClientDisconnected}\", \"data\":\"Player not found in group\"}}";
+    }
+
+    public async Task Reconnect(String groupName, String playerName, String oldConnectionId)
+    {
+        QuizHubGroup? group = quizData.FindGroup(groupName);
+        if (group == null)
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ReconnectNotPossible}\", \"data\":\"Group not found\"}}");
+            return;
+        }
+
+        Player? player = group.FindPlayer(oldConnectionId);
+
+        if (player == null) {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ReconnectNotPossible}\", \"data\":\"ConnectionId not found in group\"}}");
+            return;
+        }
+
+        await Groups.RemoveFromGroupAsync(player.connectionId, groupName);
+        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+        if (player.isActive) {
+            var RejoinedInADifferentTabDTO = new
+            {
+                action = ActionTypes.RejoinedInADifferentTab,
+                data = groupName
+            };
+            await Clients.Client(oldConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(RejoinedInADifferentTabDTO));
+        }
+        player.Reconnect(Context.ConnectionId);
+
+        var playerReconnectedDTO = new
+        {
+            action = ActionTypes.PlayerReconnected,
+            data = new
+            {
+                name = playerName,
+                connectionId = Context.ConnectionId,
+                oldConnectionId = oldConnectionId
+            }
+        };
+        await Clients.Client(group.HostConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(playerReconnectedDTO));
+
+        var succesfullyReconnectedDTO = new
+        {
+            action = ActionTypes.SuccesfullyReconnected,
+            data = groupName
+        };
+        await Clients.Client(Context.ConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(succesfullyReconnectedDTO));
     }
 }
 
@@ -132,4 +206,10 @@ static class ActionTypes
     public const string HostDisconnected = "HostDisconnected";
     public const string SuccesfullyJoinedGroup = "SuccesfullyJoinedGroup";
     public const string ErrorSendingToGroup = "ErrorSendingToGroup";
+    public const string ReconnectNotPossible = "ReconnectNotPossible";
+    public const string ReconnectPossibleOldClientConnected = "ReconnectPossibleOldClientConnected";
+    public const string ReconnectPossibleOldClientDisconnected = "ReconnectPossibleOldClientDisconnected";
+    public const string SuccesfullyReconnected = "SuccesfullyReconnected";
+    public const string RejoinedInADifferentTab = "RejoinedInADifferentTab";
+    public const string PlayerReconnected = "PlayerReconnected";
 }
