@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { QuizPlayerData, QuizPlayerState } from '../classes/QuizPlayerData';
 import { FormBuilder, Validators } from '@angular/forms';
+import { HostDisconnectedComponent } from '../host-disconnected/host-disconnected.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class QuizPlayerService {
   public currentSpinnerTimeout = 0
   public currentSpinnerText = ""
   
-  constructor(public signalRService: SignalrService, public fb : FormBuilder) { }
+  constructor(public signalRService: SignalrService, public fb : FormBuilder, private dialog: MatDialog ) { }
 
   public async initialize() {
     await this.signalRService.startConnection();
@@ -24,6 +26,12 @@ export class QuizPlayerService {
     })
     await this.checkIfReconnectIsPossible()
     this.quizData.quizState = QuizPlayerState.Disconnected
+  }
+
+  openHostDisconnectedDialog():void{
+    const dialog = this.dialog.open(HostDisconnectedComponent, {
+      width: '50%',
+    })
   }
 
   public joinQuiz(groupName: string, playerName: string) {
@@ -101,7 +109,7 @@ export class QuizPlayerService {
   public processMessage(data: any) {
     switch (data.action) {
       case 'SuccesfullyJoinedGroup':
-        this.quizData.quizState = QuizPlayerState.WaitingForStart
+        this.quizData.quizState = QuizPlayerState.Disconnected
         this.saveCurrentConnectionToLocalStorage()
         break
       case 'QuestionSent':
@@ -119,6 +127,10 @@ export class QuizPlayerService {
         this.quizData.currentCorrectAnswerId = data.data.correctAnswerId
         this.currentSpinnerText = data.data.spinnerText
         this.currentSpinnerTimeout = data.data.spinnerTimer
+        break
+      case 'HostDisconnected':
+        this.quizData.quizState = QuizPlayerState.Disconnected
+        this.openHostDisconnectedDialog()
         break
       case 'QuizEnded':
         this.quizData.quizState = QuizPlayerState.End

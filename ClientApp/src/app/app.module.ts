@@ -20,6 +20,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { QuizHostComponent } from './quiz-host/quiz-host.component';
 import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     QuizHostComponent,
     QuizPlayerComponent,
     SpinnerComponent,
+    HostDisconnectedComponent,
   ],
   imports: [
     ClipboardModule,
