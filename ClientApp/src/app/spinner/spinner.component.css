@@ -1,5 +1,24 @@
 .spinner {
+    font-family: 'Arvo';
     width: 100px;
     display: inline-block;
     text-align: center;
+    min-height: 175px;
+}
+
+.spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: rgb(22 107 22) !important;
+}
+
+.timeLeft {
+    font-family: 'Arvo';
+    position:relative;
+    top: -65px;
+    left: 0px;
+    font-size: 22px;
+}
+
+.spinner-text {
+    font-family: 'Arvo';
+    margin-top: -24px;
 }

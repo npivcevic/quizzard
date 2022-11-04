@@ -9,7 +9,7 @@ export class QuizHostData {
     players: Player[] = []
     questions: Question[] = []
     quizState: BehaviorSubject<QuizState> = new BehaviorSubject<QuizState>(QuizState.Idle)
-    private currentQuestionIndex: number = -1;
+    currentQuestionIndex:number = -1;
     currentQuestion!: Question
     currentCorrectAnswer!: Answer | undefined
     copyedToCLipboard: boolean = false

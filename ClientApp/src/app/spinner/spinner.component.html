@@ -1,12 +1,13 @@
 <div class="spinner">
-    <h4>{{text}}</h4>
     <mat-progress-spinner
-        class="example-margin"
+        class="mat-spinner"
         [color]="color"
         mode="determinate"
+        strokeWidth="12"
         [value]="timeLeft">
     </mat-progress-spinner>
-    <span style="position:relative; top: -61px; left: 0px;">
+    <span class="timeLeft">
         {{timeLeftInSeconds}}
     </span>
+    <h4 class="spinner-text">{{text}}</h4>
 </div>

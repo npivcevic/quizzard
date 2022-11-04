@@ -33,16 +33,17 @@
 
         <div class="active-players">
             <div class="active-players-card">
-                Aktivni igrači
+                Aktivni igrači:
             </div>
-            <div *ngFor="let player of quizHostService.quizData.players">
+            <div *ngFor="let player of quizHostService.quizData.players; let i = index">
                 <div [class]="playerCardClass(player)" class="active-player-card">
+                    <div class="player-card-position">{{i+1}}.</div>
                     <div class="player-name">
                         <span [class.disconnected]="!player.isActive">{{player.name}}</span>
                         <mat-icon *ngIf="!player.isActive" style="color: orangered;" aria-hidden="false" aria-label="Player not active">wifi_off</mat-icon>
                     </div>
-                    <div class="player-score">
-                        <span class="score-value" [class.disconnected]="!player.isActive">{{player.score}}</span>
+                    <div class="player-score" [class.disconnected]="!player.isActive">
+                        {{player.score}}
                     </div>
                 </div>
             </div>
@@ -76,22 +77,27 @@
             <ng-template #questionBlock>
                 <div style="text-align: left;">
 
-                        <mat-card class="questionTitleCard">
+                        <div class="questionTitleCard">
+                            <div class="questionText">
+                                <div class="questionNumber">
+                                    Pitanje {{quizHostService.quizData.currentQuestionIndex + 1}}
+                                    od {{quizHostService.quizData.questions.length}}
+                                </div>
+                                {{quizHostService.quizData.currentQuestion.text}}
+                            </div>
                             <app-spinner 
                                 [time]="currentSpinnerTimeout"
                                 [text]="currentSpinnerText"
                                 (timeout)="spinnerTimeout()"
                             >
                             </app-spinner>
-                            <div class="questionText">
-                                {{quizHostService.quizData.currentQuestion.text}}
-                            </div>
-                        </mat-card>
-                        <div style="display: flex; flex-wrap: wrap;">
-                            <div style="width: 50%;"
-                                *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index">
+                        </div>
+                        <div class="answer-cards">
+                            <div
+                                *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index"
+                                style="width: 50%;">
                                 <mat-card class="answer-card" [class.correct]="answer.isCorrect && isShowingAnswers()">
-                                    {{answer.text}}
+                                    <span class="answer-letter">{{getLetter(i)}}:</span> {{answer.text}}
                                 </mat-card>
                             </div>
                         </div>

@@ -12,7 +12,7 @@ export class QuizPlayerComponent implements OnInit {
 
   logInForm = this.fb.group({
     groupName : this.fb.control('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
-    playerName : this.fb.control(localStorage.getItem('playerName') || "", [Validators.required, Validators.minLength(2), Validators.maxLength(12)])
+    playerName : this.fb.control(localStorage.getItem('playerName') || "", [Validators.required, Validators.minLength(2), Validators.maxLength(25)])
   })
 
   constructor(public quizPlayerService: QuizPlayerService, public fb : FormBuilder ) { }
