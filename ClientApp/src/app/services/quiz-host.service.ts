@@ -44,13 +44,13 @@ export class QuizHostService {
   }
 
   public showCorrectAnswer() {
-    this.quizData.quizState = QuizState.AnswersShowing
+    this.quizData.quizState.next(QuizState.AnswersShowing)
     this.quizData.checkAnswersAndAssignPoints()
     this.sendCorrectAnswerToGroup()
   }
 
   private quizEnd() {
-    this.quizData.quizState = QuizState.Idle
+    this.quizData.quizState.next(QuizState.Idle)
     this.sendQuizEndedToGroup()
     this.quizData.players.forEach((player) => {
       this.sendScoreToPlayer(player)
@@ -61,9 +61,9 @@ export class QuizHostService {
     const data = {
       action: "QuestionSent",
       data: {
-        question : this.quizData.currentQuestionWithoutIsCorrect(),
-        text : "Preostalo vrijeme",
-        timer : this.quizSettings.totalTimePerQuestion
+        question: this.quizData.currentQuestionWithoutIsCorrect(),
+        text: "Preostalo vrijeme",
+        timer: this.quizSettings.totalTimePerQuestion
       }
     }
     this.sendToGroup(JSON.stringify(data));
@@ -72,7 +72,7 @@ export class QuizHostService {
   public sendEvaluatingAnswersToGroup() {
     const data = {
       action: "EvaluatingAnswers",
-      data : {
+      data: {
         text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
         timer: this.quizSettings.nextQuestionDelay
       }
@@ -122,6 +122,9 @@ export class QuizHostService {
         break;
       case 'PlayerAnswered':
         this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId)
+        if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion()) {
+          this.showCorrectAnswer()
+        }
         break;
       case 'GroupCreated':
         this.quizData.groupName = data.data
