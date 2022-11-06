@@ -70,6 +70,7 @@
                 {{quizPlayerService.quizData.currentQuestion.text}}
             </div>
         </div>
+
         <div class="answerList">
             <div *ngFor="let answer of quizPlayerService.quizData.currentQuestion.answers; let i = index"
                 class="answer-wrapper">
@@ -80,6 +81,8 @@
             </div>
         </div>
     </div>
+
+
 
     <div *ngIf="isQuizEnd()" class="container">
         <mat-card style="text-align: center;">
@@ -106,3 +109,4 @@
         </mat-card>
     </div>
 </div>
+

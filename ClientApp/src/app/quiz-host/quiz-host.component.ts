@@ -20,9 +20,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   quizSettings: QuizSettings = new QuizSettings()
 
   quizSetup = this.fb.group({
-    questionsNo: this.fb.control(this.quizSettings.numberOfQuestions, [Validators.required, Validators.min(1)]),
-    answerTime: this.fb.control(this.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
-    questionDelay: this.fb.control(this.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)])
+    numberOfQuestions: this.fb.control(this.quizSettings.numberOfQuestions, [Validators.required, Validators.min(1)]),
+    totalTimePerQuestion: this.fb.control(this.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
+    nextQuestionDelay: this.fb.control(this.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
+    MoveToNextQuestionWhenAllPlayersAnswered : this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
   constructor(public quizHostService: QuizHostService, public navbarservice: NavBarService, public fb: FormBuilder) { }
@@ -43,9 +44,11 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     if (!this.quizSetup.valid) {
       return
     }
-    this.quizSettings.numberOfQuestions = this.quizSetup.value.questionsNo!
-    this.quizSettings.nextQuestionDelay = this.quizSetup.value.questionDelay! * 1000
-    this.quizSettings.totalTimePerQuestion = this.quizSetup.value.answerTime! * 1000
+    this.quizSettings.numberOfQuestions = this.quizSetup.value.numberOfQuestions!
+    this.quizSettings.nextQuestionDelay = this.quizSetup.value.nextQuestionDelay! * 1000
+    this.quizSettings.totalTimePerQuestion = this.quizSetup.value.totalTimePerQuestion! * 1000
+    this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = this.quizSetup.value.MoveToNextQuestionWhenAllPlayersAnswered
+
     this.quizHostService.startQuiz(this.quizSettings)
 
     this.currentSpinnerText = "Preostalo vrijeme"
