@@ -49,7 +49,19 @@ export class QuizHostService {
     this.sendCorrectAnswerToGroup()
   }
 
-  private quizEnd() {
+  public quizEnd() {
+    if (this.quizSettings.autoStartNewQuiz && this.quizData.quizState.getValue() !== QuizState.WaintForNextSet) {
+      this.quizData.quizState.next(QuizState.WaintForNextSet)
+      const data = {
+        action: "WaintForNextSet",
+        data: {
+          spinnerText : "Vrijeme do sljedećeg seta",
+          spinnerTimer : this.quizSettings.autoStartNewQuizDelay
+        }
+      }
+      this.sendToGroup(JSON.stringify(data))
+      return
+    }
     this.quizData.quizState.next(QuizState.Idle)
     this.sendQuizEndedToGroup()
     this.quizData.players.forEach((player) => {
@@ -122,8 +134,12 @@ export class QuizHostService {
         break;
       case 'PlayerAnswered':
         this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId)
-        if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion()) {
+        if (this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered &&
+          this.quizData.checkIfAllPlayerAnsweredCurrentQuestion()) {
           this.showCorrectAnswer()
+        }
+        if (!this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered) {
+          return
         }
         break;
       case 'GroupCreated':

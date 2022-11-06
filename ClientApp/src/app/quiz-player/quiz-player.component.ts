@@ -54,6 +54,10 @@ export class QuizPlayerComponent implements OnInit {
       || this.quizPlayerService.quizData.quizState === QuizPlayerState.AnswersShowing
   }
 
+  public isWaintForNextSet() {
+    return this.quizPlayerService.quizData.quizState === QuizPlayerState.WaintForNextSet
+  }
+
   public isQuizEnd() {
     return this.quizPlayerService.quizData.quizState === QuizPlayerState.End
   }
