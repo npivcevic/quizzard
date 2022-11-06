@@ -109,7 +109,7 @@ export class QuizPlayerService {
   public processMessage(data: any) {
     switch (data.action) {
       case 'SuccesfullyJoinedGroup':
-        this.quizData.quizState = QuizPlayerState.Disconnected
+        this.quizData.quizState = QuizPlayerState.WaitingForStart
         this.saveCurrentConnectionToLocalStorage()
         break
       case 'QuestionSent':
