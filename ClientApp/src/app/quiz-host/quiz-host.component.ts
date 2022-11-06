@@ -5,6 +5,7 @@ import { QuizState } from '../classes/QuizHostData';
 import { Player } from '../classes/Player';
 import { FormBuilder, Validators } from '@angular/forms';
 import { QuizSettings } from '../model/QuizSettings';
+import { letterFromIndex } from '../utils/letterFromIndex';
 
 
 @Component({
@@ -102,5 +103,9 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     }
 
     return "incorrect"
+  }
+
+  getLetter(n: number) {
+    return letterFromIndex(n)
   }
 }

@@ -1,12 +1,16 @@
-<div class="spinner">
-    <h4>{{text}}</h4>
-    <mat-progress-spinner
-        class="example-margin"
-        [color]="color"
-        mode="determinate"
-        [value]="timeLeft">
+<div class="spinner" *ngIf="type==='spinner'">
+    <mat-progress-spinner class="mat-spinner" [color]="color" mode="determinate" strokeWidth="12" [value]="timeLeft">
     </mat-progress-spinner>
-    <span style="position:relative; top: -61px; left: 0px;">
+    <span class="timeLeft">
+        {{timeLeftInSeconds}}
+    </span>
+    <h4 class="spinner-text">{{text}}</h4>
+</div>
+<div class="progressBar" *ngIf="type==='progressBar'">
+    <h4 class="progress-bar-text">{{text}}</h4>
+    <mat-progress-bar class="mat-progress-bar" [color]="color" mode="determinate" strokeWidth="12" [value]="timeLeft">
+    </mat-progress-bar>
+    <span class="progress-bar-timeLeft">
         {{timeLeftInSeconds}}
     </span>
 </div>
