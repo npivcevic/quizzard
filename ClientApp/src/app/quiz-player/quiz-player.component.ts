@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { QuizPlayerState } from '../classes/QuizPlayerData';
 import { QuizPlayerService } from '../services/quiz-player.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { letterFromIndex } from '../utils/letterFromIndex';
 
 @Component({
   selector: 'app-quiz-player',
@@ -11,11 +12,11 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class QuizPlayerComponent implements OnInit {
 
   logInForm = this.fb.group({
-    groupName : this.fb.control('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
-    playerName : this.fb.control(localStorage.getItem('playerName') || "", [Validators.required, Validators.minLength(2), Validators.maxLength(25)])
+    groupName: this.fb.control('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
+    playerName: this.fb.control(localStorage.getItem('playerName') || "", [Validators.required, Validators.minLength(2), Validators.maxLength(25)])
   })
 
-  constructor(public quizPlayerService: QuizPlayerService, public fb : FormBuilder ) { }
+  constructor(public quizPlayerService: QuizPlayerService, public fb: FormBuilder) { }
 
   async ngOnInit() {
     await this.quizPlayerService.initialize();
@@ -74,5 +75,9 @@ export class QuizPlayerComponent implements OnInit {
 
   public sendAnswerToHost(id?: string) {
     this.quizPlayerService.questionAnswered(id!)
+  }
+
+  getLetter(n: number) {
+    return letterFromIndex(n)
   }
 }

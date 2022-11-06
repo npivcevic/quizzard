@@ -94,6 +94,12 @@ body{
     margin: auto;
 }
 
+.disconnected-icon {
+    color: orangered;
+    margin: auto 5px auto 0;
+    flex-shrink: 0;
+}
+
 .player-name {
     width: 260px;
     overflow: hidden;
@@ -188,6 +194,7 @@ mat-card{
     background-color: #0a1d36;
     color: whitesmoke;
 }
+
 .answer-letter {
     color: #f4ce26;
 }
@@ -196,10 +203,10 @@ mat-card{
     background-color: rgb(22 107 22)
 }
 .incorrect {
-    background-color: rgb(230, 88, 88);
+    background-color: rgb(152 57 57);
 }
 .answered {
-    background-color: rgb(250, 224, 118);
+    background-color: rgb(116 98 27);
 }
 
 .logoKviz {

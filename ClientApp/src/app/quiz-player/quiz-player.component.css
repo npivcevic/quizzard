@@ -1,11 +1,13 @@
-.main-frame{
-    border-style:none;
-}
-
 .top-bar{
     background: rgba(255, 235, 205, 0.39);
     display: flex;
     box-shadow: 0 1px 8px #888888;
+}
+.top-bar-link{
+    padding: 10px;
+    width: 80%;
+    font-size: 50px;
+    text-align:center;
 }
 
 .domain{
@@ -17,28 +19,21 @@
     border-color:  #888888;
 }
 
-.top-bar-link{
-    padding: 10px;
-    width: 80%;
-    font-size: 50px;
-    text-align:center;
-}
-
-.body{
-    padding-top: 20px;
-}
-
-.join-group-code{
-    width: 200px;
-    margin: auto;
-}
-
-.join-group-code-card-title{
+.main-frame{
+    border-style:none;
+    height: calc(100vh - 61px - 1rem);
+    max-height: calc(100vh - 61px - 1rem);
     width: 100%;
+    max-width: 450px;
     margin: auto;
-    text-align: center;
 }
 
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
 .log{
     border: solid;
@@ -67,24 +62,55 @@ input::placeholder{
 
 .questionTitleCard {
     display: flex;
+    overflow-y: auto;
 }
 
 .questionText {
     display: inline-block;
     text-align: center;
-    font-size: 32px;
+    font-size: 20px;
     margin: auto !important;
     padding: 15px;
 }
 
 .correct {
-    background-color: rgb(153, 211, 153);
+    background-color: rgb(22 107 22) !important;
 }
-
 .incorrect {
-    background-color: rgb(230, 88, 88);
+    background-color: rgb(152 57 57) !important;
+}
+.answered {
+    background-color: rgb(116 98 27) !important;
 }
 
-.answered {
-    background-color: rgb(250, 224, 118);
+.player-spinner {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.answerList {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: auto;
+}
+
+.answer-wrapper {
+    width: 50%;
+    padding: 5px;
+}
+
+.answer-button {
+    width: 100%;
+    min-height: 80px;
+    background-color: #0a1d36;
+    color: whitesmoke !important;
+    text-align: left;
+    font-size: 15px;
+    white-space: normal;
+}
+
+.answer-letter {
+    display: contents;
+    color: #f4ce26;
 }

@@ -1,130 +1,108 @@
 <div class="main-frame">
-    <div class="body">
 
-        <div *ngIf="isLoading()" class="join-group-code">
-            <div class="join-group-code-card-title">
-                <mat-card-title style="text-align: center;">
-                    <mat-card>
-                        Učitavanje...
-                    </mat-card>
-                </mat-card-title>
-            </div>
-        </div>
-
-        <div *ngIf="isDisconnected()" class="join-group-code">
-            <div class="join-group-code-card-title" [formGroup]="logInForm">
-
-                <fieldset [disabled]="quizPlayerService.quizData.reconnectPossible">
-                    <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
-                        <input
-                            matInput
-                            placeholder="Unesi kod"
-                            formControlName="groupName">
-                    </mat-form-field>
-                    <br />
-                    <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
-                        <input
-                            matInput
-                            placeholder="Unesi ime"
-                            formControlName="playerName">
-                    </mat-form-field>
-                    <br />
-                </fieldset>
-                <button
-                    *ngIf="!quizPlayerService.quizData.reconnectPossible"
-                    class="join-group-button"
-                    color="primary"
-                    mat-stroked-button
-                    (click)="joinQuiz()"
-                    type="submit"
-                    [disabled]="this.logInForm.invalid">
-                    Igraj
-                </button>
-
-                <div *ngIf="quizPlayerService.quizData.reconnectPossible">
-                    <span *ngIf="!quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz, klikom na 'vrati se u igru' mozete nastaviti.</span>
-                    <span *ngIf="quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz u nekom drugom tab-u. Klikom na vrati se mozete nastaviti kviz igrati ovdje.</span>
-                    
-                    <button
-                        class="join-group-button"
-                        color="primary"
-                        mat-stroked-button
-                        (click)="reconnectToQuiz()"
-                        type="submit"
-                        [disabled]="this.logInForm.invalid">
-                        Vrati se u igru
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div *ngIf="isWaitingForStart()">
-            <mat-card style="text-align: center;">
-                <mat-card-title *ngIf="!quizPlayerService.quizData.reconnected">
-                    <strong>
-                        Pozdrav {{ quizPlayerService.quizData.playerName }}, hvala ti na prijavi!
-                        <br>
-                        Molim te sačekaj početak igre.
-                    </strong>
-                </mat-card-title>
-                <mat-card-title *ngIf="quizPlayerService.quizData.reconnected">
-                    <strong>
-                        Pozdrav {{ quizPlayerService.quizData.playerName }}, dobrodosao natrag!
-                        <br>
-                        Molim te sačekaj početak novog pitanja.
-                    </strong>
-                </mat-card-title>
-            </mat-card>
-        </div>
-
-        <div *ngIf="isQuizInProgress()">
-            <mat-card *ngIf="quizPlayerService.quizData.currentQuestion">
-                <mat-card class="questionTitleCard">
-                    <app-spinner [time]="quizPlayerService.currentSpinnerTimeout"
-                        [text]="quizPlayerService.currentSpinnerText">
-                    </app-spinner>
-                    <div class="questionText">
-                        {{quizPlayerService.quizData.currentQuestion.text}}
-                    </div>
+    <div *ngIf="isLoading()" class="container">
+        <div class="join-group-code-card-title">
+            <mat-card-title style="text-align: center;">
+                <mat-card>
+                    Učitavanje...
                 </mat-card>
-                <div style="display: flex; flex-wrap: wrap; ">
-                    <div *ngFor="let answer of quizPlayerService.quizData.currentQuestion.answers; let i = index"
-                        style="width: 50%;">
-                        <mat-card>
-                            <button style="width: 100%;" [class]="answerStyle(answer.id!)" mat-stroked-button
-                                [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost(answer.id)">
-                                {{answer.text}}
-                            </button>
-                        </mat-card>
+            </mat-card-title>
+        </div>
+    </div>
+
+    <div *ngIf="isDisconnected()" class="container" [formGroup]="logInForm">
+        <fieldset [disabled]="quizPlayerService.quizData.reconnectPossible">
+            <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
+                <input matInput placeholder="Unesi kod" formControlName="groupName">
+            </mat-form-field>
+            <br />
+            <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
+                <input matInput placeholder="Unesi ime" formControlName="playerName">
+            </mat-form-field>
+            <br />
+        </fieldset>
+        <button *ngIf="!quizPlayerService.quizData.reconnectPossible" class="join-group-button" color="primary"
+            mat-stroked-button (click)="joinQuiz()" type="submit" [disabled]="this.logInForm.invalid">
+            Igraj
+        </button>
+
+        <div *ngIf="quizPlayerService.quizData.reconnectPossible">
+            <span *ngIf="!quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz, klikom na 'vrati
+                se u igru' mozete nastaviti.</span>
+            <span *ngIf="quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz u nekom drugom
+                tab-u. Klikom na vrati se mozete nastaviti kviz igrati ovdje.</span>
+
+            <button class="join-group-button" color="primary" mat-stroked-button (click)="reconnectToQuiz()"
+                type="submit" [disabled]="this.logInForm.invalid">
+                Vrati se u igru
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="isWaitingForStart()" class="container">
+        <mat-card style="text-align: center;">
+            <mat-card-title *ngIf="!quizPlayerService.quizData.reconnected">
+                <strong>
+                    Pozdrav {{ quizPlayerService.quizData.playerName }}, hvala ti na prijavi!
+                    <br>
+                    Molim te sačekaj početak igre.
+                </strong>
+            </mat-card-title>
+            <mat-card-title *ngIf="quizPlayerService.quizData.reconnected">
+                <strong>
+                    Pozdrav {{ quizPlayerService.quizData.playerName }}, dobrodosao natrag!
+                    <br>
+                    Molim te sačekaj početak novog pitanja.
+                </strong>
+            </mat-card-title>
+        </mat-card>
+    </div>
+
+    <div *ngIf="isQuizInProgress() && quizPlayerService.quizData.currentQuestion" class="container">
+        <div class="player-spinner">
+            <app-spinner type="progressBar" [time]="quizPlayerService.currentSpinnerTimeout"
+                [text]="quizPlayerService.currentSpinnerText">
+            </app-spinner>
+        </div>
+
+        <div class="questionTitleCard">
+            <div class="questionText">
+                {{quizPlayerService.quizData.currentQuestion.text}}
+            </div>
+        </div>
+        <div class="answerList">
+            <div *ngFor="let answer of quizPlayerService.quizData.currentQuestion.answers; let i = index"
+                class="answer-wrapper">
+                <button class="answer-button" [class]="answerStyle(answer.id!)" mat-stroked-button
+                    [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost(answer.id)">
+                    <span class="answer-letter">{{getLetter(i)}}:</span> {{answer.text}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="isQuizEnd()" class="container">
+        <mat-card style="text-align: center;">
+            <mat-card-title>
+                <strong>
+                    {{ quizPlayerService.quizData.playerName }}, hvala ti na odigranoj igri
+                    <br>
+                    Molim te sačekaj početak nove igre
+                </strong>
+            </mat-card-title>
+            <mat-card-content *ngIf="quizPlayerService.quizData.playerScore">
+                <strong>Ovdje možeš vidjeti svoje odogovore:</strong>
+                <br />
+                <div style="display: flex;" *ngFor="let answer of quizPlayerService.quizData.playerScore">
+                    <div style="border: solid;">
+                        <strong>{{answer.questionText}}</strong>
+                    </div>
+                    <div style="border: solid;"
+                        [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+                        <strong>{{answer.answerText}}</strong>
                     </div>
                 </div>
-            </mat-card>
-        </div>
-
-        <div *ngIf="isQuizEnd()">
-            <mat-card style="text-align: center;">
-                <mat-card-title>
-                    <strong>
-                        {{ quizPlayerService.quizData.playerName }}, hvala ti na odigranoj igri
-                        <br>
-                        Molim te sačekaj početak nove igre
-                    </strong>
-                </mat-card-title>
-                <mat-card-content *ngIf="quizPlayerService.quizData.playerScore">
-                    <strong>Ovdje možeš vidjeti svoje odogovore:</strong>
-                    <br />
-                    <div style="display: flex;" *ngFor="let answer of quizPlayerService.quizData.playerScore">
-                        <div style="border: solid;">
-                            <strong>{{answer.questionText}}</strong>
-                        </div>
-                        <div style="border: solid;"
-                            [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
-                            <strong>{{answer.answerText}}</strong>
-                        </div>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
-
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>
