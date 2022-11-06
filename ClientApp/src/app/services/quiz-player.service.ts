@@ -135,6 +135,11 @@ export class QuizPlayerService {
       case 'QuizEnded':
         this.quizData.quizState = QuizPlayerState.End
         break
+      case 'WaintForNextSet':
+        this.quizData.quizState = QuizPlayerState.WaintForNextSet
+        this.currentSpinnerText = data.data.spinnerText
+        this.currentSpinnerTimeout = data.data.spinnerTimer
+        break
       case 'PlayerScore':
         this.quizData.playerScore = data.data
         break

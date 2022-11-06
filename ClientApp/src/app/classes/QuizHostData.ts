@@ -111,5 +111,6 @@ export class QuizHostData {
 export enum QuizState {
     Idle,
     QuestionShowing,
-    AnswersShowing
+    AnswersShowing,
+    WaintForNextSet
 }

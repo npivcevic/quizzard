@@ -34,5 +34,6 @@ export enum QuizPlayerState {
     WaitingForStart,
     QuestionShowing,
     AnswersShowing,
+    WaintForNextSet,
     End
 }

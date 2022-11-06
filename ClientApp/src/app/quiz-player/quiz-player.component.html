@@ -82,7 +82,10 @@
         </div>
     </div>
 
-
+    <div *ngIf="isWaintForNextSet()">
+        <app-spinner [time]="quizPlayerService.currentSpinnerTimeout" [text]="quizPlayerService.currentSpinnerText">
+        </app-spinner>
+    </div>
 
     <div *ngIf="isQuizEnd()" class="container">
         <mat-card style="text-align: center;">

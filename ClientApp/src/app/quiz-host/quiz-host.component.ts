@@ -23,7 +23,9 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     numberOfQuestions: this.fb.control(this.quizSettings.numberOfQuestions, [Validators.required, Validators.min(1)]),
     totalTimePerQuestion: this.fb.control(this.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
     nextQuestionDelay: this.fb.control(this.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
-    MoveToNextQuestionWhenAllPlayersAnswered : this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
+    MoveToNextQuestionWhenAllPlayersAnswered : this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered),
+    autoStartNewQuiz : this.fb.control(this.quizSettings.autoStartNewQuiz),
+    autoStartNewQuizDelay : this.fb.control(this.quizSettings.autoStartNewQuizDelay / 1000)
   })
 
   constructor(public quizHostService: QuizHostService, public navbarservice: NavBarService, public fb: FormBuilder) { }
@@ -48,6 +50,8 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.quizSettings.nextQuestionDelay = this.quizSetup.value.nextQuestionDelay! * 1000
     this.quizSettings.totalTimePerQuestion = this.quizSetup.value.totalTimePerQuestion! * 1000
     this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = this.quizSetup.value.MoveToNextQuestionWhenAllPlayersAnswered
+    this.quizSettings.autoStartNewQuiz = this.quizSetup.value.autoStartNewQuiz
+    this.quizSettings.autoStartNewQuizDelay = this.quizSetup.value.autoStartNewQuizDelay * 1000
 
     this.quizHostService.startQuiz(this.quizSettings)
 
@@ -66,12 +70,21 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       this.currentSpinnerTimeout = this.quizSettings.totalTimePerQuestion
       return;
     }
+    if (state === QuizState.WaintForNextSet) {
+      this.currentSpinnerText = ""
+      this.currentSpinnerTimeout = this.quizSettings.autoStartNewQuizDelay
+    }
   }
 
   public spinnerTimeout() {
     if (this.quizHostService.quizData.quizState.getValue() === QuizState.AnswersShowing) {
       this.quizHostService.nextQuestion();
       return;
+    }
+    if (this.quizHostService.quizData.quizState.getValue() === QuizState.WaintForNextSet &&
+      this.quizSettings.autoStartNewQuiz) {
+      this.startQuiz()
+      return
     }
     this.quizHostService.showCorrectAnswer();
   }
@@ -86,6 +99,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   isIdle() {
     return this.quizHostService.quizData.quizState.getValue() === QuizState.Idle
+  }
+
+  isWaintForNextSet() {
+    return this.quizHostService.quizData.quizState.getValue() === QuizState.WaintForNextSet
   }
 
   playerCardClass(player: Player) {
