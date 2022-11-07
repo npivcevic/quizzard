@@ -2,6 +2,7 @@ import { BehaviorSubject, Subject } from "rxjs";
 import { Player } from "../classes/Player";
 import { Answer } from "../model/answer";
 import { Question } from "../model/question";
+import { ScoreboardRow } from "../model/scoreboard-row";
 
 export class QuizHostData {
 
@@ -95,12 +96,23 @@ export class QuizHostData {
     }
 
     public checkIfAllPlayerAnsweredCurrentQuestion() {
+        let x = true
         for (let i = 0; i < this.players.length; i++) {
-            if (this.players[i].hasAnswered(this.currentQuestion.id)) {
-                return false
+            if (!this.players[i].hasAnswered(this.currentQuestion.id)) {
+                x = false
+                return
             }
         }
-        return true
+        return x
+    }
+
+    public playersScoreboard() {
+        return this.players.map(player =>{
+            return{
+                playerName:player.name,
+                points: player.score
+            }
+        })
     }
 
     getCorrectAnswerToCurrentQuestion() {

@@ -22,6 +22,7 @@ import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component'
 import { LogoComponent } from './logo/logo.component';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { LogoComponent } from './logo/logo.component';
     SpinnerComponent,
     HostDisconnectedComponent,
     LogoComponent,
+    ScoreboardComponent,
   ],
   imports: [
     ClipboardModule,

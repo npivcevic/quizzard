@@ -138,6 +138,11 @@ export class QuizPlayerService {
       case 'PlayerScore':
         this.quizData.playerScore = data.data
         break
+      case 'PlayersScoreboard':
+        console.log(data.action,data.data)
+        this.quizData.dataSource = data.data
+        console.log(this.quizData.dataSource)
+        break
       case 'ReconnectNotPossible':
         this.quizData.reconnectPossible = false;
         this.clearLastConnectionFromLocalStorage()

@@ -55,6 +55,7 @@ export class QuizHostService {
     this.quizData.players.forEach((player) => {
       this.sendScoreToPlayer(player)
     })
+    this.sendScoreBoardToPlayers()
   }
 
   public sendQuestiontoGroup() {
@@ -106,6 +107,15 @@ export class QuizHostService {
       data: player.getQuizReviewBoard(this.quizData.questions)
     }
     this.sendToPlayer(JSON.stringify(data), player.connectionId)
+  }
+
+  public sendScoreBoardToPlayers() {
+    const data = {
+      action: "PlayersScoreboard",
+      data: this.quizData.playersScoreboard()
+    }
+    
+    this.sendToGroup(JSON.stringify(data))
   }
 
   public sendToPlayer(data: string, playerConnectionId: string) {

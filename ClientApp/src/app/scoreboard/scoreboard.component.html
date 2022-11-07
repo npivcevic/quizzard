@@ -1,0 +1,9 @@
+<div style="display: flex;" *ngFor="let answer of answers">
+  <div style="border: solid;">
+      <strong>{{answer.questionText}}</strong>
+  </div>
+  <div style="border: solid;"
+      [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+      <strong>{{answer.answerText}}</strong>
+  </div>
+</div>

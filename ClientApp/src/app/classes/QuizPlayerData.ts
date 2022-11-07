@@ -1,5 +1,6 @@
 import { PlayerScore } from "../model/player-score";
 import { Question } from "../model/question";
+import { ScoreboardRow } from "../model/scoreboard-row";
 
 export class QuizPlayerData {
 
@@ -10,6 +11,9 @@ export class QuizPlayerData {
     currentAnswerId: string = ""
     currentCorrectAnswerId: string = ""
     playerScore:PlayerScore[]=[]
+    displayedColumns: string[] = ['playerName', 'points'];
+    scoreBoard:ScoreboardRow[]=[]
+    dataSource = this.scoreBoard
     reconnectPossible: Boolean = false;
     oldClientConnected: Boolean = false;
     reconnected: Boolean = false;
