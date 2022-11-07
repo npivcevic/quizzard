@@ -19,7 +19,7 @@ export class QuizPlayerComponent implements OnInit {
     playerName: this.fb.control(localStorage.getItem('playerName') || "", [Validators.required, Validators.minLength(2), Validators.maxLength(25)])
   })
 
-  constructor(public quizPlayerService: QuizPlayerService, public dialog : MatDialog,public fb: FormBuilder) { }
+  constructor(public quizPlayerService: QuizPlayerService, public dialog: MatDialog, public fb: FormBuilder) { }
 
   async ngOnInit() {
     await this.quizPlayerService.initialize();
@@ -30,10 +30,10 @@ export class QuizPlayerComponent implements OnInit {
     }
   }
 
-  public openPlayerScoreDetails(details:PlayerScore[]){
-    const dialog = this.dialog.open(ScoreboardComponent,{
+  public openPlayerScoreDetails(details: PlayerScore[]) {
+    const dialog = this.dialog.open(ScoreboardComponent, {
       data: details,
-      width: '50%'
+      width: '90%'
     })
     dialog.afterClosed()
   }
