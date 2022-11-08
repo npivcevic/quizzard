@@ -30,6 +30,12 @@ export class QuizPlayerComponent implements OnInit {
     }
   }
 
+  private uppercase(x:string){
+
+    
+
+  }
+
   public openPlayerScoreDetails(details: PlayerScore[]) {
     const dialog = this.dialog.open(ScoreboardComponent, {
       data: details,
