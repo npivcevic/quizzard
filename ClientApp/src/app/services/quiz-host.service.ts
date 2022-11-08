@@ -132,7 +132,9 @@ export class QuizHostService {
         break;
       case 'PlayerAnswered':
         this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId)
-        if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion()) {
+        if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion() &&
+            this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered) {
+              console.log( this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
           this.showCorrectAnswer()
         }
         break;
