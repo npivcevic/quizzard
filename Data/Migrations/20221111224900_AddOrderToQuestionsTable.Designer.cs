@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using quizzard.Data;
 
@@ -10,9 +11,10 @@ using quizzard.Data;
 namespace quizzard.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221111224900_AddOrderToQuestionsTable")]
+    partial class AddOrderToQuestionsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -100,7 +102,7 @@ namespace quizzard.Data.Migrations
 
                     b.HasIndex("Use");
 
-                    b.ToTable("Keys", (string)null);
+                    b.ToTable("Keys");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
@@ -310,7 +312,7 @@ namespace quizzard.Data.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("quizzard.Models.ApplicationUser", b =>
@@ -397,7 +399,7 @@ namespace quizzard.Data.Migrations
 
                     b.HasIndex("QuestionSetId");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("quizzard.Models.QuestionSet", b =>
@@ -420,7 +422,7 @@ namespace quizzard.Data.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("QuestionSets", (string)null);
+                    b.ToTable("QuestionSets");
                 });
 
             modelBuilder.Entity("quizzard.Models.Quiz", b =>
@@ -439,7 +441,7 @@ namespace quizzard.Data.Migrations
 
                     b.HasKey("QuizId");
 
-                    b.ToTable("Quizzes", (string)null);
+                    b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

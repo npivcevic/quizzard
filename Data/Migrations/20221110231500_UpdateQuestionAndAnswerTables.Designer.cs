@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using quizzard.Data;
 
@@ -10,9 +11,10 @@ using quizzard.Data;
 namespace quizzard.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221110231500_UpdateQuestionAndAnswerTables")]
+    partial class UpdateQuestionAndAnswerTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -100,7 +102,7 @@ namespace quizzard.Data.Migrations
 
                     b.HasIndex("Use");
 
-                    b.ToTable("Keys", (string)null);
+                    b.ToTable("Keys");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
@@ -310,7 +312,7 @@ namespace quizzard.Data.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("quizzard.Models.ApplicationUser", b =>
@@ -383,63 +385,13 @@ namespace quizzard.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid?>("QuestionSetId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("QuestionId");
 
-                    b.HasIndex("QuestionSetId");
-
-                    b.ToTable("Questions", (string)null);
-                });
-
-            modelBuilder.Entity("quizzard.Models.QuestionSet", b =>
-                {
-                    b.Property<Guid>("QuestionSetId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("QuizId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("QuestionSetId");
-
-                    b.HasIndex("QuizId");
-
-                    b.ToTable("QuestionSets", (string)null);
-                });
-
-            modelBuilder.Entity("quizzard.Models.Quiz", b =>
-                {
-                    b.Property<Guid>("QuizId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("QuizId");
-
-                    b.ToTable("Quizzes", (string)null);
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -495,43 +447,18 @@ namespace quizzard.Data.Migrations
 
             modelBuilder.Entity("quizzard.Models.Answer", b =>
                 {
-                    b.HasOne("quizzard.Models.Question", null)
+                    b.HasOne("quizzard.Models.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("quizzard.Models.Question", b =>
-                {
-                    b.HasOne("quizzard.Models.QuestionSet", null)
-                        .WithMany("Questions")
-                        .HasForeignKey("QuestionSetId")
-                        .OnDelete(DeleteBehavior.SetNull);
-                });
-
-            modelBuilder.Entity("quizzard.Models.QuestionSet", b =>
-                {
-                    b.HasOne("quizzard.Models.Quiz", null)
-                        .WithMany("QuestionSets")
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Question");
                 });
 
             modelBuilder.Entity("quizzard.Models.Question", b =>
                 {
                     b.Navigation("Answers");
-                });
-
-            modelBuilder.Entity("quizzard.Models.QuestionSet", b =>
-                {
-                    b.Navigation("Questions");
-                });
-
-            modelBuilder.Entity("quizzard.Models.Quiz", b =>
-                {
-                    b.Navigation("QuestionSets");
                 });
 #pragma warning restore 612, 618
         }

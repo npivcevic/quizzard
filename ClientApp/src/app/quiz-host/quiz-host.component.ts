@@ -47,7 +47,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.quizSettings.numberOfQuestions = this.quizSetup.value.numberOfQuestions!
     this.quizSettings.nextQuestionDelay = this.quizSetup.value.nextQuestionDelay! * 1000
     this.quizSettings.totalTimePerQuestion = this.quizSetup.value.totalTimePerQuestion! * 1000
-    this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = this.quizSetup.value.MoveToNextQuestionWhenAllPlayersAnswered
+    this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = this.quizSetup.value.MoveToNextQuestionWhenAllPlayersAnswered!
 
     this.quizHostService.startQuiz(this.quizSettings)
 

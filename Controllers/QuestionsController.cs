@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace quizzard.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionsController : ControllerBase
@@ -56,7 +56,7 @@ namespace quizzard.Controllers
             {
                 return NotFound();
             }
-            var question = await _context.Questions.Include(q => q.Answers).FirstOrDefaultAsync(q => q.ID.Equals(id));
+            var question = await _context.Questions.Include(q => q.Answers).FirstOrDefaultAsync(q => q.QuestionId.Equals(id));
 
             if (question == null)
             {
@@ -71,7 +71,7 @@ namespace quizzard.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutQuestion(Guid id, Question question)
         {
-            if (id != question.ID)
+            if (id != question.QuestionId)
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace quizzard.Controllers
 
             var dbQuestion = _context.Questions
                 .Include(q => q.Answers)
-                .FirstOrDefault(q => q.ID.Equals(id));
+                .FirstOrDefault(q => q.QuestionId.Equals(id));
 
             if (dbQuestion == null)
             {
@@ -126,7 +126,7 @@ namespace quizzard.Controllers
             _context.Questions.Add(question);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetQuestion", new { id = question.ID }, question);
+            return CreatedAtAction("GetQuestion", new { id = question.QuestionId }, question);
         }
 
         // DELETE: api/Questions/5
@@ -151,7 +151,7 @@ namespace quizzard.Controllers
 
         private bool QuestionExists(Guid id)
         {
-            return (_context.Questions?.Any(e => e.ID == id)).GetValueOrDefault();
+            return (_context.Questions?.Any(e => e.QuestionId == id)).GetValueOrDefault();
         }
     }
 }

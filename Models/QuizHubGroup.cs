@@ -28,19 +28,23 @@ public class QuizHubGroup
     public void DeactivateConnectionId(String connectionId)
     {
         Player? player = this.players.Find(p => p.connectionId == connectionId);
-        if (player == null) {
+        if (player == null)
+        {
             return;
         }
         player.Deactivate();
     }
 
-    public Player? FindPlayer(String connectionId) {
+    public Player? FindPlayer(String connectionId)
+    {
         return this.players.Find(p => p.connectionId == connectionId);
     }
 
-    public void ReconnectConnectionId(String newConnectionId, String oldConnectionId) {
+    public void ReconnectConnectionId(String newConnectionId, String oldConnectionId)
+    {
         Player? player = this.players.Find(p => p.connectionId == oldConnectionId);
-        if (player == null) {
+        if (player == null)
+        {
             return;
         }
         player.Reconnect(newConnectionId);

@@ -5,19 +5,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace quizzard.Models;
 
-public class Question
+public class QuestionSet
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
-    public Guid QuestionId { get; set; }
+    public Guid QuestionSetId { get; set; }
 
     [Required]
-    public string Text { get; set; } = "";
+    public string Name { get; set; } = "";
 
+    [Required]
     public int Order { get; set; } = 0;
 
-    public List<Answer> Answers { get; set; } = new List<Answer>();
-    
-    public Guid? QuestionSetId { get; set; }
-    public QuestionSet? QuestionSet { get; set; }
+    public List<Question> Questions { get; set; } = new List<Question>();
+
+    public Guid QuizId { get; set; }
+    public Quiz? Quiz { get; set; }
 }
