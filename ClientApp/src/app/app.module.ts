@@ -22,6 +22,8 @@ import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component'
 import { LogoComponent } from './logo/logo.component';
+import { QuizzesComponent } from './quizzes/quizzes.component';
+import { AddQuizComponent } from './add-quiz/add-quiz.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { LogoComponent } from './logo/logo.component';
     SpinnerComponent,
     HostDisconnectedComponent,
     LogoComponent,
+    QuizzesComponent,
+    AddQuizComponent,
   ],
   imports: [
     ClipboardModule,
@@ -50,6 +54,8 @@ import { LogoComponent } from './logo/logo.component';
       { path: 'app-question', component: QuestionsComponent, canActivate: [AuthorizeGuard] },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'quiz-host', component: QuizHostComponent },
+      { path: 'quizzes', component: QuizzesComponent },
+
     ]),
     BrowserAnimationsModule
   ],
