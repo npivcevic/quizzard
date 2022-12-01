@@ -27,8 +27,13 @@ export class QuizzesComponent implements OnInit {
   constructor(private quizservice: QuizzesService,  private dialog: MatDialog ,private snack: MatSnackBar) { }
 
   quizzes!: Quiz[]
+  quizCreatorMode:boolean = false
 
-  displayedColumns: string[] = ['select', 'name', 'numberOfQuestions']
+  name!:string
+  description!:string
+  quizId!:string
+
+  displayedColumns: string[] = [ 'name', 'numberOfQuestions']
   dataSource = new MatTableDataSource<Quiz>(this.quizzes);
   selection = new SelectionModel<Quiz>(true, []);
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand', 'delete'];
@@ -42,16 +47,21 @@ export class QuizzesComponent implements OnInit {
 
   openPostQuizDialog():void {
     const dialog = this.dialog.open(AddQuizComponent, {
-      width: '50%',
+      width: '90%',
     })
 
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
+          console.log(result)
+          this.name = result.name
+          this.description = result.description
+          this.quizId = result.quizId
           this.quizservice.getQuizzes()
-            .subscribe(data => this.dataSource.data = data)
+            .subscribe()
           this.openSnackBar("Kviz je spremljen")
         }
+        this.quizCreatorMode = true
       },
       error: (error) => {
         this.openSnackBar("Kviz nije spremljen")
@@ -72,6 +82,13 @@ export class QuizzesComponent implements OnInit {
       }
     }
     )
+  }
+
+  editQuiz(quiz:Quiz){
+    this.quizCreatorMode = true
+    this.quizId = quiz.quizId
+    this.name = quiz.name
+    this.description = quiz.description
   }
 
 

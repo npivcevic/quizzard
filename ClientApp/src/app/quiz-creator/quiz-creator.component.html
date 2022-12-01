@@ -1,0 +1,52 @@
+<div>{{'Quiz ID : '+quizId}}</div>
+    <div class="name-description">
+        <div class="name">
+            <mat-form-field appearance="fill">
+                <mat-label>Ime kviza</mat-label>
+                <input type="text" matInput [(ngModel)]="name">
+            </mat-form-field>
+        </div>
+        <div class="description">
+            <mat-form-field appearance="fill">
+                <mat-label>Opis kviza</mat-label>
+                <textarea type="text" matInput [(ngModel)]="description">
+                </textarea>
+            </mat-form-field>
+        </div>
+</div>
+<mat-divider></mat-divider>
+
+<div cdkDropListGroup>
+    <div class="example-container-quiz">
+    <div class="question-sets-list">
+      Setovi pitanja
+    </div>
+      <div
+        cdkDropList
+        [cdkDropListData]="questionSets"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let questionSet of questionSets" cdkDrag>{{questionSet.name}}</div>
+      </div>
+    </div>
+
+    <div class="example-container-quiz">
+        <div class="question-sets-list">
+          {{name}}
+        </div>
+    
+        <div
+          cdkDropList
+          [cdkDropListData]="questionSetsForQuiz"
+          class="example-list-quiz"
+          (cdkDropListDropped)="drop($event)">
+          <button mat-stroked-button class="example-box" *ngFor="let questionSet of questionSetsForQuiz" cdkDrag>{{questionSet.name}}</button>
+        </div>
+        <div>
+            <span>
+                <button mat-stroked-button
+                        (click)="openPostQuestionSetDialog()">Novi Set</button>
+            </span>
+          </div>
+      </div>
+</div>

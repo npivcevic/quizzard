@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material/material.module';
 
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -24,6 +26,8 @@ import { HostDisconnectedComponent } from './host-disconnected/host-disconnected
 import { LogoComponent } from './logo/logo.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
 import { AddQuizComponent } from './add-quiz/add-quiz.component';
+import { QuizCreatorComponent } from './quiz-creator/quiz-creator.component';
+import { AddQuestionSetComponent } from './add-question-set/add-question-set.component';
 
 @NgModule({
   declarations: [
@@ -40,9 +44,12 @@ import { AddQuizComponent } from './add-quiz/add-quiz.component';
     LogoComponent,
     QuizzesComponent,
     AddQuizComponent,
+    QuizCreatorComponent,
+    AddQuestionSetComponent,
   ],
   imports: [
     ClipboardModule,
+    DragDropModule,
     ReactiveFormsModule,
     MaterialModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
