@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { QuestionSet } from 'src/app/model/question-set';
 import { QuestionSetService } from 'src/app/services/question-set.service';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { AddQuestionSetComponent } from '../add-question-set/add-question-set.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { QuizzesService } from '../services/quizzes.service';
 
 
 
@@ -15,36 +16,102 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class QuizCreatorComponent implements OnInit {
 
-  constructor(public questionsetservice:QuestionSetService, private dialog : MatDialog, private snack: MatSnackBar) { }
+  constructor(public questionsetservice: QuestionSetService, public quizservice: QuizzesService, private dialog: MatDialog, private snack: MatSnackBar) { }
 
-  @Input() name!:string
-  @Input() description!:string
-  @Input() quizId!:string
+  @Input() name!: string
+  @Input() description!: string
+  @Input() quizId!: string
 
-  questionSets!:QuestionSet[]
-  questionSetsForQuiz:QuestionSet[]=[]
+  questionSets!: QuestionSet[]
+  questionSetsForQuiz: QuestionSet[] = []
+  questionSetPreview!: QuestionSet
 
 
 
   ngOnInit(): void {
     this.questionsetservice.getQuestionSets()
-    .subscribe(data => this.questionSets = data)
+      .subscribe(data => {
+        this.questionSets = data
+      })
+
   }
 
-  openPostQuestionSetDialog():void {
+  getQuestionSetPreview(questionSetId: string) {
+    this.questionsetservice.getQuestionSet(questionSetId)
+      .subscribe(
+        {
+          next: result => {
+            this.questionSetPreview = result
+            console.log(result)
+          }
+        }
+      )
+  }
+
+  getQuestionSets() {
+    this.questionsetservice.getQuestionSets()
+      .subscribe({
+        next: data => {
+          this.questionSets = data
+        }
+      })
+  }
+
+  checkForSetInSetsForQuiz(questionSetId: string) {
+    return this.questionSetsForQuiz.find(questionSet => {
+      return questionSet.questionSetId === questionSetId
+    }
+    )
+  }
+
+  removeSetFromSetsForQuiz(questionSetId: string) {
+    const index = this.questionSetsForQuiz.findIndex(questionSet => {
+      return questionSet.questionSetId === questionSetId
+    })
+
+    this.questionSetsForQuiz.splice(index, 1)
+  }
+
+  removeSetFromSets(questionSetId: string) {
+    const index = this.questionSets.findIndex(questionSet => {
+      return questionSet.questionSetId === questionSetId
+    })
+
+    this.questionSets.splice(index, 1)
+  }
+
+  deleteQuestionSet(questionSetId: string) {
+    this.questionsetservice.deleteQuestionSet(questionSetId)
+      .subscribe({
+        complete: () => {
+          if (this.checkForSetInSetsForQuiz(questionSetId)) {
+            return this.removeSetFromSetsForQuiz(questionSetId)
+          }
+          return this.removeSetFromSets(questionSetId)
+        }
+      })
+  }
+
+  openPostQuestionSetDialog(): void {
     const dialog = this.dialog.open(AddQuestionSetComponent, {
       width: '50%',
+
+    })
+
+    dialog.afterOpened().subscribe({
+      next: result => {
+        console.log(result)
+      }
     })
 
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
           console.log(result)
-          
         }
       },
       error: (error) => {
-        this.openSnackBar("Kviz nije spremljen")
+        this.openSnackBar("Set nije spremljen")
       }
     })
   }
@@ -64,7 +131,7 @@ export class QuizCreatorComponent implements OnInit {
         event.currentIndex,
       );
     }
-    console.log("pitanja za kviz",this.questionSetsForQuiz)
+    console.log("pitanja za kviz", this.questionSetsForQuiz)
   }
 
 }

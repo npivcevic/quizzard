@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { QuestionSet } from '../model/question-set';
 import { QuestionSetService } from '../services/question-set.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-question-set',
@@ -10,9 +11,18 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class AddQuestionSetComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: QuestionSet, private questionsetservice: QuestionSetService, private dialogRef: MatDialogRef<AddQuestionSetComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: QuestionSet, public fb: FormBuilder, private questionsetservice: QuestionSetService, private dialogRef: MatDialogRef<AddQuestionSetComponent>) { }
+
+  questionSet!:QuestionSet
 
   ngOnInit(): void {
   }
+
+  questionSetForm = this.fb.group({
+    name : this.fb.control("",[Validators.required]),
+    quizId : this.fb.control("",[Validators.required])
+  })
+
+
 
 }

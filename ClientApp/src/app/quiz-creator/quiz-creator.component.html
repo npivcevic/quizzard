@@ -16,17 +16,47 @@
 </div>
 <mat-divider></mat-divider>
 
+<div class="style">
 <div cdkDropListGroup>
     <div class="example-container-quiz">
     <div class="question-sets-list">
       Setovi pitanja
+    </div>
+    <div>
+      <span>
+          <button class="new-set-button" mat-stroked-button
+                  (click)="openPostQuestionSetDialog()">Novi Set</button>
+      </span>
     </div>
       <div
         cdkDropList
         [cdkDropListData]="questionSets"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let questionSet of questionSets" cdkDrag>{{questionSet.name}}</div>
+        <div class="example-box" 
+              
+             *ngFor="let questionSet of questionSets" 
+             cdkDrag>
+              {{questionSet.name}}
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                  <mat-icon>remove_red_eye</mat-icon>
+                  <span>Prikaži</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>edit</mat-icon>
+                  <span>Promijeni</span>
+                </button>
+                <button mat-menu-item
+                        (click)="deleteQuestionSet(questionSet.questionSetId)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Izbriši</span>
+                </button>
+              </mat-menu>
+            </div>
       </div>
     </div>
 
@@ -40,13 +70,35 @@
           [cdkDropListData]="questionSetsForQuiz"
           class="example-list-quiz"
           (cdkDropListDropped)="drop($event)">
-          <button mat-stroked-button class="example-box" *ngFor="let questionSet of questionSetsForQuiz" cdkDrag>{{questionSet.name}}</button>
+          <div mat-stroked-button
+                  class="example-box" 
+                  *ngFor="let questionSet of questionSetsForQuiz" 
+                  cdkDrag>
+                    {{questionSet.name}}
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item
+                              (click)="getQuestionSetPreview(questionSet.questionSetId)">
+                        <mat-icon>remove_red_eye</mat-icon>
+                        <span>Prikaži</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>edit</mat-icon>
+                        <span>Promijeni</span>
+                      </button>
+                      <button mat-menu-item
+                              (click)="deleteQuestionSet(questionSet.questionSetId)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Izbriši</span>
+                      </button>
+                    </mat-menu>
+                  </div>
         </div>
-        <div>
-            <span>
-                <button mat-stroked-button
-                        (click)="openPostQuestionSetDialog()">Novi Set</button>
-            </span>
-          </div>
       </div>
+</div>
+<div class="set-preview">
+  <h1>Set preview</h1>
+</div>
 </div>

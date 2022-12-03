@@ -1,6 +1,12 @@
-<div class="style">
-<app-questions></app-questions>
-<div>
-    <h1>ovjde se trebaju drag and dropa ptianja za kviz</h1>
-</div>
+<div class="questionSetForm">
+    <form [formGroup]="questionSetForm" >
+      <mat-form-field appearance="fill">
+        <mat-label>Ime seta</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <br>
+      <div>
+        <button mat-raised-button color="primary" type="submit">Dodaj novi set</button>
+      </div>
+    </form>
 </div>
