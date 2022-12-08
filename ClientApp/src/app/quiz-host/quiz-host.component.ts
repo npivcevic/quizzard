@@ -94,14 +94,14 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     }
 
     if (this.quizHostService.quizData.quizState.getValue() === QuizState.QuestionShowing) {
-      return player.hasAnswered(this.quizHostService.quizData.currentQuestion.id) ? "answered" : ""
+      return player.hasAnswered(this.quizHostService.quizData.currentQuestion.questionId) ? "answered" : ""
     }
 
-    if (!player.hasAnswered(this.quizHostService.quizData.currentQuestion.id)) {
+    if (!player.hasAnswered(this.quizHostService.quizData.currentQuestion.questionId)) {
       return ""
     }
 
-    if (player.hasAnsweredCorrectly(this.quizHostService.quizData.currentQuestion.id)) {
+    if (player.hasAnsweredCorrectly(this.quizHostService.quizData.currentQuestion.questionId)) {
       return "correct"
     }
 

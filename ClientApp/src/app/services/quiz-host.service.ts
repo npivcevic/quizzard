@@ -92,7 +92,7 @@ export class QuizHostService {
     const data = {
       action: "CorrectAnswer",
       data: {
-        correctAnswerId: this.quizData.getCorrectAnswerToCurrentQuestion()?.id,
+        correctAnswerId: this.quizData.getCorrectAnswerToCurrentQuestion()?.answerId,
         spinnerText: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
         spinnerTimer: this.quizSettings.nextQuestionDelay
       }

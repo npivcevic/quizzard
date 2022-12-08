@@ -74,8 +74,8 @@
         <div class="answerList">
             <div *ngFor="let answer of quizPlayerService.quizData.currentQuestion.answers; let i = index"
                 class="answer-wrapper">
-                <button class="answer-button" [class]="answerStyle(answer.id!)" mat-stroked-button
-                    [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost(answer.id)">
+                <button class="answer-button" [class]="answerStyle(answer.answerId!)" mat-stroked-button
+                    [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost(answer.answerId)">
                     <span class="answer-letter">{{getLetter(i)}}:</span> {{answer.text}}
                 </button>
             </div>

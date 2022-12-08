@@ -1,104 +1,119 @@
-<div>{{'Quiz ID : '+quizId}}</div>
-    <div class="name-description">
-        <div class="name">
-            <mat-form-field appearance="fill">
-                <mat-label>Ime kviza</mat-label>
-                <input type="text" matInput [(ngModel)]="name">
-            </mat-form-field>
-        </div>
-        <div class="description">
-            <mat-form-field appearance="fill">
-                <mat-label>Opis kviza</mat-label>
-                <textarea type="text" matInput [(ngModel)]="description">
+<div>{{'Quiz ID : '+quiz.quizId}}</div>
+<div class="name-description">
+  <div class="name">
+    <mat-form-field appearance="fill">
+      <mat-label>Ime kviza</mat-label>
+      <input type="text" matInput [(ngModel)]="quiz.name">
+    </mat-form-field>
+  </div>
+  <div class="description">
+    <mat-form-field appearance="fill">
+      <mat-label>Opis kviza</mat-label>
+      <textarea type="text" matInput [(ngModel)]="quiz.description">
                 </textarea>
-            </mat-form-field>
-        </div>
+    </mat-form-field>
+  </div>
 </div>
 <mat-divider></mat-divider>
 
-<div class="style">
-<div cdkDropListGroup>
-    <div class="example-container-quiz">
-    <div class="question-sets-list">
-      Setovi pitanja
-    </div>
-    <div>
-      <span>
-          <button class="new-set-button" mat-stroked-button
-                  (click)="openPostQuestionSetDialog()">Novi Set</button>
-      </span>
-    </div>
-      <div
-        cdkDropList
-        [cdkDropListData]="questionSets"
-        class="example-list"
-        (cdkDropListDropped)="drop($event)">
-        <div class="example-box" 
-              
-             *ngFor="let questionSet of questionSets" 
-             cdkDrag>
-              {{questionSet.name}}
-              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item>
-                  <mat-icon>remove_red_eye</mat-icon>
-                  <span>Prikaži</span>
-                </button>
-                <button mat-menu-item>
-                  <mat-icon>edit</mat-icon>
-                  <span>Promijeni</span>
-                </button>
-                <button mat-menu-item
-                        (click)="deleteQuestionSet(questionSet.questionSetId)">
-                  <mat-icon>delete</mat-icon>
-                  <span>Izbriši</span>
-                </button>
-              </mat-menu>
-            </div>
-      </div>
-    </div>
+<div>
+  <span>
+    <button class="new-set-button" mat-stroked-button (click)="openPostQuestionSetDialog()">Novi Set</button>
+  </span>
+</div>
 
-    <div class="example-container-quiz">
-        <div class="question-sets-list">
-          {{name}}
+<mat-divider></mat-divider>
+
+<mat-accordion *ngFor="let item of quiz.questionSets">
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{item.name}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-questions [questionSetId]="item.questionSetId" [quizId]="quiz.quizId"></app-questions>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<br>
+<br>
+<br>
+
+<div *ngIf="quizIsLoaded then thenBlock"></div>
+
+<ng-template #thenBlock>
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Set Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Ime seta </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+
+
+
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button aria-label="expand row"
+          (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+          <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+          <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div class="example-element-description">
+            <app-questions [questionSetId]="element.questionSetId" [quizId]="quiz.quizId"></app-questions>
+          </div>
         </div>
-    
-        <div
-          cdkDropList
-          [cdkDropListData]="questionSetsForQuiz"
-          class="example-list-quiz"
-          (cdkDropListDropped)="drop($event)">
-          <div mat-stroked-button
-                  class="example-box" 
-                  *ngFor="let questionSet of questionSetsForQuiz" 
-                  cdkDrag>
-                    {{questionSet.name}}
-                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu">
-                      <button mat-menu-item
-                              (click)="getQuestionSetPreview(questionSet.questionSetId)">
-                        <mat-icon>remove_red_eye</mat-icon>
-                        <span>Prikaži</span>
-                      </button>
-                      <button mat-menu-item>
-                        <mat-icon>edit</mat-icon>
-                        <span>Promijeni</span>
-                      </button>
-                      <button mat-menu-item
-                              (click)="deleteQuestionSet(questionSet.questionSetId)">
-                        <mat-icon>delete</mat-icon>
-                        <span>Izbriši</span>
-                      </button>
-                    </mat-menu>
-                  </div>
-        </div>
-      </div>
-</div>
-<div class="set-preview">
-  <h1>Set preview</h1>
-</div>
-</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button>
+          <mat-icon>
+            delete
+          </mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>
+            edit
+          </mat-icon>
+        </button>
+        <a class="nav-link text-light" [routerLink]="['/quizzes', element.quizId]">
+          edit
+        </a>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+      (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+    </tr>
+    <tr matRipple mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+</ng-template>

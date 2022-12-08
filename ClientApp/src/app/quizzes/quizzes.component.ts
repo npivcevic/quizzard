@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { AddQuizComponent } from '../add-quiz/add-quiz.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -24,16 +25,19 @@ import { AddQuizComponent } from '../add-quiz/add-quiz.component';
 })
 export class QuizzesComponent implements OnInit {
 
-  constructor(private quizservice: QuizzesService,  private dialog: MatDialog ,private snack: MatSnackBar) { }
+  constructor(private router: Router,
+    private quizservice: QuizzesService,
+    private dialog: MatDialog,
+    private snack: MatSnackBar) { }
 
   quizzes!: Quiz[]
-  quizCreatorMode:boolean = false
+  quizCreatorMode: boolean = false
 
-  name!:string
-  description!:string
-  quizId!:string
+  name!: string
+  description!: string
+  quizId!: string
 
-  displayedColumns: string[] = [ 'name', 'numberOfQuestions']
+  displayedColumns: string[] = ['select', 'name', 'numberOfQuestions']
   dataSource = new MatTableDataSource<Quiz>(this.quizzes);
   selection = new SelectionModel<Quiz>(true, []);
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand', 'delete'];
@@ -45,7 +49,7 @@ export class QuizzesComponent implements OnInit {
       .subscribe(data => this.dataSource.data = data)
   }
 
-  openPostQuizDialog():void {
+  openPostQuizDialog(): void {
     const dialog = this.dialog.open(AddQuizComponent, {
       width: '90%',
     })
@@ -53,15 +57,15 @@ export class QuizzesComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
-          console.log(result)
           this.name = result.name
           this.description = result.description
           this.quizId = result.quizId
           this.quizservice.getQuizzes()
-            .subscribe()
+            .subscribe({
+            })
           this.openSnackBar("Kviz je spremljen")
+
         }
-        this.quizCreatorMode = true
       },
       error: (error) => {
         this.openSnackBar("Kviz nije spremljen")
@@ -84,11 +88,8 @@ export class QuizzesComponent implements OnInit {
     )
   }
 
-  editQuiz(quiz:Quiz){
-    this.quizCreatorMode = true
-    this.quizId = quiz.quizId
-    this.name = quiz.name
-    this.description = quiz.description
+  editQuiz(quiz: Quiz) {
+    this.router.navigate(['quizzes', quiz.quizId]);
   }
 
 
@@ -123,4 +124,3 @@ export class QuizzesComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.name + 1}`;
   }
 }
-

@@ -8,3 +8,7 @@ export interface QuestionSet {
     quizId:string,
     quiz:string
 }
+
+export interface PostQuestionSet extends Omit<QuestionSet, 'questionSetId' | "quiz"> { 
+ 
+}

@@ -10,7 +10,7 @@
        class="mat-elevation-z8">
 
     <!-- Checkbox Column -->
-    <!-- <ng-container matColumnDef="select">
+    <ng-container matColumnDef="select">
       <th  mat-header-cell *matHeaderCellDef>
         <mat-checkbox (change)="$event ? toggleAllRows() : null"
                       [checked]="selection.hasValue() && isAllSelected()"
@@ -25,7 +25,7 @@
                       [aria-label]="checkboxLabel(row)">
         </mat-checkbox>
       </td>
-    </ng-container> -->
+    </ng-container>
   
     <!-- Position Column -->
     <ng-container matColumnDef="name">
@@ -77,6 +77,10 @@
             edit
           </mat-icon>
         </button>
+        <!-- <a class="nav-link text-light" [routerLink]="['/quizzes', element.quizId]">
+      edit
+      </a> -->
+
     </td>
   </ng-container>
   
@@ -89,8 +93,8 @@
   </table>
 </div>
 
-<app-quiz-creator [name]="name" 
+<!-- <app-quiz-creator [name]="name" 
                   [description]="description" 
                   [quizId]="quizId"
                   [hidden]="!quizCreatorMode">
-</app-quiz-creator>
+</app-quiz-creator> -->

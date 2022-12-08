@@ -16,16 +16,18 @@ export class AddQuestionComponent implements OnInit {
 
   question: PostQuestion | Question = {
     text: "",
+    order:0,
     answers: [
       { text: "", isCorrect: true },
       { text: "", isCorrect: false },
       { text: "", isCorrect: false },
       { text: "", isCorrect: false }
-    ]
+    ],
+    questionSetId:this.data.questionSetId
   }
 
   ngOnInit(): void {
-    if (this.data) {
+    if (this.data.text) {
       this.isNew = false
       this.question = JSON.parse(JSON.stringify(this.data))
     }

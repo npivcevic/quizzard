@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { QuestionSet } from 'src/app/model/question-set';
 import { QuestionSetService } from 'src/app/services/question-set.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -6,25 +6,50 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddQuestionSetComponent } from '../add-question-set/add-question-set.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { QuizzesService } from '../services/quizzes.service';
+import { Quiz } from '../model/quiz';
+import { ActivatedRoute } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Subject } from 'rxjs';
+
+
 
 
 
 @Component({
   selector: 'app-quiz-creator',
   templateUrl: './quiz-creator.component.html',
-  styleUrls: ['./quiz-creator.component.css']
+  styleUrls: ['./quiz-creator.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class QuizCreatorComponent implements OnInit {
 
-  constructor(public questionsetservice: QuestionSetService, public quizservice: QuizzesService, private dialog: MatDialog, private snack: MatSnackBar) { }
-
-  @Input() name!: string
-  @Input() description!: string
-  @Input() quizId!: string
+  constructor(private questionsetservice: QuestionSetService,
+    private route: ActivatedRoute,
+    private quizservice: QuizzesService,
+    private dialog: MatDialog,
+    private snack: MatSnackBar) { }
 
   questionSets!: QuestionSet[]
   questionSetsForQuiz: QuestionSet[] = []
   questionSetPreview!: QuestionSet
+
+  quiz!: Quiz
+  quizIsLoaded: boolean = false
+  panelOpenState = false;
+
+  displayedColumns: string[] = ['select', 'name']
+  dataSource = new MatTableDataSource<QuestionSet>();
+  selection = new SelectionModel<QuestionSet>(true, []);
+  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
+  expandedElement!: QuestionSet | null;
 
 
 
@@ -34,7 +59,27 @@ export class QuizCreatorComponent implements OnInit {
         this.questionSets = data
       })
 
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id')
+      if (!id) {
+        return
+      }
+      this.quizservice.getQuiz(id)
+        .subscribe({
+          next: (data) => {
+            this.quiz = data
+            this.dataSource.data = data.questionSets
+          },
+          complete: () => {
+            this.quizIsLoaded = true
+            console.log("this is passed to quiz object", this.quiz.questionSets)
+          }
+        })
+    })
+
   }
+
+
 
   getQuestionSetPreview(questionSetId: string) {
     this.questionsetservice.getQuestionSet(questionSetId)
@@ -85,19 +130,23 @@ export class QuizCreatorComponent implements OnInit {
       .subscribe({
         complete: () => {
           if (this.checkForSetInSetsForQuiz(questionSetId)) {
-            return this.removeSetFromSetsForQuiz(questionSetId)
+            this.removeSetFromSetsForQuiz(questionSetId)
+            return this.openSnackBar("Set pitanja je izbrisan")
           }
-          return this.removeSetFromSets(questionSetId)
+          this.removeSetFromSets(questionSetId)
+          return this.openSnackBar("Set pitanja je izbrisan")
+        },
+        error: (err) => {
+          return this.openSnackBar("Set pitanja nije izbrisan")
         }
       })
   }
 
-  openPostQuestionSetDialog(): void {
+  openPutQuestionSetDialog(questionSet: QuestionSet): void {
     const dialog = this.dialog.open(AddQuestionSetComponent, {
       width: '50%',
-
+      data: questionSet
     })
-
     dialog.afterOpened().subscribe({
       next: result => {
         console.log(result)
@@ -107,7 +156,41 @@ export class QuizCreatorComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
+          if (this.checkForSetInSetsForQuiz(result.questionSetId)) {
+            console.log("pronasa san kviz u toj gupi")
+            console.log(this.questionSetsForQuiz)
+            this.questionSetsForQuiz.splice(this.questionSetsForQuiz.findIndex(x => x.questionSetId = questionSet.questionSetId), 1, result)
+            console.log(this.questionSetsForQuiz)
+
+          }
+        }
+        this.openSnackBar("Set pitanja je promijenjen")
+      }
+    })
+  }
+
+  openPostQuestionSetDialog(): void {
+    const dialog = this.dialog.open(AddQuestionSetComponent, {
+      width: '50%',
+      data: {
+        quizId: this.quiz.quizId
+      }
+
+    })
+
+    dialog.afterOpened().subscribe({
+      next: result => {
+      }
+    })
+
+    dialog.afterClosed().subscribe({
+      next: result => {
+        if (result) {
           console.log(result)
+          this.quizservice.getQuiz(result.quizId)
+            .subscribe(data => {
+              this.quiz = data
+            })
         }
       },
       error: (error) => {
@@ -132,6 +215,33 @@ export class QuizCreatorComponent implements OnInit {
       );
     }
     console.log("pitanja za kviz", this.questionSetsForQuiz)
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: QuestionSet): string {
+    if (!row) {
+
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.name + 1}`;
   }
 
 }

@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { QuestionSet } from '../model/question-set';
+import { PostQuestionSet, QuestionSet } from '../model/question-set';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,11 @@ export class QuestionSetService {
     return this.http.delete<null>(this.baseUrl + "api/QuestionSets/" + id)
   }
 
-  postQuestionSet(quiz: QuestionSet): Observable<QuestionSet> {
-    return this.http.post<QuestionSet>(this.baseUrl + "api/QuestionSets", quiz)
+  postQuestionSet(questionSet: PostQuestionSet): Observable<PostQuestionSet> {
+    return this.http.post<QuestionSet>(this.baseUrl + "api/QuestionSets", questionSet)
+  }
+
+  putQuestionSet(questionSet: QuestionSet): Observable<null> {
+    return this.http.put<null>(this.baseUrl + "api/QuestionSets/"+questionSet.questionSetId, questionSet)
   }
 }

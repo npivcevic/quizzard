@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material/material.module';
 
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 import { AppComponent } from './app.component';
@@ -62,6 +62,7 @@ import { AddQuestionSetComponent } from './add-question-set/add-question-set.com
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quizzes', component: QuizzesComponent },
+      { path: 'quizzes/:id', component: QuizCreatorComponent }
 
     ]),
     BrowserAnimationsModule

@@ -1,12 +1,12 @@
-<div class="questionSetForm">
-    <form [formGroup]="questionSetForm" >
-      <mat-form-field appearance="fill">
-        <mat-label>Ime seta</mat-label>
-        <input matInput formControlName="name">
-      </mat-form-field>
-      <br>
-      <div>
-        <button mat-raised-button color="primary" type="submit">Dodaj novi set</button>
-      </div>
-    </form>
+<div class="questionSetForm" *ngIf="isNew">
+  <form [formGroup]="postQuestionSetForm" (ngSubmit)="postQuestionSet(postQuestionSetForm.value)">
+    <mat-form-field appearance="fill">
+      <mat-label>Ime seta</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <br>
+    <div>
+      <button mat-raised-button color="primary" type="submit">Dodaj</button>
+    </div>
+  </form>
 </div>

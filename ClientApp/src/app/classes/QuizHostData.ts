@@ -52,8 +52,8 @@ export class QuizHostData {
         if (!player) {
             return
         }
-        const isCorrect = answerId === this.currentCorrectAnswer?.id
-        player.recordAnswer(answerId, this.currentQuestion.id, isCorrect)
+        const isCorrect = answerId === this.currentCorrectAnswer?.answerId
+        player.recordAnswer(answerId, this.currentQuestion.questionId, isCorrect)
     }
 
     findPlayerByConnectionId(connectionId: string): Player | undefined {
@@ -82,7 +82,7 @@ export class QuizHostData {
         let qCopy = Object.assign({}, this.currentQuestion)
         qCopy.answers = this.currentQuestion.answers.map((answer) => {
             return {
-                id: answer.id,
+                id: answer.answerId,
                 text: answer.text
             }
         })
@@ -90,13 +90,13 @@ export class QuizHostData {
     }
 
     checkAnswersAndAssignPoints() {
-        this.players.forEach((player) => player.assignPoints(this.currentQuestion.id))
+        this.players.forEach((player) => player.assignPoints(this.currentQuestion.questionId))
         this.players.sort(function (a, b) { return b.score - a.score })
     }
 
     public checkIfAllPlayerAnsweredCurrentQuestion() {
         for (let i = 0; i < this.players.length; i++) {
-            if (this.players[i].hasAnswered(this.currentQuestion.id)) {
+            if (this.players[i].hasAnswered(this.currentQuestion.questionId)) {
                 return false
             }
         }

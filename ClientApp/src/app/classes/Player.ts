@@ -4,8 +4,8 @@ import { SubmitedAnswer } from "../model/submitedAnswer"
 export class Player {
     connectionId: string = ""
     name: string = ""
-    score:number = 0
-    submitedAnswers:SubmitedAnswer[] = []
+    score: number = 0
+    submitedAnswers: SubmitedAnswer[] = []
     isActive: Boolean = true
 
     constructor(connectionId: string, name: string) {
@@ -13,7 +13,7 @@ export class Player {
         this.name = name
     }
 
-    recordAnswer (answerId: string, questionId: string, isCorrect: boolean) {
+    recordAnswer(answerId: string, questionId: string, isCorrect: boolean) {
         if (answerId === "") {
             return
         }
@@ -30,8 +30,7 @@ export class Player {
         })
     }
 
-    assignPoints(currentQuestionId: string) :void
-    {
+    assignPoints(currentQuestionId: string): void {
         let answerToCurrentQuesiton = this.getSubmittedAnswer(currentQuestionId)
         if (!answerToCurrentQuesiton) {
             return
@@ -58,11 +57,10 @@ export class Player {
         return this.submitedAnswers.some(sa => sa.questionId === questionId && sa.isCorrect)
     }
 
-    getQuizReviewBoard(questions: Question[])
-    {
+    getQuizReviewBoard(questions: Question[]) {
         return questions.map(q => {
-            const submitedAnswer = this.getSubmittedAnswer(q.id)
-            const answer = q.answers.find(a => a.id === submitedAnswer?.answerId)
+            const submitedAnswer = this.getSubmittedAnswer(q.questionId)
+            const answer = q.answers.find(a => a.answerId === submitedAnswer?.answerId)
 
             return {
                 questionText: q.text,
@@ -71,5 +69,4 @@ export class Player {
             }
         })
     }
-
 }

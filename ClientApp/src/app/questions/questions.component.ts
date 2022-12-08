@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddQuestionComponent } from '../add-question/add-question.component';
 import { Question } from '../model/question';
 import { QuestionService } from '../question.service';
+import { QuizzesComponent } from '../quizzes/quizzes.component';
+import { QuizzesService } from '../services/quizzes.service';
 
 @Component({
   selector: 'app-questions',
@@ -12,13 +15,26 @@ import { QuestionService } from '../question.service';
 })
 export class QuestionsComponent implements OnInit {
 
-  constructor(private questionservice: QuestionService, private dialog: MatDialog, private snack: MatSnackBar) { }
+  constructor(private questionservice: QuestionService, private quizservice: QuizzesService, private dialog: MatDialog, private snack: MatSnackBar) { }
+
+  @Input() questionSetId!: string
+  @Input() quizId!: string
+
 
   public questions: Question[] = []
 
+
   ngOnInit(): void {
-    this.questionservice.getQuestions()
-      .subscribe(data => this.questions = data)
+    // this.questionservice.getQuestions()
+    //   .subscribe(data => this.questions = data)
+
+    this.quizservice.getQuiz(this.quizId)
+      .subscribe(data => {
+        const x = data.questionSets.find(set => {
+          return set.questionSetId === this.questionSetId
+        })
+        this.questions = x!.questions
+      })
   }
 
   deleteQuestion(id: string, index: number): void {
@@ -44,7 +60,7 @@ export class QuestionsComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: (result) => {
         if (result) {
-          this.questions.splice(this.questions.findIndex(x => x.id == question.id), 1, result)
+          this.questions.splice(this.questions.findIndex(x => x.questionId == question.questionId), 1, result)
           this.openSnackBar("Question is updated")
         }
       },
@@ -57,7 +73,11 @@ export class QuestionsComponent implements OnInit {
 
   openPostDialog(): void {
     const dialog = this.dialog.open(AddQuestionComponent, {
-      width: '50%'
+      width: '50%',
+      data: {
+        questionSetId: this.questionSetId,
+        quizId: this.quizId
+      }
     })
 
     dialog.afterClosed().subscribe({
@@ -71,6 +91,10 @@ export class QuestionsComponent implements OnInit {
         this.openSnackBar("Something went wrong")
       }
     })
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.questions, event.previousIndex, event.currentIndex);
   }
 
   openSnackBar(message: string, duration: number = 2000): void {
