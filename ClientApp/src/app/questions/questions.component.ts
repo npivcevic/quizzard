@@ -148,6 +148,9 @@ export class QuestionsComponent implements OnInit {
 
     dialog.afterClosed().subscribe({
       next: (result)=>{
+        if(!result){
+          return
+        }
         console.log("result",result)
         result.forEach((q: Question)=>{
           this.questions.unshift(q)

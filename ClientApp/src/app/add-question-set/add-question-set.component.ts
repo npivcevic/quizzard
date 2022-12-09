@@ -24,8 +24,6 @@ export class AddQuestionSetComponent implements OnInit {
       return
     }
     this.isNew = true
-    console.log(this.data)
-    console.log("this is new set")
     this.postQuestionSetForm.patchValue({
       quizId:this.data
     })
@@ -60,7 +58,7 @@ export class AddQuestionSetComponent implements OnInit {
     this.questionsetservice.postQuestionSet(questionSet)
       .subscribe({
         next: (data)=>{
-          this.dialogRef.close(questionSet)
+          this.dialogRef.close(data)
         },
         error: (err)=>{
           console.log("error :" + err)

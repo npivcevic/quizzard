@@ -107,7 +107,6 @@ export class QuizCreatorComponent implements OnInit {
     this.quiz.questionSets.forEach((set,index)=>{
       if(questionSetId === set.questionSetId){
         this.quiz.questionSets.splice(index,1)
-        console.log(this.quiz)
       }
     })
   }
@@ -116,11 +115,6 @@ export class QuizCreatorComponent implements OnInit {
     const dialog = this.dialog.open(AddQuestionSetComponent, {
       width: '50%',
       data: questionSet
-    })
-    dialog.afterOpened().subscribe({
-      next: result => {
-        console.log(result)
-      }
     })
 
     dialog.afterClosed().subscribe({
@@ -139,15 +133,9 @@ export class QuizCreatorComponent implements OnInit {
 
     })
 
-    dialog.afterOpened().subscribe({
-      next: result => {
-      }
-    })
-
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
-          console.log("after close",result)
           this.quiz.questionSets.unshift(result)
         }
       },

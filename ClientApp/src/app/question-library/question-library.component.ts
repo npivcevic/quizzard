@@ -39,7 +39,6 @@ export class QuestionLibraryComponent implements OnInit {
   expandedElement!: Answer[] | null;
 
   ngOnInit(): void {
-    console.log("wwwe", this.questionSetId)
     this.questionservice.getQuestions()
       .subscribe({
         next: (data)=>{
