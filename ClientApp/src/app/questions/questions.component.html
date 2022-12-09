@@ -2,6 +2,9 @@
   <mat-card class="general-buttons-card" align="start">
     <button class="general-buttons" color="primary" mat-raised-button (click)="openPostDialog()">Dodaj pitanje
       broj {{questions.length+1}}</button>
+      <button class="general-buttons" color="primary" mat-raised-button (click)="openQuestionLibraryDialog()">
+        Dodaj pitanje iz baze
+      </button>
   </mat-card>
   <br>
   <div cdkDropList class="example-list" 

@@ -28,6 +28,7 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
 import { AddQuizComponent } from './add-quiz/add-quiz.component';
 import { QuizCreatorComponent } from './quiz-creator/quiz-creator.component';
 import { AddQuestionSetComponent } from './add-question-set/add-question-set.component';
+import { QuestionLibraryComponent } from './question-library/question-library.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AddQuestionSetComponent } from './add-question-set/add-question-set.com
     AddQuizComponent,
     QuizCreatorComponent,
     AddQuestionSetComponent,
+    QuestionLibraryComponent,
   ],
   imports: [
     ClipboardModule,

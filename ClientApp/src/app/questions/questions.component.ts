@@ -6,6 +6,7 @@ import { AddQuestionComponent } from '../add-question/add-question.component';
 import { Question } from '../model/question';
 import { QuestionSet } from '../model/question-set';
 import { Quiz } from '../model/quiz';
+import { QuestionLibraryComponent } from '../question-library/question-library.component';
 import { QuestionService } from '../question.service';
 import { QuizzesComponent } from '../quizzes/quizzes.component';
 import { QuizzesService } from '../services/quizzes.service';
@@ -131,7 +132,26 @@ export class QuestionsComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.openSnackBar("Something went wrong")
+        this.openSnackBar("Something went wrong") 
+      }
+    })
+  }
+
+  openQuestionLibraryDialog(){
+    const dialog = this.dialog.open(QuestionLibraryComponent, {
+      width: '90%',
+      data: {
+        questionSetId:this.questionSetId,
+        quizId: this.quizId
+      }
+    })
+
+    dialog.afterClosed().subscribe({
+      next: (result)=>{
+        console.log("result",result)
+        result.forEach((q: Question)=>{
+          this.questions.unshift(q)
+        })
       }
     })
   }
