@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddQuestionComponent } from '../add-question/add-question.component';
 import { Question } from '../model/question';
+import { QuestionSet } from '../model/question-set';
+import { Quiz } from '../model/quiz';
 import { QuestionService } from '../question.service';
 import { QuizzesComponent } from '../quizzes/quizzes.component';
 import { QuizzesService } from '../services/quizzes.service';
@@ -19,22 +21,61 @@ export class QuestionsComponent implements OnInit {
 
   @Input() questionSetId!: string
   @Input() quizId!: string
+  @Input() quiz!: Quiz
+  @Input() questionSet!: QuestionSet
 
 
   public questions: Question[] = []
+  public questionSetList: QuestionSet[] = []
 
 
   ngOnInit(): void {
-    // this.questionservice.getQuestions()
-    //   .subscribe(data => this.questions = data)
+    this.questions = this.questionSet.questions
+    this.listOfSetNamesExeptThisOne()
+  }
 
-    this.quizservice.getQuiz(this.quizId)
-      .subscribe(data => {
-        const x = data.questionSets.find(set => {
-          return set.questionSetId === this.questionSetId
-        })
-        this.questions = x!.questions
+  listOfSetNamesExeptThisOne() {
+    this.quiz.questionSets.forEach(set => {
+      if (set.questionSetId === this.questionSet.questionSetId) {
+        return
+      }
+      this.questionSetList.push(set)
+    })
+  }
+
+  moveQuestionToAnotherSet(question: Question, _questionSetId: string) {
+    this.moveQuestionToAnotherSetOnClient(question, _questionSetId)
+    this.moveQuestionToAnotherSetOnBase(question, _questionSetId)
+      .subscribe({
+        complete: () => {
+        }
       })
+  }
+
+  moveQuestionToAnotherSetOnBase(question: Question, _questionSetId: string) {
+
+    let x = Object.assign(question, {
+      questionSetId: _questionSetId
+    })
+
+    return this.questionservice.putQuestion(x)
+  }
+
+  moveQuestionToAnotherSetOnClient(question: Question, _questionSetId: string) {
+    let oldSet = this.quiz.questionSets.find(set => {
+      return set.questionSetId === question.questionSetId
+    })
+    let questionIndex = oldSet!.questions.findIndex(_question => {
+      return question.questionId === _question.questionId
+    })
+    oldSet?.questions.splice(questionIndex, 1)
+    let newSet = this.quiz.questionSets.find(set => {
+      return set.questionSetId === _questionSetId
+    })
+    let x = Object.assign(question, {
+      questionSetId: _questionSetId
+    })
+    newSet?.questions.push(x)
   }
 
   deleteQuestion(id: string, index: number): void {
@@ -76,7 +117,8 @@ export class QuestionsComponent implements OnInit {
       width: '50%',
       data: {
         questionSetId: this.questionSetId,
-        quizId: this.quizId
+        quizId: this.quizId,
+        order: this.questions.length
       }
     })
 
@@ -85,6 +127,7 @@ export class QuestionsComponent implements OnInit {
         if (result) {
           this.questions.push(result)
           this.openSnackBar("Question is added")
+          console.log(this.questions)
         }
       },
       error: (error) => {
@@ -95,6 +138,17 @@ export class QuestionsComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.questions, event.previousIndex, event.currentIndex);
+
+
+
+    this.questions.forEach((question, index) => {
+      if (question.order === index) {
+        return
+      }
+      question.order = index
+      this.questionservice.putQuestion(question)
+        .subscribe(data => console.log(data))
+    })
   }
 
   openSnackBar(message: string, duration: number = 2000): void {

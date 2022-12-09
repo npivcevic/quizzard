@@ -1,16 +1,19 @@
-<div class="add-quiz-form">
-    <form [formGroup]="addQuizForm" (ngSubmit)="saveQuiz()">
-        <mat-form-field appearance="fill">
-            <mat-label>Ime</mat-label>
-            <input matInput formControlName="name">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-            <mat-label>Opis</mat-label>
-            <textarea matInput formControlName="description"></textarea>
-        </mat-form-field>
-        <br>
-        <button mat-raised-button color="primary" type="submit">Dodaj kviz</button>
-        <button mat-raised-button color="warn" type="button" (click)="cancelAdding()">Odustani</button>
-    </form>
-</div>
+    <div class="add-quiz-form">
+        <form [formGroup]="addQuizForm" (ngSubmit)="saveQuiz()">
+            <mat-form-field appearance="fill">
+                <mat-label>Ime</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+                <mat-label>Opis</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+            <br>
+            <button mat-raised-button color="primary" type="submit">{{isNew ? "Dodaj kviz" : "Spremi"}}</button>
+            <button [hidden]="!isNew" mat-raised-button color="warn" type="button" (click)="cancelAdding()">Odustani</button>
+        </form>
+    </div>
+
+
+

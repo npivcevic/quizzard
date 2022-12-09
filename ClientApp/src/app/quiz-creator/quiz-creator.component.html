@@ -1,119 +1,36 @@
+<div class="content">
 <div>{{'Quiz ID : '+quiz.quizId}}</div>
-<div class="name-description">
-  <div class="name">
-    <mat-form-field appearance="fill">
-      <mat-label>Ime kviza</mat-label>
-      <input type="text" matInput [(ngModel)]="quiz.name">
-    </mat-form-field>
-  </div>
-  <div class="description">
-    <mat-form-field appearance="fill">
-      <mat-label>Opis kviza</mat-label>
-      <textarea type="text" matInput [(ngModel)]="quiz.description">
-                </textarea>
-    </mat-form-field>
-  </div>
-</div>
+<div>{{'Ime kviza : ' + quiz.name}}</div>
+<div>{{'Opis kviza : ' + quiz.description}}</div>
+<button mat-raised-button (click)="openPutQuizDialog()">Promijeni</button>
+
 <mat-divider></mat-divider>
 
-<div>
-  <span>
-    <button class="new-set-button" mat-stroked-button (click)="openPostQuestionSetDialog()">Novi Set</button>
-  </span>
-</div>
+<button mat-stroked-button (click)="openPostQuestionSetDialog()">Novi Set</button>
 
 <mat-divider></mat-divider>
 
 <mat-accordion *ngFor="let item of quiz.questionSets">
-  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+  <mat-expansion-panel (opened)="panelOpenState = true" 
+                      (closed)="panelOpenState = false"
+                      [expanded]="true">
 
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{item.name}}
+        <h1>{{item.order+1+'.'}} {{item.name}}</h1>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-questions [questionSetId]="item.questionSetId" [quizId]="quiz.quizId"></app-questions>
+    <app-questions [questionSet]="item" 
+                   [quiz]="quiz"
+                   [questionSetId]="item.questionSetId" 
+                   [quizId]="quiz.quizId"></app-questions>
+    <mat-action-row>
+      <button mat-icon-button
+              (click)="deleteQuestionSet(item.questionSetId)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-action-row>
   </mat-expansion-panel>
+
 </mat-accordion>
-
-<br>
-<br>
-<br>
-
-<div *ngIf="quizIsLoaded then thenBlock"></div>
-
-<ng-template #thenBlock>
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
-
-    <!-- Checkbox Column -->
-    <ng-container matColumnDef="select">
-      <th mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-        </mat-checkbox>
-      </th>
-      <td mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-          [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
-        </mat-checkbox>
-      </td>
-    </ng-container>
-
-    <!-- Set Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Ime seta </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-
-
-
-
-    <ng-container matColumnDef="expand">
-      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button aria-label="expand row"
-          (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-          <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-          <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-          <div class="example-element-description">
-            <app-questions [questionSetId]="element.questionSetId" [quizId]="quiz.quizId"></app-questions>
-          </div>
-        </div>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button>
-          <mat-icon>
-            delete
-          </mat-icon>
-        </button>
-        <button mat-icon-button>
-          <mat-icon>
-            edit
-          </mat-icon>
-        </button>
-        <a class="nav-link text-light" [routerLink]="['/quizzes', element.quizId]">
-          edit
-        </a>
-
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-      (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-    </tr>
-    <tr matRipple mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-  </table>
-</ng-template>
+</div>

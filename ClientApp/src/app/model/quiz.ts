@@ -7,3 +7,6 @@ export interface Quiz {
     numberOfQuestions:number,
     questionSets : QuestionSet[]
 }
+
+export interface PutQuiz extends Omit<Quiz, 'questionSets' | 'numberOfQuestions'> { 
+}

@@ -38,6 +38,11 @@ mat-form-field{
   display: flex;
 }
 
+.content{
+  max-width: 1320px;
+  margin: auto;
+}
+
 
 .example-container {
     width: 400px;
@@ -116,9 +121,6 @@ mat-form-field{
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
 
-
-
-  
   table {
     width: 100%;
   }

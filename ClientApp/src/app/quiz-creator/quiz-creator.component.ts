@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Subject } from 'rxjs';
+import { AddQuizComponent } from '../add-quiz/add-quiz.component';
 
 
 
@@ -37,27 +37,11 @@ export class QuizCreatorComponent implements OnInit {
     private dialog: MatDialog,
     private snack: MatSnackBar) { }
 
-  questionSets!: QuestionSet[]
-  questionSetsForQuiz: QuestionSet[] = []
-  questionSetPreview!: QuestionSet
-
   quiz!: Quiz
   quizIsLoaded: boolean = false
-  panelOpenState = false;
-
-  displayedColumns: string[] = ['select', 'name']
-  dataSource = new MatTableDataSource<QuestionSet>();
-  selection = new SelectionModel<QuestionSet>(true, []);
-  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
-  expandedElement!: QuestionSet | null;
-
-
+  panelOpenState = true;
 
   ngOnInit(): void {
-    this.questionsetservice.getQuestionSets()
-      .subscribe(data => {
-        this.questionSets = data
-      })
 
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id')
@@ -68,78 +52,64 @@ export class QuizCreatorComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.quiz = data
-            this.dataSource.data = data.questionSets
           },
           complete: () => {
             this.quizIsLoaded = true
-            console.log("this is passed to quiz object", this.quiz.questionSets)
           }
         })
     })
-
   }
 
-
-
-  getQuestionSetPreview(questionSetId: string) {
-    this.questionsetservice.getQuestionSet(questionSetId)
-      .subscribe(
-        {
-          next: result => {
-            this.questionSetPreview = result
-            console.log(result)
-          }
-        }
-      )
-  }
-
-  getQuestionSets() {
-    this.questionsetservice.getQuestionSets()
-      .subscribe({
-        next: data => {
-          this.questionSets = data
-        }
-      })
-  }
-
-  checkForSetInSetsForQuiz(questionSetId: string) {
-    return this.questionSetsForQuiz.find(questionSet => {
-      return questionSet.questionSetId === questionSetId
-    }
-    )
-  }
-
-  removeSetFromSetsForQuiz(questionSetId: string) {
-    const index = this.questionSetsForQuiz.findIndex(questionSet => {
-      return questionSet.questionSetId === questionSetId
+  openPutQuizDialog(): void {
+    const dialog = this.dialog.open(AddQuizComponent, {
+      width: '90%',
+      data: {
+        quizId: this.quiz.quizId,
+        name: this.quiz.name,
+        description: this.quiz.description
+      }
     })
 
-    this.questionSetsForQuiz.splice(index, 1)
-  }
-
-  removeSetFromSets(questionSetId: string) {
-    const index = this.questionSets.findIndex(questionSet => {
-      return questionSet.questionSetId === questionSetId
+    dialog.afterClosed().subscribe({
+      next: result => {
+        this.quizservice.getQuiz(this.quiz.quizId)
+          .subscribe({
+            next: (data) => {
+              this.quiz = data
+              // this.dataSource.data = data.questionSets
+            }
+          })
+      },
+      error: (error) => {
+        this.openSnackBar("Kviz nije spremljen")
+      }
     })
-
-    this.questionSets.splice(index, 1)
   }
 
   deleteQuestionSet(questionSetId: string) {
-    this.questionsetservice.deleteQuestionSet(questionSetId)
+    this.deleteQuestionSetOnClient(questionSetId)
+    this.deleteQuestionSetOnBase(questionSetId)
       .subscribe({
         complete: () => {
-          if (this.checkForSetInSetsForQuiz(questionSetId)) {
-            this.removeSetFromSetsForQuiz(questionSetId)
-            return this.openSnackBar("Set pitanja je izbrisan")
-          }
-          this.removeSetFromSets(questionSetId)
           return this.openSnackBar("Set pitanja je izbrisan")
         },
         error: (err) => {
           return this.openSnackBar("Set pitanja nije izbrisan")
         }
       })
+  }
+
+  deleteQuestionSetOnBase(questionSetId: string) {
+    return this.questionsetservice.deleteQuestionSet(questionSetId)
+  }
+
+  deleteQuestionSetOnClient(questionSetId: string) {
+    this.quiz.questionSets.forEach((set,index)=>{
+      if(questionSetId === set.questionSetId){
+        this.quiz.questionSets.splice(index,1)
+        console.log(this.quiz)
+      }
+    })
   }
 
   openPutQuestionSetDialog(questionSet: QuestionSet): void {
@@ -156,15 +126,8 @@ export class QuizCreatorComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
-          if (this.checkForSetInSetsForQuiz(result.questionSetId)) {
-            console.log("pronasa san kviz u toj gupi")
-            console.log(this.questionSetsForQuiz)
-            this.questionSetsForQuiz.splice(this.questionSetsForQuiz.findIndex(x => x.questionSetId = questionSet.questionSetId), 1, result)
-            console.log(this.questionSetsForQuiz)
-
-          }
+          this.openSnackBar("Set pitanja je promijenjen")
         }
-        this.openSnackBar("Set pitanja je promijenjen")
       }
     })
   }
@@ -172,9 +135,7 @@ export class QuizCreatorComponent implements OnInit {
   openPostQuestionSetDialog(): void {
     const dialog = this.dialog.open(AddQuestionSetComponent, {
       width: '50%',
-      data: {
-        quizId: this.quiz.quizId
-      }
+      data: this.quiz.quizId
 
     })
 
@@ -186,11 +147,8 @@ export class QuizCreatorComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
-          console.log(result)
-          this.quizservice.getQuiz(result.quizId)
-            .subscribe(data => {
-              this.quiz = data
-            })
+          console.log("after close",result)
+          this.quiz.questionSets.unshift(result)
         }
       },
       error: (error) => {
@@ -202,46 +160,4 @@ export class QuizCreatorComponent implements OnInit {
   openSnackBar(message: string, duration: number = 2000): void {
     this.snack.open(message, "", { duration: duration });
   }
-
-  drop(event: CdkDragDrop<QuestionSet[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-    console.log("pitanja za kviz", this.questionSetsForQuiz)
-  }
-
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-
-      return;
-    }
-
-    this.selection.select(...this.dataSource.data);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: QuestionSet): string {
-    if (!row) {
-
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.name + 1}`;
-  }
-
 }

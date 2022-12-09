@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Quiz } from '../model/quiz';
+import { PutQuiz, Quiz } from '../model/quiz';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,5 +23,9 @@ export class QuizzesService {
 
   postQuiz(quiz: Quiz): Observable<Quiz> {
     return this.http.post<Quiz>(this.baseUrl + "api/Quizzes", quiz)
+  }
+
+  putQuiz(quiz: PutQuiz): Observable<null> {
+    return this.http.put<null>(this.baseUrl + "api/Quizzes/" + quiz.quizId, quiz)
   }
 }

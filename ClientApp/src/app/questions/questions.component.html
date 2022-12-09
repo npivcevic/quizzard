@@ -1,12 +1,13 @@
 <div class="qustion-grid">
   <mat-card class="general-buttons-card" align="start">
-    <button class="general-buttons" color="primary" mat-raised-button (click)="openPostDialog()">Add Question
-      No.{{questions.length+1}}</button>
+    <button class="general-buttons" color="primary" mat-raised-button (click)="openPostDialog()">Dodaj pitanje
+      broj {{questions.length+1}}</button>
   </mat-card>
   <br>
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div cdkDropList class="example-list" 
+      (cdkDropListDropped)="drop($event)">
     <div *ngFor="let question of questions; let i = index" cdkDrag>
-      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>  
       <mat-expansion-panel>
         <mat-expansion-panel-header>
 
@@ -29,6 +30,18 @@
           <button mat-icon-button color="primary" (click)="deleteQuestion(question.questionId,i)">
             <mat-icon>delete</mat-icon>
           </button>
+          <button  mat-icon-button color="primary" [matMenuTriggerFor]="menu"><mat-icon>drive_file_move_outline</mat-icon></button>
+            <mat-menu #menu="matMenu">
+              <div>move to</div>
+              <mat-divider></mat-divider>
+              <div *ngFor="let set of questionSetList; let i = index">
+                <button mat-menu-item
+                        (click)="moveQuestionToAnotherSet(question, set.questionSetId)">
+                        {{set.name}}
+                </button>
+              </div>
+            </mat-menu>
+
         </mat-action-row>
       </mat-expansion-panel>
     </div>

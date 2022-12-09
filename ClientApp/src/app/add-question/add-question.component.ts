@@ -16,7 +16,7 @@ export class AddQuestionComponent implements OnInit {
 
   question: PostQuestion | Question = {
     text: "",
-    order:0,
+    order: this.data.order,
     answers: [
       { text: "", isCorrect: true },
       { text: "", isCorrect: false },
