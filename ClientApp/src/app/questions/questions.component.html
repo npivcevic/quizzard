@@ -1,11 +1,11 @@
 <div class="qustion-grid">
-  <mat-card class="general-buttons-card" align="start">
+  <div class="general-buttons-card" align="start">
     <button class="general-buttons" color="primary" mat-raised-button (click)="openPostDialog()">Dodaj pitanje
       broj {{questions.length+1}}</button>
       <button class="general-buttons" color="primary" mat-raised-button (click)="openQuestionLibraryDialog()">
         Dodaj pitanje iz baze
       </button>
-  </mat-card>
+  </div>
   <br>
   <div cdkDropList class="example-list" 
       (cdkDropListDropped)="drop($event)">
@@ -22,7 +22,7 @@
         <div class="answers">
           <div *ngFor="let answer of question.answers let i = index">
             <mat-card [ngStyle]="{background:answer.isCorrect===true ? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)' }">
-              {{question.answers[i].text}}
+              {{i+1+"."}}{{question.answers[i].text}}
             </mat-card>
           </div>
         </div>

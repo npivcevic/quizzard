@@ -88,6 +88,14 @@ export class QuizzesComponent implements OnInit {
     )
   }
 
+  numberOfSetsInQuiz(quizId:string){
+    
+    this.quizservice.getQuiz(quizId)
+      .subscribe(data=>{
+        return data.questionSets.length
+      })
+  }
+
   editQuiz(quiz: Quiz) {
     this.router.navigate(['quizzes', quiz.quizId]);
   }

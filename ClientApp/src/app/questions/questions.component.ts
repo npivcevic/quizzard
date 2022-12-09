@@ -18,7 +18,10 @@ import { QuizzesService } from '../services/quizzes.service';
 })
 export class QuestionsComponent implements OnInit {
 
-  constructor(private questionservice: QuestionService, private quizservice: QuizzesService, private dialog: MatDialog, private snack: MatSnackBar) { }
+  constructor(private questionservice: QuestionService, 
+              private quizservice: QuizzesService, 
+              private dialog: MatDialog, 
+              private snack: MatSnackBar) { }
 
   @Input() questionSetId!: string
   @Input() quizId!: string
@@ -83,11 +86,13 @@ export class QuestionsComponent implements OnInit {
     this.questionservice.deleteQuestion(id).subscribe({
       next: () => {
         this.questions.splice(index, 1)
-        this.openSnackBar("Question is deleted")
       },
       error: (error) => {
         console.error(error)
-        this.openSnackBar("Something went wrong")
+        this.openSnackBar("Something went wrong : " + error)
+      },
+      complete : ()=>{
+        this.openSnackBar("Question is deleted")
       }
     }
     )
@@ -103,12 +108,14 @@ export class QuestionsComponent implements OnInit {
       next: (result) => {
         if (result) {
           this.questions.splice(this.questions.findIndex(x => x.questionId == question.questionId), 1, result)
-          this.openSnackBar("Question is updated")
         }
       },
       error: (error) => {
         console.error(error)
-        this.openSnackBar("Something went wrong")
+        this.openSnackBar("Something went wrong : " + error)
+      },
+      complete:()=>{
+        this.openSnackBar("Question is updated")
       }
     })
   }
@@ -127,23 +134,21 @@ export class QuestionsComponent implements OnInit {
       next: result => {
         if (result) {
           this.questions.push(result)
-          this.openSnackBar("Question is added")
-          console.log(this.questions)
         }
       },
       error: (error) => {
-        this.openSnackBar("Something went wrong") 
-      }
+        this.openSnackBar("Something went wrong : " + error) 
+      },
+      complete:()=>{          
+        this.openSnackBar("Question is added")
+    }
     })
   }
 
   openQuestionLibraryDialog(){
     const dialog = this.dialog.open(QuestionLibraryComponent, {
       width: '90%',
-      data: {
-        questionSetId:this.questionSetId,
-        quizId: this.quizId
-      }
+      data: this.questionSet
     })
 
     dialog.afterClosed().subscribe({
@@ -151,10 +156,13 @@ export class QuestionsComponent implements OnInit {
         if(!result){
           return
         }
-        console.log("result",result)
         result.forEach((q: Question)=>{
-          this.questions.unshift(q)
+          this.questions.push(q)
         })
+        this.openSnackBar("Question is added")
+      },
+      error: (error) => {
+        this.openSnackBar("Something went wrong : " + error) 
       }
     })
   }
@@ -162,14 +170,15 @@ export class QuestionsComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.questions, event.previousIndex, event.currentIndex);
 
-
-
     this.questions.forEach((question, index) => {
       if (question.order === index) {
         return
       }
-      question.order = index
-      this.questionservice.putQuestion(question)
+      let x = Object.assign(question,{
+        order : index
+      })
+      console.log(x)
+      this.questionservice.putQuestion(x)
         .subscribe(data => console.log(data))
     })
   }

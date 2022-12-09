@@ -13,11 +13,12 @@
 <mat-accordion *ngFor="let item of quiz.questionSets">
   <mat-expansion-panel (opened)="panelOpenState = true" 
                       (closed)="panelOpenState = false"
-                      [expanded]="true">
+                      [expanded]="true"
+                      class="quiz-exp-panel">
 
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <h1>{{item.order+1+'.'}} {{item.name}}</h1>
+        <h1>{{questionSetOrder(item.questionSetId)+1+'.'}} {{item.name}}</h1>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <app-questions [questionSet]="item" 

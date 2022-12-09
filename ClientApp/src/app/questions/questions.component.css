@@ -1,6 +1,7 @@
 mat-card{
     width: 100%;
     background: rgba(255, 235, 205, 0.39);
+    text-align: center;
 }
 
 mat-expansion-panel{
@@ -20,7 +21,7 @@ mat-expansion-panel{
 
 .answers{
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     justify-content: center;
 }
 

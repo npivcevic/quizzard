@@ -60,6 +60,12 @@ export class QuizCreatorComponent implements OnInit {
     })
   }
 
+  questionSetOrder(_questionSetId:string){
+    return this.quiz.questionSets.findIndex(set=>{
+      return set.questionSetId === _questionSetId
+    })
+  }
+
   openPutQuizDialog(): void {
     const dialog = this.dialog.open(AddQuizComponent, {
       width: '90%',

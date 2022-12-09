@@ -6,6 +6,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Answer } from '../model/answer';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class QuestionLibraryComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private questionservice: QuestionService, 
-              private dialogRef: MatDialogRef<QuestionLibraryComponent>) { }
+              private dialogRef: MatDialogRef<QuestionLibraryComponent>,
+              private snack: MatSnackBar) { }
 
   @Input() questionSetId:string = this.data.questionSetId
   @Input() quizId:string = this.data.quizId
@@ -51,6 +53,7 @@ export class QuestionLibraryComponent implements OnInit {
           })
         },
       })
+      console.log(this.data.questions.length)
   }
 
   checkbox(el:Question){
@@ -68,19 +71,32 @@ export class QuestionLibraryComponent implements OnInit {
   }
 
   addQuestionsToQuestionSet(questionSetId:string){
+    let _order = this.data.questions.length
+    let _questions:Question[] = []
     this.selected.forEach(q=>{
-      let x = Object.assign(q,{
-        questionSetId: questionSetId
+      let question = Object.assign(q,{
+        questionSetId: questionSetId,
+        order: _order
       })
-      console.log(x)
-      this.questionservice.putQuestion(x)
+      _questions.push(question)
+      this.questionservice.putQuestion(question)
         .subscribe({
           next:()=>{
-            this.dialogRef.close(this.selected)
-          }
+            this.dialogRef.close(_questions)
+          },
+          error: (error)=>{
+            this.openSnackBar("Question is not deleted : " + error)
+          },
+          complete:()=> {
+            this.openSnackBar("Question is deleted")
+          },
         }
         )
     })
+  }
+
+  openSnackBar(message: string, duration: number = 2000): void {
+    this.snack.open(message, "", { duration: duration });
   }
 
   isAllSelected() {
