@@ -26,7 +26,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     MoveToNextQuestionWhenAllPlayersAnswered : this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
-  constructor(public quizHostService: QuizHostService, public navbarservice: NavBarService, public fb: FormBuilder) { }
+  constructor(public quizHostService: QuizHostService, 
+              public navbarservice: NavBarService, 
+              public fb: FormBuilder,
+              private _formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.navbarservice.visible = false
@@ -35,6 +38,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       next: (data) => this.quizStateChanged(data)
     })
   }
+  
+  secondFormGroup = this._formBuilder.group({
+    secondCtrl: ['', Validators.required],
+  });
 
   ngOnDestroy(): void {
     this.navbarservice.visible = true

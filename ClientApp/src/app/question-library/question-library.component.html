@@ -5,7 +5,8 @@
 <div class="example-table-container">
 <table mat-table [dataSource]="dataSource"
        multiTemplateDataRows 
-       class="mat-elevation-z8">
+       class="mat-elevation-z8"
+       #table>
 
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
@@ -58,7 +59,7 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
         <button mat-icon-button 
-                >
+                (click)="deleteQuestion(element.questionId)">
             <mat-icon>
                 delete
             </mat-icon>

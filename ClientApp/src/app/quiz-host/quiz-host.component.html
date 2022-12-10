@@ -53,7 +53,7 @@
             <div *ngIf="isIdle(); then startQuizButtonBlock"></div>
 
             <ng-template [formGroup]="quizSetup" #startQuizButtonBlock>
-                <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
                     <mat-label>Broj pitanja</mat-label>
                     <input matInput formControlName="numberOfQuestions" type="number">
                 </mat-form-field>
@@ -76,7 +76,59 @@
                 <div style="text-align: center;">
                     <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-raised-button
                         [disabled]="!quizSetup.valid">Pokreni Kviz</button>
-                </div>
+                </div> -->
+
+                <mat-stepper headerPosition="bottom" [linear]="true" #stepper>
+                    <mat-step [stepControl]="secondFormGroup">
+                      <form [formGroup]="secondFormGroup">
+                        <ng-template matStepLabel>Odaberi kviz</ng-template>
+                        <mat-form-field>
+                          <input matInput placeholder="Address" formControlName="secondCtrl" required>
+                        </mat-form-field>
+                        <div>
+                          <button mat-button matStepperPrevious>Back</button>
+                          <button mat-button matStepperNext>Next</button>
+                        </div>
+                      </form>
+                    </mat-step>
+                    <mat-step [stepControl]="quizSetup">
+                        <ng-template matStepLabel>Postavke kviza</ng-template>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Broj pitanja</mat-label>
+                            <input matInput formControlName="numberOfQuestions" type="number">
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Vrijeme za odgovor</mat-label>
+                            <input matInput formControlName="totalTimePerQuestion" type="number">
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Vrijeme između pitanja</mat-label>
+                            <input matInput formControlName="nextQuestionDelay" type="number">
+                        </mat-form-field>
+                        <br>
+                        <mat-checkbox formControlName="MoveToNextQuestionWhenAllPlayersAnswered">Slijedeće pitanje kad svi
+                            igraci odgovore</mat-checkbox>
+                        <br>
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                          </div>
+                    </mat-step>
+                    <mat-step>
+                      <ng-template matStepLabel>Igraj</ng-template>
+                      You are now done.
+                      <div>
+                        <div style="text-align: center;">
+                            <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-raised-button
+                                [disabled]="!quizSetup.valid">Pokreni Kviz</button>
+                        </div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button (click)="stepper.reset()">Reset</button>
+                      </div>
+                    </mat-step>
+                  </mat-stepper>
             </ng-template>
 
             

@@ -95,6 +95,7 @@ namespace quizzard.Controllers
             dbQuestion.Text = question.Text;
             dbQuestion.Answers = question.Answers;
             dbQuestion.QuestionSetId = question.QuestionSetId;
+            dbQuestion.Order = question.Order;
 
             try
             {

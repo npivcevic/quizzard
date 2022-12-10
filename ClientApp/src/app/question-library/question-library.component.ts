@@ -1,9 +1,9 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { QuestionService } from '../question.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Question } from '../model/question';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Answer } from '../model/answer';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -30,6 +30,7 @@ export class QuestionLibraryComponent implements OnInit {
 
   @Input() questionSetId:string = this.data.questionSetId
   @Input() quizId:string = this.data.quizId
+  @ViewChild(MatTable) table!: MatTable<any>;
 
   public questions:Question[] = []
   public selected : Question[] = []
@@ -53,7 +54,6 @@ export class QuestionLibraryComponent implements OnInit {
           })
         },
       })
-      console.log(this.data.questions.length)
   }
 
   checkbox(el:Question){
@@ -68,6 +68,10 @@ export class QuestionLibraryComponent implements OnInit {
       return
     }
     this.selected.unshift(el)
+  }
+
+  checkAll(){
+    console.log("sad")
   }
 
   addQuestionsToQuestionSet(questionSetId:string){
@@ -95,6 +99,28 @@ export class QuestionLibraryComponent implements OnInit {
     })
   }
 
+  deleteQuestion(_questionId: string): void {
+    let index = this.questions.findIndex(q=>{
+      return q.questionId === _questionId
+    })
+    console.log(index)
+    this.questionservice.deleteQuestion(_questionId).subscribe({
+      next: () => {
+        this.dataSource.data.splice(index, 1)
+        this.table.renderRows()
+      },
+      error: (error) => {
+        console.error(error)
+        this.openSnackBar("Something went wrong : " + error)
+      },
+      complete : ()=>{
+        this.openSnackBar("Question is deleted")
+        this.dataSource.data.splice(index, 1)
+      }
+    }
+    )
+  }
+
   openSnackBar(message: string, duration: number = 2000): void {
     this.snack.open(message, "", { duration: duration });
   }
@@ -110,10 +136,15 @@ export class QuestionLibraryComponent implements OnInit {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
-
+      this.selected = []
+      console.log(this.selected)
       return;
     }
     this.selection.select(...this.dataSource.data);
+    this.selected = this.questions
+
+    console.log(this.selected)
+
   }
 
   /** The label for the checkbox on the passed row */
