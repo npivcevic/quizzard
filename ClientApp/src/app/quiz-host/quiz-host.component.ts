@@ -3,15 +3,29 @@ import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
 import { QuizState } from '../classes/QuizHostData';
 import { Player } from '../classes/Player';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuizSettings } from '../model/QuizSettings';
 import { letterFromIndex } from '../utils/letterFromIndex';
+import { Quiz } from '../model/quiz';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
+import { QuizzesService } from '../services/quizzes.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { QuestionSetService } from '../services/question-set.service';
+
 
 
 @Component({
   selector: 'app-quiz-host',
   templateUrl: './quiz-host.component.html',
-  styleUrls: ['./quiz-host.component.css']
+  styleUrls: ['./quiz-host.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class QuizHostComponent implements OnInit, OnDestroy {
 
@@ -19,17 +33,32 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   currentSpinnerText!: string
   quizSettings: QuizSettings = new QuizSettings()
 
+  quizzes!: Quiz[]
+  quizId!: string
+
+  displayedColumns: string[] = ['select', 'name', 'numberOfQuestions']
+  dataSource = new MatTableDataSource<Quiz>(this.quizzes);
+  selection = new SelectionModel<Quiz>(true, []);
+  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
+  expandedElement!: Quiz | null;
+
   quizSetup = this.fb.group({
     numberOfQuestions: this.fb.control(this.quizSettings.numberOfQuestions, [Validators.required, Validators.min(1)]),
     totalTimePerQuestion: this.fb.control(this.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
     nextQuestionDelay: this.fb.control(this.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
-    MoveToNextQuestionWhenAllPlayersAnswered : this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
+    MoveToNextQuestionWhenAllPlayersAnswered: this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
-  constructor(public quizHostService: QuizHostService, 
-              public navbarservice: NavBarService, 
-              public fb: FormBuilder,
-              private _formBuilder: FormBuilder) { }
+  quiz = this.fb.group({
+    quizId: this.fb.control(this.quizId, [Validators.required]),
+    randomQuestions: this.fb.control(false)
+  })
+
+  constructor(public quizHostService: QuizHostService,
+              private quizservice: QuizzesService,
+              private questionsetservice: QuestionSetService,
+              public navbarservice: NavBarService,
+              public fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.navbarservice.visible = false
@@ -37,14 +66,43 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.quizHostService.quizData.quizState.subscribe({
       next: (data) => this.quizStateChanged(data)
     })
+    this.quizservice.getQuizzes()
+      .subscribe(data => this.dataSource.data = data)
   }
-  
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
 
   ngOnDestroy(): void {
     this.navbarservice.visible = true
+  }
+
+  setQuizId(quizId: string) {
+    if (this.quizId === quizId) {
+      this.quiz.patchValue({
+        quizId: ""
+      })
+      this.quizId = ""
+      return
+    }
+    this.quiz.patchValue({
+      quizId: quizId
+    })
+    this.quizId = quizId
+    this.selection.clear()
+  }
+
+  resetStepper() {
+    this.selection.clear()
+    this.quizId = ""
+    this.quiz.patchValue({
+      quizId: ""
+    })
+  }
+
+  questionSetName(questionSetId:string)
+  {
+    this.questionsetservice.getQuestionSet(questionSetId)
+      .subscribe(data => {
+        return data.name
+      })
   }
 
   startQuiz() {
@@ -56,7 +114,8 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.quizSettings.totalTimePerQuestion = this.quizSetup.value.totalTimePerQuestion! * 1000
     this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = this.quizSetup.value.MoveToNextQuestionWhenAllPlayersAnswered!
 
-    this.quizHostService.startQuiz(this.quizSettings)
+    this.quizHostService.startQuiz_(this.quizSettings, this.quizId)
+    this.selection.clear();
 
     this.currentSpinnerText = "Preostalo vrijeme"
     this.currentSpinnerTimeout = this.quizSettings.totalTimePerQuestion
@@ -117,5 +176,32 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   getLetter(n: number) {
     return letterFromIndex(n)
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: Quiz): string {
+    if (!row) {
+
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.name + 1}`;
   }
 }

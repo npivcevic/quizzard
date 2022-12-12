@@ -2,14 +2,20 @@ import { BehaviorSubject, Subject } from "rxjs";
 import { Player } from "../classes/Player";
 import { Answer } from "../model/answer";
 import { Question } from "../model/question";
+import { QuestionSet } from "../model/question-set";
+import { Quiz } from "../model/quiz";
 
 export class QuizHostData {
 
     groupName: string = ""
     players: Player[] = []
+    quiz!: Quiz
+    questionSets: QuestionSet[] = []
+    currentQuestionSet!: QuestionSet
+    currentQuestionSetIndex: number = 0
     questions: Question[] = []
     quizState: BehaviorSubject<QuizState> = new BehaviorSubject<QuizState>(QuizState.Idle)
-    currentQuestionIndex:number = -1;
+    currentQuestionIndex: number = -1;
     currentQuestion!: Question
     currentCorrectAnswer!: Answer | undefined
     copyedToCLipboard: boolean = false
