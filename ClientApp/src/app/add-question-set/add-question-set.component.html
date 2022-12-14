@@ -10,3 +10,17 @@
     </div>
   </form>
 </div>
+
+<div class="questionSetForm" *ngIf="!isNew">
+  <form [formGroup]="questionSetForm" (ngSubmit)="putQuestionSet(questionSetForm.value)">
+    <mat-form-field appearance="fill">
+      <mat-label>Ime seta</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <br>
+    <div>
+      <button mat-raised-button color="primary" type="submit">Dodaj</button>
+    </div>
+  </form>
+</div>
+

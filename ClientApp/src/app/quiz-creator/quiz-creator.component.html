@@ -27,6 +27,10 @@
                    [quizId]="quiz.quizId"></app-questions>
     <mat-action-row>
       <button mat-icon-button
+              (click)="openPutQuestionSetDialog(item)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button
               (click)="deleteQuestionSet(item.questionSetId)">
         <mat-icon>delete</mat-icon>
       </button>

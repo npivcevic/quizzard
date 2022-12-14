@@ -13,14 +13,17 @@ import { Quiz } from '../model/quiz';
 })
 export class AddQuestionSetComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Quiz, public fb: FormBuilder, private questionsetservice: QuestionSetService, private dialogRef: MatDialogRef<AddQuestionSetComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: QuestionSet, 
+              public fb: FormBuilder, 
+              private questionsetservice: QuestionSetService, 
+              private dialogRef: MatDialogRef<AddQuestionSetComponent>) { }
 
   isNew!: boolean
 
   ngOnInit(): void {
     if (this.data.name) {
       this.isNew = false
-      this.questionSetForm.setValue(this.questionSet)
+      this.questionSetForm.patchValue(this.data)
       return
     }
     this.isNew = true

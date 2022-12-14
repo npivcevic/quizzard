@@ -1,20 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionSet } from 'src/app/model/question-set';
 import { QuestionSetService } from 'src/app/services/question-set.service';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { AddQuestionSetComponent } from '../add-question-set/add-question-set.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { QuizzesService } from '../services/quizzes.service';
 import { Quiz } from '../model/quiz';
 import { ActivatedRoute } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AddQuizComponent } from '../add-quiz/add-quiz.component';
-
-
-
 
 
 @Component({
@@ -32,10 +26,10 @@ import { AddQuizComponent } from '../add-quiz/add-quiz.component';
 export class QuizCreatorComponent implements OnInit {
 
   constructor(private questionsetservice: QuestionSetService,
-    private route: ActivatedRoute,
-    private quizservice: QuizzesService,
-    private dialog: MatDialog,
-    private snack: MatSnackBar) { }
+              private route: ActivatedRoute,
+              private quizservice: QuizzesService,
+              private dialog: MatDialog,
+              private snack: MatSnackBar) { }
 
   quiz!: Quiz
   quizIsLoaded: boolean = false
@@ -82,7 +76,6 @@ export class QuizCreatorComponent implements OnInit {
           .subscribe({
             next: (data) => {
               this.quiz = data
-              // this.dataSource.data = data.questionSets
             }
           })
       },
@@ -126,6 +119,12 @@ export class QuizCreatorComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
+          this.quiz.questionSets.forEach(set => {
+            if(set.questionSetId === result.questionSetId){
+              set.name = result.name
+              return
+            }
+          });
           this.openSnackBar("Set pitanja je promijenjen")
         }
       }
@@ -142,7 +141,7 @@ export class QuizCreatorComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: result => {
         if (result) {
-          this.quiz.questionSets.unshift(result)
+          this.quiz.questionSets.push(result)
         }
       },
       error: (error) => {

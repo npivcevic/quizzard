@@ -1,12 +1,13 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { QuestionService } from '../question.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Question } from '../model/question';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Answer } from '../model/answer';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddQuestionComponent } from '../add-question/add-question.component';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class QuestionLibraryComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private questionservice: QuestionService, 
               private dialogRef: MatDialogRef<QuestionLibraryComponent>,
-              private snack: MatSnackBar) { }
+              private snack: MatSnackBar,
+              private dialog: MatDialog) { }
 
   @Input() questionSetId:string = this.data.questionSetId
   @Input() quizId:string = this.data.quizId
@@ -70,8 +72,27 @@ export class QuestionLibraryComponent implements OnInit {
     this.selected.unshift(el)
   }
 
-  checkAll(){
-    console.log("sad")
+  openPutDialog(question: Question): void {
+    const dialog = this.dialog.open(AddQuestionComponent, {
+      data: question,
+      width: '50%'
+    })
+
+    dialog.afterClosed().subscribe({
+      next: (result) => {
+        if (result) {
+          this.questions.splice(this.questions.findIndex(x => x.questionId == question.questionId), 1, result)
+          this.table.renderRows()
+        }
+      },
+      error: (error) => {
+        console.error(error)
+        this.openSnackBar("Something went wrong : " + error)
+      },
+      complete:()=>{
+        this.openSnackBar("Question is updated")
+      }
+    })
   }
 
   addQuestionsToQuestionSet(questionSetId:string){
