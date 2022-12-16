@@ -70,6 +70,10 @@ export class QuizHostData {
         return this.currentQuestionIndex + 1 >= this.questions.length
     }
 
+    isLastQuestionSet() {
+        return this.currentQuestionSetIndex + 1 >= this.quiz.questionSets.length
+    }
+
     nextQuestion() {
         this.currentQuestionIndex++
         this.currentQuestion = this.createCurrentQuestion()
