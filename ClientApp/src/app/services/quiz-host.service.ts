@@ -50,7 +50,14 @@ export class QuizHostService {
   }
 
   nextQuestion() {
-    if (this.quizData.isLastQuestion()) {
+    if (this.quizData.isLastQuestion() && !this.quizData.isLastQuestionSet()) {
+      this.quizData.nextQuestionSet()
+      this.quizData.nextQuestion()
+      this.sendQuestiontoGroup()
+      return
+    }
+
+    if (this.quizData.isLastQuestion() && this.quizData.isLastQuestionSet()) {
       this.quizEnd()
       return
     }

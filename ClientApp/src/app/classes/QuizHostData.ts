@@ -81,6 +81,13 @@ export class QuizHostData {
         this.quizState.next(QuizState.QuestionShowing)
     }
 
+    nextQuestionSet(){
+        this.currentQuestionSetIndex++
+        this.currentQuestionIndex = -1
+        this.currentQuestionSet = this.quiz.questionSets[this.currentQuestionSetIndex]
+        this.questions = this.quiz.questionSets[this.currentQuestionSetIndex].questions
+    }
+
     createCurrentQuestion() {
         let qCopy = Object.assign({}, this.questions[this.currentQuestionIndex])
         qCopy.answers = this.questions[this.currentQuestionIndex].answers.map((answer) => answer)

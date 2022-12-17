@@ -1,6 +1,11 @@
 table {
     width: 100%;
   }
+
+  .content{
+    max-width: 1320px;
+    margin: auto;
+  }
   
   tr.example-detail-row {
     height: 0;
