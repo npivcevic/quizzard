@@ -16,16 +16,21 @@ mat-form-field{
 
 .quiz-exp-panel{
   margin: 10px 0;
+  border: solid;
+  border-color:#0a1d36;
 }
 
-.new-set-button{
-    width: 100%;
-    color: whitesmoke;
-    background-color: #0a1d36;
-    border-color: #f4ce26 !important;
-    border-style:solid ; 
-    border-width: 3px;
-    font-size: 20px; 
+.icon-button{
+  padding-bottom: 35px;
+}
+
+button{
+  color: whitesmoke;
+  background-color: #0a1d36;
+  border-color: #f4ce26 !important;
+  border-style:solid ; 
+  border-width: 3px;
+  font-size: 30px; 
 }
 
 .question-sets-list{

@@ -28,7 +28,8 @@ export class AddQuestionSetComponent implements OnInit {
     }
     this.isNew = true
     this.postQuestionSetForm.patchValue({
-      quizId:this.data
+      quizId:this.data.quizId,
+      order:this.data.order
     })
   }
 
@@ -58,6 +59,7 @@ export class AddQuestionSetComponent implements OnInit {
 
 
   postQuestionSet(questionSet: PostQuestionSet): void {
+    console.log(questionSet)
     this.questionsetservice.postQuestionSet(questionSet)
       .subscribe({
         next: (data)=>{

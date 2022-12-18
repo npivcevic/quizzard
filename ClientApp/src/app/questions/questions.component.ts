@@ -39,6 +39,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   listOfSetNamesExeptThisOne() {
+    this.questionSetList = []
     this.quiz.questionSets.forEach(set => {
       if (set.questionSetId === this.questionSet.questionSetId) {
         return
@@ -177,7 +178,6 @@ export class QuestionsComponent implements OnInit {
       let x = Object.assign(question,{
         order : index
       })
-      console.log(x)
       this.questionservice.putQuestion(x)
         .subscribe(data => console.log(data))
     })

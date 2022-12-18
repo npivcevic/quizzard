@@ -1,12 +1,11 @@
-mat-card{
-    width: 100%;
-    background: rgba(255, 235, 205, 0.39);
-    text-align: center;
+mat-expansion-panel{
+    /* background: rgba(255, 235, 205, 0.39); */
+    border: solid;
+    border-color: gainsboro;
 }
 
-mat-expansion-panel{
-    background: rgba(255, 235, 205, 0.39);
-    margin: 10px 0;
+.icon-button{
+  padding-bottom: 35px;
 }
 
 .general-buttons-card{
@@ -17,6 +16,15 @@ mat-expansion-panel{
 .general-buttons{
     flex-grow:1;
     margin: 0 20px;
+}
+
+button{
+  color: whitesmoke;
+  background-color: #0a1d36;
+  border-color: #f4ce26 !important;
+  border-style:solid ; 
+  border-width: 3px;
+  font-size: 30px; 
 }
 
 .answers{

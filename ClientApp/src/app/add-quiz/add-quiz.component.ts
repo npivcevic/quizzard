@@ -26,7 +26,7 @@ export class AddQuizComponent implements OnInit {
 
   defaultQuestionSet: PostQuestionSet = {
     name: "My First Question Set",
-    order: 1,
+    order: 0,
     questions: [],
     quizId: ""
   }

@@ -60,6 +60,34 @@ export class QuizCreatorComponent implements OnInit {
     })
   }
 
+  reorderQuestionSetsOnBack(){
+    this.quiz.questionSets.forEach((set,index)=>{
+      let qSet = Object.assign(set,{
+        order:index
+      })
+      this.questionsetservice.putQuestionSet(qSet)
+      .subscribe()
+    })
+  }
+
+  moveQuestionSetUp(questionset:QuestionSet){
+    this.quiz.questionSets.forEach((set,index)=>{
+      if(questionset.questionSetId === set.questionSetId){
+        this.quiz.questionSets.splice(index,1)
+        this.quiz.questionSets.splice(index-1,0,set)
+        this.reorderQuestionSetsOnBack()
+        return
+      }
+    })
+  }
+
+  moveQuestionSetDown(questionset:QuestionSet, index:number){
+    this.quiz.questionSets.splice(index,1)
+    this.quiz.questionSets.splice(index+1,0,questionset)
+    this.reorderQuestionSetsOnBack()
+  }
+
+
   openPutQuizDialog(): void {
     const dialog = this.dialog.open(AddQuizComponent, {
       width: '90%',
@@ -89,6 +117,9 @@ export class QuizCreatorComponent implements OnInit {
     this.deleteQuestionSetOnClient(questionSetId)
     this.deleteQuestionSetOnBase(questionSetId)
       .subscribe({
+        next: ()=>{
+          this.reorderQuestionSetsOnBack()
+        },
         complete: () => {
           return this.openSnackBar("Set pitanja je izbrisan")
         },
@@ -134,7 +165,10 @@ export class QuizCreatorComponent implements OnInit {
   openPostQuestionSetDialog(): void {
     const dialog = this.dialog.open(AddQuestionSetComponent, {
       width: '50%',
-      data: this.quiz.quizId
+      data : {
+        quizId:this.quiz.quizId,
+        order:this.quiz.questionSets.length
+      }
 
     })
 

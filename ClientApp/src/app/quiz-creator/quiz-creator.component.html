@@ -1,7 +1,11 @@
-<div class="content">
-<div>{{'Quiz ID : '+quiz.quizId}}</div>
-<div>{{'Ime kviza : ' + quiz.name}}</div>
-<div>{{'Opis kviza : ' + quiz.description}}</div>
+<div class="content" *ngIf="this.quiz">
+<div>
+  {{'Quiz ID : '+quiz.quizId}}
+  <br>
+  {{'Ime kviza : ' + quiz.name}}
+  <br>
+  {{'Opis kviza : ' + quiz.description}}
+</div>
 <button mat-stroked-button (click)="openPutQuizDialog()">Promijeni</button>
 
 <mat-divider></mat-divider>
@@ -10,7 +14,7 @@
 
 <mat-divider></mat-divider>
 
-<mat-accordion *ngFor="let item of quiz.questionSets">
+<mat-accordion *ngFor="let item of quiz.questionSets; index as i">
   <mat-expansion-panel (opened)="panelOpenState = true" 
                       (closed)="panelOpenState = false"
                       [expanded]="true"
@@ -28,11 +32,23 @@
     <mat-action-row>
       <button mat-icon-button
               (click)="openPutQuestionSetDialog(item)">
-        <mat-icon>edit</mat-icon>
+        <mat-icon class="icon-button" >edit</mat-icon>
       </button>
       <button mat-icon-button
               (click)="deleteQuestionSet(item.questionSetId)">
-        <mat-icon>delete</mat-icon>
+        <mat-icon class="icon-button" >delete</mat-icon>
+      </button>
+      <button *ngIf="i!==quiz.questionSets.length-1"
+              mat-icon-button
+              (click)="moveQuestionSetDown(item,i)"
+              >
+        <mat-icon class="icon-button">arrow_downward</mat-icon>
+      </button>
+      <button [hidden]="i===0"  
+              mat-icon-button
+              (click)="moveQuestionSetUp(item)"
+              >
+        <mat-icon class="icon-button" >arrow_upward</mat-icon>
       </button>
     </mat-action-row>
   </mat-expansion-panel>
