@@ -29,7 +29,7 @@
           <button  mat-icon-button (click)="openPutDialog(question)">
             <mat-icon class="icon-button">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteQuestion(question.questionId,i)">
+          <button mat-icon-button (click)="deleteQuestionFromSet(question,i)">
             <mat-icon class="icon-button">delete</mat-icon>
           </button>
           <button mat-icon-button (click)="listOfSetNamesExeptThisOne()" [matMenuTriggerFor]="menu">

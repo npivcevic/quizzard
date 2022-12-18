@@ -19,7 +19,6 @@ import { QuizzesService } from '../services/quizzes.service';
 export class QuestionsComponent implements OnInit {
 
   constructor(private questionservice: QuestionService, 
-              private quizservice: QuizzesService, 
               private dialog: MatDialog, 
               private snack: MatSnackBar) { }
 
@@ -83,17 +82,37 @@ export class QuestionsComponent implements OnInit {
     newSet?.questions.push(x)
   }
 
-  deleteQuestion(id: string, index: number): void {
-    this.questionservice.deleteQuestion(id).subscribe({
+  // deleteQuestion(id: string, index: number): void {
+  //   this.questionservice.deleteQuestion(id).subscribe({
+  //     next: () => {
+  //       this.questions.splice(index, 1)
+  //     },
+  //     error: (error) => {
+  //       console.error(error)
+  //       this.openSnackBar("Something went wrong : " + error)
+  //     },
+  //     complete : ()=>{
+  //       this.openSnackBar("Question is deleted")
+  //     }
+  //   }
+  //   )
+  // }
+
+  deleteQuestionFromSet(question: Question, index: number): void {
+
+    let questionCopy = Object.assign(question,{
+      questionSetId:null
+    })
+    this.questionservice.putQuestion(questionCopy).subscribe({
       next: () => {
         this.questions.splice(index, 1)
       },
       error: (error) => {
         console.error(error)
-        this.openSnackBar("Something went wrong : " + error)
+        this.openSnackBar("Pitanje nije izbrisano iz seta : " + error)
       },
       complete : ()=>{
-        this.openSnackBar("Question is deleted")
+        this.openSnackBar("Pitanje je izbrisano iz seta")
       }
     }
     )
@@ -113,10 +132,10 @@ export class QuestionsComponent implements OnInit {
       },
       error: (error) => {
         console.error(error)
-        this.openSnackBar("Something went wrong : " + error)
+        this.openSnackBar("Pitanje nije promijenjeno : " + error)
       },
       complete:()=>{
-        this.openSnackBar("Question is updated")
+        this.openSnackBar("Pitanje je promijenjeno")
       }
     })
   }
@@ -138,10 +157,10 @@ export class QuestionsComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.openSnackBar("Something went wrong : " + error) 
+        this.openSnackBar("PitNje nije dodano : " + error) 
       },
       complete:()=>{          
-        this.openSnackBar("Question is added")
+        this.openSnackBar("Pitanje je dodano")
     }
     })
   }
