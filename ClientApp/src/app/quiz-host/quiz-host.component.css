@@ -133,6 +133,10 @@ button{
     font-size: 30px; 
 }
 
+.icon-button{
+    padding-bottom: 35px;
+  }
+
 .active-player-card {
     display: flex;
 }

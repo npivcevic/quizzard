@@ -79,7 +79,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   openQuizSettingsDialog(){
     const dialog = this.dialog.open(QuizSettingsComponent,{
-      width:"50%",
+      width:"20%",
     })
 
     dialog.afterClosed()

@@ -36,10 +36,9 @@
             <mat-icon class="icon-button">drive_file_move_outline</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <div>move to</div>
-            <mat-divider></mat-divider>
+            <span>Premjesti u:</span>
             <div *ngFor="let set of questionSetList; let i = index">
-              <button mat-menu-item (click)="moveQuestionToAnotherSet(question, set.questionSetId)">
+              <button class="menu-item" mat-menu-item (click)="moveQuestionToAnotherSet(question, set.questionSetId)">
                 {{set.name}}
               </button>
             </div>

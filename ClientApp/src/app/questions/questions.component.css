@@ -8,6 +8,10 @@ mat-expansion-panel{
   padding-bottom: 35px;
 }
 
+.menu-item:hover{
+  background:#0a1d36;
+}
+
 .general-buttons-card{
     display: flex;
     justify-content: center;

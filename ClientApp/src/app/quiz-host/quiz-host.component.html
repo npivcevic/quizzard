@@ -70,6 +70,7 @@
                 <mat-checkbox (click)="setQuizId(row.quizId)"
                             (change)="$event ? selection.toggle(row) : null"
                             [checked]="selection.isSelected(row)"
+                            [disabled]="row.numberOfQuestions===0"
                             [aria-label]="checkboxLabel(row)">
                 </mat-checkbox>
             </td>
@@ -126,8 +127,10 @@
                     type="submit"
                     mat-raised-button
                     [disabled]="!quizSetup.valid">Pokreni Kviz</button>
-            <button mat-raised-button 
-                    (click)="openQuizSettingsDialog()">Postavke</button>
+            <button mat-icon-button 
+                    (click)="openQuizSettingsDialog()">
+                <mat-icon class="icon-button" >settings</mat-icon>
+                </button>
         </div>                
             </ng-template>
 
