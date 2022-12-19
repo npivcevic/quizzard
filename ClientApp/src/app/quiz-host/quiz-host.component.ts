@@ -12,6 +12,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { QuizzesService } from '../services/quizzes.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { QuestionSetService } from '../services/question-set.service';
+import { MatDialog } from '@angular/material/dialog';
+import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component';
 
 
 
@@ -58,6 +60,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
               private quizservice: QuizzesService,
               private questionsetservice: QuestionSetService,
               public navbarservice: NavBarService,
+              private dialog: MatDialog, 
               public fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -72,6 +75,22 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.navbarservice.visible = true
+  }
+
+  openQuizSettingsDialog(){
+    const dialog = this.dialog.open(QuizSettingsComponent,{
+      width:"50%",
+    })
+
+    dialog.afterClosed()
+    .subscribe(data=>{
+      // this.quizSettings = data
+      this.quizSettings.numberOfQuestions = data.numberOfQuestions!
+      this.quizSettings.nextQuestionDelay = data.nextQuestionDelay! * 1000
+      this.quizSettings.totalTimePerQuestion = data.totalTimePerQuestion! * 1000
+      this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = data.MoveToNextQuestionWhenAllPlayersAnswered!
+      console.log(this.quizSettings)
+    })
   }
 
   setQuizId(quizId: string) {
@@ -89,14 +108,6 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.selection.clear()
   }
 
-  resetStepper() {
-    this.selection.clear()
-    this.quizId = ""
-    this.quiz.patchValue({
-      quizId: ""
-    })
-  }
-
   questionSetName(questionSetId:string)
   {
     this.questionsetservice.getQuestionSet(questionSetId)
@@ -109,11 +120,6 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     if (!this.quizSetup.valid) {
       return
     }
-    this.quizSettings.numberOfQuestions = this.quizSetup.value.numberOfQuestions!
-    this.quizSettings.nextQuestionDelay = this.quizSetup.value.nextQuestionDelay! * 1000
-    this.quizSettings.totalTimePerQuestion = this.quizSetup.value.totalTimePerQuestion! * 1000
-    this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = this.quizSetup.value.MoveToNextQuestionWhenAllPlayersAnswered!
-
     this.quizHostService.startQuiz_(this.quizSettings, this.quizId)
     this.selection.clear();
 

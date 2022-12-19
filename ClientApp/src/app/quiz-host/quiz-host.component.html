@@ -53,119 +53,82 @@
             <div *ngIf="isIdle(); then startQuizButtonBlock"></div>
 
             <ng-template [formGroup]="quizSetup" #startQuizButtonBlock>
+                <table mat-table [dataSource]="dataSource" 
+                multiTemplateDataRows 
+                class="mat-elevation-z8">
 
-                <mat-stepper headerPosition="bottom" [linear]="true" #stepper>
-                    <mat-step [stepControl]="quiz">
-                        <ng-template matStepLabel>Odaberi kviz</ng-template>
-                        <table mat-table [dataSource]="dataSource" 
-                                multiTemplateDataRows 
-                                class="mat-elevation-z8">
+                <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+            <th  mat-header-cell *matHeaderCellDef>
+                <!-- <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            [aria-label]="checkboxLabel()">
+                </mat-checkbox> -->
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="setQuizId(row.quizId)"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </td>
+            </ng-container>
+        
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Ime kviza </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+        
+            <!-- Name Column -->
+            <ng-container matColumnDef="numberOfQuestions">
+            <th mat-header-cell *matHeaderCellDef> Broj Pitanja </th>
+            <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
+            </ng-container>
 
-                                <!-- Checkbox Column -->
-                            <ng-container matColumnDef="select">
-                            <th  mat-header-cell *matHeaderCellDef>
-                                <!-- <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                                            [checked]="selection.hasValue() && isAllSelected()"
-                                            [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                            [aria-label]="checkboxLabel()">
-                                </mat-checkbox> -->
-                            </th>
-                            <td mat-cell *matCellDef="let row">
-                                <mat-checkbox (click)="setQuizId(row.quizId)"
-                                            (change)="$event ? selection.toggle(row) : null"
-                                            [checked]="selection.isSelected(row)"
-                                            [aria-label]="checkboxLabel(row)">
-                                </mat-checkbox>
-                            </td>
-                            </ng-container>
-                        
-                            <!-- Position Column -->
-                            <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Ime kviza </th>
-                            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                            </ng-container>
-                        
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="numberOfQuestions">
-                            <th mat-header-cell *matHeaderCellDef> Broj Pitanja </th>
-                            <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
-                            </ng-container>
-
-                        
+        
 
 
-                            <ng-container matColumnDef="expand">
-                                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-                                <td mat-cell *matCellDef="let element">
-                                    <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-                                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-                                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-                                    </button>
-                                </td>
-                            </ng-container>
+            <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
 
-                            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-                        <ng-container matColumnDef="expandedDetail">
-                            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-                            <div class="example-element-detail"
-                                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                                <div class="example-element-description">
-                                {{element.description}}
-                                </div>
-                            </div>
-                            </td>
-                        </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+            <div class="example-element-detail"
+                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="example-element-description">
+                {{element.description}}
+                </div>
+            </div>
+            </td>
+        </ng-container>
 
-                        
-                            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-                            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-                            
-                            >
-                            </tr>
-                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-                        </table>
-                        <div>
-                          <button mat-button matStepperNext [disabled]="quiz.invalid">Next</button>
-                        </div>
-                    </mat-step>
-                    <mat-step [stepControl]="quizSetup">
-                        <ng-template matStepLabel>Postavke kviza</ng-template>
-                        <mat-form-field appearance="outline" [hidden]="true">
-                            <mat-label>Broj pitanja</mat-label>
-                            <input matInput formControlName="numberOfQuestions" type="number">
-                        </mat-form-field>
-                        <br>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Vrijeme za odgovor</mat-label>
-                            <input matInput formControlName="totalTimePerQuestion" type="number">
-                        </mat-form-field>
-                        <br>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Vrijeme između pitanja</mat-label>
-                            <input matInput formControlName="nextQuestionDelay" type="number">
-                        </mat-form-field>
-                        <br>
-                        <mat-checkbox formControlName="MoveToNextQuestionWhenAllPlayersAnswered">Slijedeće pitanje kad svi
-                            igraci odgovore</mat-checkbox>
-                        <br>
-                        <div>
-                            <button mat-button matStepperPrevious>Back</button>
-                            <button mat-button matStepperNext [disabled]="quizSetup.invalid">Next</button>
-                          </div>
-                    </mat-step>
-                    <mat-step>
-                      <ng-template matStepLabel>Igraj</ng-template>
-                      You are now done.
-                      <div>
-                        <div style="text-align: center;">
-                            <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-raised-button
-                                [disabled]="!quizSetup.valid">Pokreni Kviz</button>
-                        </div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button (click)="stepper.reset(); resetStepper()">Reset</button>
-                      </div>
-                    </mat-step>
-                  </mat-stepper>
+        
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+            
+            >
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+
+        <div style="text-align: center;">
+            <button (click)="startQuiz()" 
+                    type="submit"
+                    mat-raised-button
+                    [disabled]="!quizSetup.valid">Pokreni Kviz</button>
+            <button mat-raised-button 
+                    (click)="openQuizSettingsDialog()">Postavke</button>
+        </div>                
             </ng-template>
 
             

@@ -38,6 +38,7 @@ export class QuizHostService {
 
   startQuiz_(quizSettings: QuizSettings, quizId: string) {
     this.quizSettings = quizSettings
+    console.log("from start quiz",this.quizSettings)
     this.quizservice.getQuiz(quizId)
       .subscribe(data => {
         this.quizData.reset();

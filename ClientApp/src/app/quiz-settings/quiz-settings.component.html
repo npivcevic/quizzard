@@ -1,0 +1,24 @@
+<form [formGroup]="quizSetup">
+    <mat-form-field appearance="outline" [hidden]="true">
+        <mat-label>Broj pitanja</mat-label>
+        <input matInput formControlName="numberOfQuestions" type="number">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline">
+        <mat-label>Vrijeme za odgovor</mat-label>
+        <input matInput formControlName="totalTimePerQuestion" type="number">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline">
+        <mat-label>Vrijeme između pitanja</mat-label>
+        <input matInput formControlName="nextQuestionDelay" type="number">
+    </mat-form-field>
+    <br>
+    <mat-checkbox formControlName="MoveToNextQuestionWhenAllPlayersAnswered">Slijedeće pitanje kad svi
+        igraci odgovore</mat-checkbox>
+    <br>
+    <button mat-stroked-button 
+            (click)="saveSettings()">
+        Spremi postavke
+    </button>
+</form>
