@@ -93,12 +93,15 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     })
   }
 
-  setQuizId(quizId: string) {
+  setQuizId(quizId: string, numberOfQuestions:number) {
     if (this.quizId === quizId) {
       this.quiz.patchValue({
         quizId: ""
       })
       this.quizId = ""
+      return
+    }
+    if(numberOfQuestions===0){
       return
     }
     this.quiz.patchValue({
