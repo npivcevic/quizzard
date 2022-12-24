@@ -1,3 +1,8 @@
+<div class="close-dialog-button">
+  <button (click)="closeDialog()" mat-icon-button>
+    <mat-icon class="icon-button">close</mat-icon>
+  </button>
+</div>
 <div class="add-question-form">
   <form #addquestionForm="ngForm" (ngSubmit)="saveQuestion()">
     <mat-form-field appearance="fill">
@@ -15,7 +20,7 @@
       </mat-slide-toggle>
     </div>
     <div>
-      <button mat-raised-button color="primary" type="submit">{{this.isNew ? "Add" : "Edit"}}</button>
+      <button class="submit-button" mat-raised-button type="submit">{{this.isNew ? "Add" : "Edit"}}</button>
     </div>
   </form>
 </div>

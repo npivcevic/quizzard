@@ -13,23 +13,26 @@ export class QuizSettingsComponent implements OnInit {
 
   quizSettings: QuizSettings = new QuizSettings()
 
-  constructor(public fb: FormBuilder,
-              @Inject(MAT_DIALOG_DATA) public data: QuizSettings, 
-              private dialogRef: MatDialogRef<QuizSettingsComponent>) { }
+  constructor(
+    public fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: QuizSettings,
+    private dialogRef: MatDialogRef<QuizSettingsComponent>) { }
 
   quizSetup = this.fb.group({
-    numberOfQuestions: this.fb.control(this.quizSettings.numberOfQuestions, [Validators.required, Validators.min(1)]),
-    totalTimePerQuestion: this.fb.control(this.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
-    nextQuestionDelay: this.fb.control(this.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
-    MoveToNextQuestionWhenAllPlayersAnswered: this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
+    totalTimePerQuestion: this.fb.control(this.data.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
+    nextQuestionDelay: this.fb.control(this.data.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
+    MoveToNextQuestionWhenAllPlayersAnswered: this.fb.control(this.data.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
   ngOnInit(): void {
   }
 
-
-  saveSettings(){
+  saveSettings() {
     this.dialogRef.close(this.quizSetup.value)
+  }
+
+  closeDialog(){
+    this.dialogRef.close()
   }
 
 }

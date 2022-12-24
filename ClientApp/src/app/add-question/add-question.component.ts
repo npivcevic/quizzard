@@ -10,7 +10,11 @@ import { QuestionService } from '../question.service';
 })
 export class AddQuestionComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Question, private questionservice: QuestionService, private dialogRef: MatDialogRef<AddQuestionComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Question, 
+              private questionservice: QuestionService, 
+              private dialogRef: MatDialogRef<AddQuestionComponent>) { 
+                dialogRef.disableClose = true
+              }
 
   isNew: boolean = true
 
@@ -27,11 +31,23 @@ export class AddQuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.text) {
+    if (this.data.questionId) {
       this.isNew = false
-      this.question = JSON.parse(JSON.stringify(this.data))
+      this.question = this.copyQuestion(this.data)
     }
   }
+
+  copyQuestion(question:Question) {
+    let qCopy = Object.assign({}, question)
+    qCopy.answers = question.answers.map((answer) => {
+        return {
+            id: answer.answerId,
+            text: answer.text,
+            isCorrect: answer.isCorrect
+        }
+    })
+    return qCopy
+}
 
   saveQuestion(): void {
     if (this.isNew) {
@@ -49,6 +65,10 @@ export class AddQuestionComponent implements OnInit {
   putQuestion(question: any): void {
     this.questionservice.putQuestion(question)
       .subscribe(() => { this.dialogRef.close(this.question) })
+  }
+
+  closeDialog(){
+    this.dialogRef.close()
   }
 
   untoggleAllAnswers(): void {

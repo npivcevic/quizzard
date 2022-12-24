@@ -18,9 +18,9 @@ import { QuizzesService } from '../services/quizzes.service';
 })
 export class QuestionsComponent implements OnInit {
 
-  constructor(private questionservice: QuestionService, 
-              private dialog: MatDialog, 
-              private snack: MatSnackBar) { }
+  constructor(private questionservice: QuestionService,
+    private dialog: MatDialog,
+    private snack: MatSnackBar) { }
 
   @Input() questionSetId!: string
   @Input() quizId!: string
@@ -82,37 +82,37 @@ export class QuestionsComponent implements OnInit {
     newSet?.questions.push(x)
   }
 
-  // deleteQuestion(id: string, index: number): void {
-  //   this.questionservice.deleteQuestion(id).subscribe({
-  //     next: () => {
-  //       this.questions.splice(index, 1)
-  //     },
-  //     error: (error) => {
-  //       console.error(error)
-  //       this.openSnackBar("Something went wrong : " + error)
-  //     },
-  //     complete : ()=>{
-  //       this.openSnackBar("Question is deleted")
-  //     }
-  //   }
-  //   )
-  // }
-
-  deleteQuestionFromSet(question: Question, index: number): void {
-
-    let questionCopy = Object.assign(question,{
-      questionSetId:null
-    })
-    this.questionservice.putQuestion(questionCopy).subscribe({
+  deleteQuestion(id: string, index: number): void {
+    this.questionservice.deleteQuestion(id).subscribe({
       next: () => {
         this.questions.splice(index, 1)
       },
       error: (error) => {
         console.error(error)
-        this.openSnackBar("Pitanje nije izbrisano iz seta : " + error)
+        this.openSnackBar("Something went wrong : " + error)
       },
-      complete : ()=>{
-        this.openSnackBar("Pitanje je izbrisano iz seta")
+      complete: () => {
+        this.openSnackBar("Question is deleted")
+      }
+    }
+    )
+  }
+
+  deleteQuestionFromSet(question: Question, index: number): void {
+
+    let questionCopy = Object.assign(question, {
+      questionSetId: null
+    })
+    this.questionservice.putQuestion(questionCopy).subscribe({
+      next: (result) => {
+        if(result){
+          this.questions.splice(index, 1)
+          this.openSnackBar("Pitanje je izbrisano iz seta")
+        }
+      },
+      error: (error) => {
+        console.error(error)
+        this.openSnackBar("Pitanje nije izbrisano iz seta : " + error)
       }
     }
     )
@@ -128,14 +128,12 @@ export class QuestionsComponent implements OnInit {
       next: (result) => {
         if (result) {
           this.questions.splice(this.questions.findIndex(x => x.questionId == question.questionId), 1, result)
+          this.openSnackBar("Pitanje je promijenjeno")
         }
       },
       error: (error) => {
         console.error(error)
         this.openSnackBar("Pitanje nije promijenjeno : " + error)
-      },
-      complete:()=>{
-        this.openSnackBar("Pitanje je promijenjeno")
       }
     })
   }
@@ -154,35 +152,33 @@ export class QuestionsComponent implements OnInit {
       next: result => {
         if (result) {
           this.questions.push(result)
+          this.openSnackBar("Pitanje je dodano")
         }
       },
       error: (error) => {
-        this.openSnackBar("PitNje nije dodano : " + error) 
-      },
-      complete:()=>{          
-        this.openSnackBar("Pitanje je dodano")
-    }
+        this.openSnackBar("Pitanje nije dodano : " + error)
+      }
     })
   }
 
-  openQuestionLibraryDialog(){
+  openQuestionLibraryDialog() {
     const dialog = this.dialog.open(QuestionLibraryComponent, {
       width: '90%',
       data: this.questionSet
     })
 
     dialog.afterClosed().subscribe({
-      next: (result)=>{
-        if(!result){
+      next: (result) => {
+        if (!result) {
           return
         }
-        result.forEach((q: Question)=>{
+        result.forEach((q: Question) => {
           this.questions.push(q)
         })
         this.openSnackBar("Question is added")
       },
       error: (error) => {
-        this.openSnackBar("Something went wrong : " + error) 
+        this.openSnackBar("Something went wrong : " + error)
       }
     })
   }
@@ -194,8 +190,8 @@ export class QuestionsComponent implements OnInit {
       if (question.order === index) {
         return
       }
-      let x = Object.assign(question,{
-        order : index
+      let x = Object.assign(question, {
+        order: index
       })
       this.questionservice.putQuestion(x)
         .subscribe(data => console.log(data))

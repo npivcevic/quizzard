@@ -27,7 +27,8 @@ export class AddQuestionSetComponent implements OnInit {
       return
     }
     this.isNew = true
-    this.postQuestionSetForm.patchValue({
+    this.questionSetForm.removeControl("questionSetId")
+    this.questionSetForm.patchValue({
       quizId:this.data.quizId,
       order:this.data.order
     })
@@ -46,16 +47,16 @@ export class AddQuestionSetComponent implements OnInit {
     order: this.fb.control(null),
     questionSetId: this.fb.control(""),
     questions: this.fb.array([]),
-    quiz: this.fb.control(null),
     quizId: this.fb.control("", [Validators.required])
   })
 
-  postQuestionSetForm = this.fb.group({
-    name: this.fb.control("", [Validators.required]),
-    order: this.fb.control(0),
-    questions: this.fb.array([]),
-    quizId: this.fb.control("", [Validators.required])
-  })
+  saveQuestionSet(questionSet:QuestionSet){
+    if(this.isNew){
+      this.postQuestionSet(questionSet)
+      return
+    }
+    this.putQuestionSet(questionSet)
+  }
 
 
   postQuestionSet(questionSet: PostQuestionSet): void {

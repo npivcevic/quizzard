@@ -6,3 +6,11 @@ button{
     border-width: 3px;
     font-size: 30px; 
 }
+
+.close-dialog-button{
+    text-align: end;
+}
+
+.icon-button{
+    padding-bottom: 35px;
+  }

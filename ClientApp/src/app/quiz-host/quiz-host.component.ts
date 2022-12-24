@@ -45,7 +45,6 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   expandedElement!: Quiz | null;
 
   quizSetup = this.fb.group({
-    numberOfQuestions: this.fb.control(this.quizSettings.numberOfQuestions, [Validators.required, Validators.min(1)]),
     totalTimePerQuestion: this.fb.control(this.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
     nextQuestionDelay: this.fb.control(this.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
     MoveToNextQuestionWhenAllPlayersAnswered: this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
@@ -56,12 +55,13 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     randomQuestions: this.fb.control(false)
   })
 
-  constructor(public quizHostService: QuizHostService,
-              private quizservice: QuizzesService,
-              private questionsetservice: QuestionSetService,
-              public navbarservice: NavBarService,
-              private dialog: MatDialog, 
-              public fb: FormBuilder) { }
+  constructor(
+    public quizHostService: QuizHostService,
+    private quizservice: QuizzesService,
+    private questionsetservice: QuestionSetService,
+    public navbarservice: NavBarService,
+    private dialog: MatDialog,
+    public fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.navbarservice.visible = false
@@ -77,23 +77,23 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.navbarservice.visible = true
   }
 
-  openQuizSettingsDialog(){
-    const dialog = this.dialog.open(QuizSettingsComponent,{
-      width:"20%",
+  openQuizSettingsDialog() {
+    const dialog = this.dialog.open(QuizSettingsComponent, {
+      width: "30%",
+      data: this.quizSettings
     })
 
     dialog.afterClosed()
-    .subscribe(data=>{
-      // this.quizSettings = data
-      this.quizSettings.numberOfQuestions = data.numberOfQuestions!
-      this.quizSettings.nextQuestionDelay = data.nextQuestionDelay! * 1000
-      this.quizSettings.totalTimePerQuestion = data.totalTimePerQuestion! * 1000
-      this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = data.MoveToNextQuestionWhenAllPlayersAnswered!
-      console.log(this.quizSettings)
-    })
+      .subscribe(data => {
+        if (data) {
+          this.quizSettings.nextQuestionDelay = data.nextQuestionDelay! * 1000
+          this.quizSettings.totalTimePerQuestion = data.totalTimePerQuestion! * 1000
+          this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = data.MoveToNextQuestionWhenAllPlayersAnswered!
+        }
+      })
   }
 
-  setQuizId(quizId: string, numberOfQuestions:number) {
+  setQuizId(quizId: string, numberOfQuestions: number) {
     if (this.quizId === quizId) {
       this.quiz.patchValue({
         quizId: ""
@@ -101,7 +101,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       this.quizId = ""
       return
     }
-    if(numberOfQuestions===0){
+    if (numberOfQuestions === 0) {
       return
     }
     this.quiz.patchValue({
@@ -111,8 +111,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.selection.clear()
   }
 
-  questionSetName(questionSetId:string)
-  {
+  questionSetName(questionSetId: string) {
     this.questionsetservice.getQuestionSet(questionSetId)
       .subscribe(data => {
         return data.name

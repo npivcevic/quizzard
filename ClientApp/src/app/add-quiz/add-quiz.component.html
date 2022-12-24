@@ -10,8 +10,8 @@
                 <textarea matInput formControlName="description"></textarea>
             </mat-form-field>
             <br>
-            <button mat-raised-button color="primary" type="submit">{{isNew ? "Dodaj kviz" : "Spremi"}}</button>
-            <button [hidden]="!isNew" mat-raised-button color="warn" type="button" (click)="cancelAdding()">Odustani</button>
+            <button mat-raised-button  type="submit">{{isNew ? "Dodaj kviz" : "Spremi"}}</button>
+            <button [hidden]="!isNew" mat-raised-button type="button" (click)="cancelAdding()">Odustani</button>
         </form>
     </div>
 

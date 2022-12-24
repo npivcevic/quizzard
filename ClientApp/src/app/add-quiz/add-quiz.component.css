@@ -5,3 +5,12 @@
 mat-form-field{
     width: 100%;
 }
+
+button{
+    color: whitesmoke;
+    background-color: #0a1d36;
+    border-color: #f4ce26 !important;
+    border-style:solid ; 
+    border-width: 3px;
+    font-size: 30px; 
+}
