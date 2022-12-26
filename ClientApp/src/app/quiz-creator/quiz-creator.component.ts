@@ -32,11 +32,9 @@ export class QuizCreatorComponent implements OnInit {
               private snack: MatSnackBar) { }
 
   quiz!: Quiz
-  quizIsLoaded: boolean = false
   panelOpenState = true;
 
   ngOnInit(): void {
-
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id')
       if (!id) {
@@ -46,9 +44,6 @@ export class QuizCreatorComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.quiz = data
-          },
-          complete: () => {
-            this.quizIsLoaded = true
           }
         })
     })
@@ -87,7 +82,6 @@ export class QuizCreatorComponent implements OnInit {
     this.reorderQuestionSetsOnBack()
   }
 
-
   openPutQuizDialog(): void {
     const dialog = this.dialog.open(AddQuizComponent, {
       width: '90%',
@@ -104,6 +98,7 @@ export class QuizCreatorComponent implements OnInit {
           .subscribe({
             next: (data) => {
               this.quiz = data
+              this.openSnackBar("Kviz je spremljen")
             }
           })
       },
@@ -169,7 +164,6 @@ export class QuizCreatorComponent implements OnInit {
         quizId:this.quiz.quizId,
         order:this.quiz.questionSets.length
       }
-
     })
 
     dialog.afterClosed().subscribe({

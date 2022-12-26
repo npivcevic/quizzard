@@ -63,12 +63,12 @@ export class QuizzesComponent implements OnInit {
           this.quizservice.getQuizzes()
             .subscribe({
             })
-          this.openSnackBar("Kviz je spremljen")
+          this.openSnackBar("Kviz je stvoren")
 
         }
       },
       error: (error) => {
-        this.openSnackBar("Kviz nije spremljen")
+        this.openSnackBar("Kviz nije stvoren")
       }
     })
   }

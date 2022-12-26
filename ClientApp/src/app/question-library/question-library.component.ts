@@ -58,7 +58,7 @@ export class QuestionLibraryComponent implements OnInit {
       })
   }
 
-  checkbox(el:Question){
+  selectQuestionCheckbox(el:Question){
     let x = this.selected.find(q=>{
       return q.questionId === el.questionId
     })
@@ -147,7 +147,6 @@ export class QuestionLibraryComponent implements OnInit {
   }
 
   isAllSelected() {
-    
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
@@ -158,14 +157,10 @@ export class QuestionLibraryComponent implements OnInit {
     if (this.isAllSelected()) {
       this.selection.clear();
       this.selected = []
-      console.log(this.selected)
       return;
     }
     this.selection.select(...this.dataSource.data);
     this.selected = this.questions
-
-    console.log(this.selected)
-
   }
 
   /** The label for the checkbox on the passed row */

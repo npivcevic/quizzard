@@ -56,11 +56,8 @@ export class AddQuizComponent implements OnInit {
     this.isNew = true
   }
 
-
-
   saveQuiz(): void {
     if(!this.isNew){
-
       this.quizservice.putQuiz(Object.assign(this.addQuizForm.value,{
         quizId: this.data.quizId
       }))
@@ -81,7 +78,7 @@ export class AddQuizComponent implements OnInit {
     this.questionsetservice.postQuestionSet(questionSet)
       .subscribe({
         next: (result) => {
-          console.log("this is default question set", result)
+          return
         }
       })
   }

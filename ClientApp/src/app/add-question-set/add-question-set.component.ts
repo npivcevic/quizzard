@@ -13,6 +13,14 @@ import { Quiz } from '../model/quiz';
 })
 export class AddQuestionSetComponent implements OnInit {
 
+  questionSetForm = this.fb.group({
+    name: this.fb.control(null, [Validators.required]),
+    order: this.fb.control(null),
+    questionSetId: this.fb.control(""),
+    questions: this.fb.array([]),
+    quizId: this.fb.control("", [Validators.required])
+  })
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: QuestionSet, 
               public fb: FormBuilder, 
               private questionsetservice: QuestionSetService, 
@@ -34,22 +42,6 @@ export class AddQuestionSetComponent implements OnInit {
     })
   }
 
-  questionSet: QuestionSet | PostQuestionSet = {
-    name: "",
-    order: 0,
-    questions: [],
-    quizId: ""
-
-  }
-
-  questionSetForm = this.fb.group({
-    name: this.fb.control(null, [Validators.required]),
-    order: this.fb.control(null),
-    questionSetId: this.fb.control(""),
-    questions: this.fb.array([]),
-    quizId: this.fb.control("", [Validators.required])
-  })
-
   saveQuestionSet(questionSet:QuestionSet){
     if(this.isNew){
       this.postQuestionSet(questionSet)
@@ -58,16 +50,14 @@ export class AddQuestionSetComponent implements OnInit {
     this.putQuestionSet(questionSet)
   }
 
-
   postQuestionSet(questionSet: PostQuestionSet): void {
-    console.log(questionSet)
     this.questionsetservice.postQuestionSet(questionSet)
       .subscribe({
         next: (data)=>{
           this.dialogRef.close(data)
         },
-        error: (err)=>{
-          console.log("error :" + err)
+        error: (error)=>{
+          console.log("error :" + error)
         }
       })
   }
