@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { PostQuestionSet, QuestionSet } from '../model/question-set';
 import { Question } from '../model/question';
 import { QuestionSetService } from '../services/question-set.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { FormArray, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Quiz } from '../model/quiz';
 

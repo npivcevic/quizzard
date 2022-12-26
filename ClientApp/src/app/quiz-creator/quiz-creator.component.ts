@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionSet } from 'src/app/model/question-set';
 import { QuestionSetService } from 'src/app/services/question-set.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AddQuestionSetComponent } from '../add-question-set/add-question-set.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { QuizzesService } from '../services/quizzes.service';
 import { Quiz } from '../model/quiz';
 import { ActivatedRoute } from '@angular/router';

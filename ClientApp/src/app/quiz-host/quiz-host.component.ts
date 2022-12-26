@@ -7,12 +7,12 @@ import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuizSettings } from '../model/QuizSettings';
 import { letterFromIndex } from '../utils/letterFromIndex';
 import { Quiz } from '../model/quiz';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { QuizzesService } from '../services/quizzes.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { QuestionSetService } from '../services/question-set.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component';
 
 

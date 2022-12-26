@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Quiz } from '../model/quiz';
 import { QuizzesService } from '../services/quizzes.service';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AddQuizComponent } from '../add-quiz/add-quiz.component';
 import { Router } from '@angular/router';
 
