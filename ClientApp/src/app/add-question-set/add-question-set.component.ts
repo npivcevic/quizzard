@@ -3,7 +3,7 @@ import { PostQuestionSet, QuestionSet } from '../model/question-set';
 import { Question } from '../model/question';
 import { QuestionSetService } from '../services/question-set.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Quiz } from '../model/quiz';
 
 @Component({
@@ -22,7 +22,7 @@ export class AddQuestionSetComponent implements OnInit {
   })
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: QuestionSet, 
-              public fb: FormBuilder, 
+              public fb: UntypedFormBuilder, 
               private questionsetservice: QuestionSetService, 
               private dialogRef: MatDialogRef<AddQuestionSetComponent>) { }
 

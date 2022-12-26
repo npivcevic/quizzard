@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { QuizSettings } from '../model/QuizSettings';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -13,7 +13,7 @@ export class QuizSettingsComponent implements OnInit {
   quizSettings: QuizSettings = new QuizSettings()
 
   constructor(
-    public fb: FormBuilder,
+    public fb: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: QuizSettings,
     private dialogRef: MatDialogRef<QuizSettingsComponent>) { 
       dialogRef.disableClose = true

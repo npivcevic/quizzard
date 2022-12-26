@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PutQuiz, Quiz } from '../model/quiz';
 import { QuizzesService } from '../services/quizzes.service';
@@ -19,7 +19,7 @@ export class AddQuizComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Quiz,
     private router: Router,
-    public fb: FormBuilder,
+    public fb: UntypedFormBuilder,
     private questionsetservice: QuestionSetService,
     private quizservice: QuizzesService,
     private dialogRef: MatDialogRef<AddQuizComponent>) { }

@@ -3,7 +3,7 @@ import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
 import { QuizState } from '../classes/QuizHostData';
 import { Player } from '../classes/Player';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuizSettings } from '../model/QuizSettings';
 import { letterFromIndex } from '../utils/letterFromIndex';
 import { Quiz } from '../model/quiz';
@@ -61,7 +61,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     private questionsetservice: QuestionSetService,
     public navbarservice: NavBarService,
     private dialog: MatDialog,
-    public fb: FormBuilder) { }
+    public fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.navbarservice.visible = false
