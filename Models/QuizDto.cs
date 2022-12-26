@@ -11,6 +11,8 @@ public class QuizDto
 
     public string Name { get; set; } = "";
 
+    public QuizStatus Status { get; set; } = QuizStatus.Draft;
+
     public string Description { get; set; } = "";
 
     public int NumberOfQuestions { get; set; }
