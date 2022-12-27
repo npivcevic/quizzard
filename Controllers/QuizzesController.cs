@@ -21,6 +21,23 @@ namespace quizzard.Controllers
             _context = context;
         }
 
+        // GET: api/Quizzes/published
+        [HttpGet("published")]
+        public async Task<ActionResult<IEnumerable<QuizDto>>> GetPublishedQuizzes()
+        {
+            if (_context.Quizzes == null)
+            {
+                return NotFound();
+            }
+            return await _context.Quizzes
+                .Where(quiz => quiz.Status == QuizStatus.Published)
+                .Include(quiz => quiz.QuestionSets.OrderBy(s => s.Order))
+                .ThenInclude(set => set.Questions.OrderBy(s => s.Order))
+                .ThenInclude(question => question.Answers)
+                .Select(q => q.ToQuizDto())
+                .ToListAsync();
+        }
+
         // GET: api/Quizzes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<QuizDto>>> GetQuizzes()
