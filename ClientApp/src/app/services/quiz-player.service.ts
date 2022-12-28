@@ -3,7 +3,7 @@ import { SignalrService } from './signalr.service';
 import { QuizPlayerData, QuizPlayerState } from '../classes/QuizPlayerData';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { HostDisconnectedComponent } from '../host-disconnected/host-disconnected.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import {  MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'

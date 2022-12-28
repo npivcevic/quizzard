@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PostQuestion, Question } from '../model/question';
 import { QuestionService } from '../question.service';
+import { Answer } from '../model/answer';
 
 @Component({
   selector: 'app-add-question',
@@ -12,9 +13,7 @@ export class AddQuestionComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Question, 
               private questionservice: QuestionService, 
-              private dialogRef: MatDialogRef<AddQuestionComponent>) { 
-                dialogRef.disableClose = true
-              }
+              private dialogRef: MatDialogRef<AddQuestionComponent>) {}
 
   isNew: boolean = true
 
@@ -67,13 +66,17 @@ export class AddQuestionComponent implements OnInit {
       .subscribe(() => { this.dialogRef.close(this.question) })
   }
 
-  closeDialog(){
+  closeDialog(): void {
     this.dialogRef.close()
   }
 
-  untoggleAllAnswers(): void {
-    this.question.answers.forEach(q => {
-      q.isCorrect = false
+  untoggleAllAnswers(answerIndex : number): void {
+    this.question.answers.forEach((answer,index )=> {
+      if(answerIndex === index){
+        answer.isCorrect = true
+      }else{
+        answer.isCorrect = false
+      }
     });
   }
 }

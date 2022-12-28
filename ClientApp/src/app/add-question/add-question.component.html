@@ -5,22 +5,23 @@
 </div>
 <div class="add-question-form">
   <form #addquestionForm="ngForm" (ngSubmit)="saveQuestion()">
-    <mat-form-field appearance="fill">
+    <mat-form-field >
       <mat-label>Question</mat-label>
       <input matInput name="question" [(ngModel)]="question.text" required>
     </mat-form-field>
     <br>
     <div *ngFor="let answer of question.answers; let i = index">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Answer {{i+1}}</mat-label>
         <input matInput [name]="'a'+i" [(ngModel)]="answer.text" required>
       </mat-form-field>
-      <mat-slide-toggle name="isCorrect" color="primary" (click)="untoggleAllAnswers()"
+      <mat-slide-toggle name="isCorrect" color="primary" (click)="untoggleAllAnswers(i)"
         [ngModelOptions]="{standalone: true}" [(ngModel)]="answer.isCorrect">
       </mat-slide-toggle>
     </div>
     <div>
-      <button class="submit-button" mat-raised-button type="submit">{{this.isNew ? "Add" : "Edit"}}</button>
+      <app-button *ngIf="this.isNew" text="Add"></app-button>
+      <app-button *ngIf="!this.isNew" text="Edit"></app-button>
     </div>
   </form>
 </div>

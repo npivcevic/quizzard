@@ -123,10 +123,7 @@
         </table>
 
         <div style="text-align: center;">
-            <button (click)="startQuiz()" 
-                    type="submit"
-                    mat-raised-button
-                    [disabled]="!quizSetup.valid">Pokreni Kviz</button>
+            <app-button text="Pokreni kviz" (click)="startQuiz()"></app-button>
             <button mat-icon-button 
                     (click)="openQuizSettingsDialog()">
                 <mat-icon class="icon-button" >settings</mat-icon>

@@ -30,6 +30,7 @@ import { QuizCreatorComponent } from './quiz-creator/quiz-creator.component';
 import { AddQuestionSetComponent } from './add-question-set/add-question-set.component';
 import { QuestionLibraryComponent } from './question-library/question-library.component';
 import { QuizSettingsComponent } from './quiz-settings/quiz-settings.component';
+import { ButtonComponent } from './button/button.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { QuizSettingsComponent } from './quiz-settings/quiz-settings.component';
     AddQuestionSetComponent,
     QuestionLibraryComponent,
     QuizSettingsComponent,
+    ButtonComponent,
   ],
   imports: [
     ClipboardModule,

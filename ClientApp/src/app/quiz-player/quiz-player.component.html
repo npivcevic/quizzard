@@ -12,12 +12,12 @@
 
     <div *ngIf="isDisconnected()" class="container" [formGroup]="logInForm">
         <fieldset [disabled]="quizPlayerService.quizData.reconnectPossible">
-            <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
-                <input matInput placeholder="Unesi kod" formControlName="groupName">
+            <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
+                <input matInput style="width: 100%; text-align: center;" placeholder="Unesi kod" formControlName="groupName">
             </mat-form-field>
             <br />
-            <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
-                <input matInput placeholder="Unesi ime" formControlName="playerName">
+            <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
+                <input matInput style="width: 100%; text-align: center;" placeholder="Unesi ime" formControlName="playerName">
             </mat-form-field>
             <br />
         </fieldset>

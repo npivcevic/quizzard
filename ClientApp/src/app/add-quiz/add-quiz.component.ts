@@ -1,12 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PutQuiz, Quiz } from '../model/quiz';
 import { QuizzesService } from '../services/quizzes.service';
 import { Router } from '@angular/router';
 import { QuestionSetService } from '../services/question-set.service';
-import { PostQuestionSet, QuestionSet } from '../model/question-set';
-import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
+import { PostQuestionSet } from '../model/question-set';
 
 
 

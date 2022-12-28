@@ -17,11 +17,6 @@ mat-expansion-panel{
     justify-content: center;
 }
 
-.general-buttons{
-    flex-grow:1;
-    margin: 0 20px;
-}
-
 button{
   color: whitesmoke;
   background-color: #0a1d36;

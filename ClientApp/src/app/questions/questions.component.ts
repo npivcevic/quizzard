@@ -1,15 +1,13 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddQuestionComponent } from '../add-question/add-question.component';
 import { Question } from '../model/question';
 import { QuestionSet } from '../model/question-set';
 import { Quiz } from '../model/quiz';
 import { QuestionLibraryComponent } from '../question-library/question-library.component';
 import { QuestionService } from '../question.service';
-import { QuizzesComponent } from '../quizzes/quizzes.component';
-import { QuizzesService } from '../services/quizzes.service';
 
 @Component({
   selector: 'app-questions',
@@ -104,11 +102,11 @@ export class QuestionsComponent implements OnInit {
       questionSetId: null
     })
     this.questionservice.putQuestion(questionCopy).subscribe({
-      next: (result) => {
-        if(result){
+      next: () => {
+          console.log("im called")
           this.questions.splice(index, 1)
           this.openSnackBar("Pitanje je izbrisano iz seta")
-        }
+        
       },
       error: (error) => {
         console.error(error)
@@ -121,7 +119,8 @@ export class QuestionsComponent implements OnInit {
   openPutDialog(question: Question): void {
     const dialog = this.dialog.open(AddQuestionComponent, {
       data: question,
-      width: '50%'
+      width: '50%',
+      height:"550px",
     })
 
     dialog.afterClosed().subscribe({
@@ -141,6 +140,7 @@ export class QuestionsComponent implements OnInit {
   openPostDialog(): void {
     const dialog = this.dialog.open(AddQuestionComponent, {
       width: '50%',
+      height:"550px",
       data: {
         questionSetId: this.questionSetId,
         quizId: this.quizId,

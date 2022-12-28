@@ -1,10 +1,10 @@
 <div class="qustion-grid">
   <div class="general-buttons-card" align="start">
-    <button class="general-buttons"  mat-raised-button (click)="openPostDialog()">Dodaj pitanje
-      broj {{questions.length+1}}</button>
-    <button class="general-buttons" mat-raised-button (click)="openQuestionLibraryDialog()">
+    <app-button text="Dodaj pitanje" (click)="openPostDialog()"></app-button>
+    <app-button text="Dodaj pitanje iz baze" (click)="openQuestionLibraryDialog()"></app-button>
+    <!-- <button class="general-buttons" mat-raised-button (click)="openQuestionLibraryDialog()">
       Dodaj pitanje iz baze
-    </button>
+    </button> -->
   </div>
   <br>
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
