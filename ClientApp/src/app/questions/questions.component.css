@@ -14,32 +14,27 @@ mat-expansion-panel{
 
 .general-buttons-card{
     display: flex;
-    justify-content: center;
-}
-
-button{
-  color: whitesmoke;
-  background-color: #0a1d36;
-  border-color: #f4ce26 !important;
-  border-style:solid ; 
-  border-width: 3px;
-  font-size: 30px; 
+    gap: 5px;
+    justify-content: right;
 }
 
 .answers{
     display: flex;
-    /* flex-wrap: wrap; */
+    gap: 8px;
     justify-content: center;
 }
 
 .answers>div{
     width: 40%;
-    margin: 10px;
     background-color: rgb(255, 255, 255);
 }
 
+.answerCard {
+  padding: 5px 8px;
+}
+
 .qustion-grid{
-    padding: 0 50px 50px 50px;
+    /* padding: 0 50px 50px 50px; */
 }
 
 .example-list {

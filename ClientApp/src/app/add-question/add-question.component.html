@@ -6,13 +6,13 @@
 <div class="add-question-form">
   <form #addquestionForm="ngForm" (ngSubmit)="saveQuestion()">
     <mat-form-field >
-      <mat-label>Question</mat-label>
+      <mat-label>Pitanje</mat-label>
       <input matInput name="question" [(ngModel)]="question.text" required>
     </mat-form-field>
     <br>
     <div *ngFor="let answer of question.answers; let i = index">
       <mat-form-field appearance="outline">
-        <mat-label>Answer {{i+1}}</mat-label>
+        <mat-label>Odgovor {{i+1}}</mat-label>
         <input matInput [name]="'a'+i" [(ngModel)]="answer.text" required>
       </mat-form-field>
       <mat-slide-toggle name="isCorrect" color="primary" (click)="untoggleAllAnswers(i)"
@@ -20,8 +20,9 @@
       </mat-slide-toggle>
     </div>
     <div>
-      <app-button *ngIf="this.isNew" text="Add"></app-button>
-      <app-button *ngIf="!this.isNew" text="Edit"></app-button>
+      <app-button *ngIf="this.isNew" text="Dodaj"></app-button>
+      <app-button *ngIf="!this.isNew" text="Spremi"></app-button>
+      <app-button type="button" (click)="closeDialog()" text="Odustani" buttonStyle="secondary"></app-button>
     </div>
   </form>
 </div>

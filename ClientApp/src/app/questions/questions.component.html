@@ -1,5 +1,5 @@
 <div class="qustion-grid">
-  <div class="general-buttons-card" align="start">
+  <div class="general-buttons-card">
     <app-button text="Dodaj pitanje" (click)="openPostDialog()"></app-button>
     <app-button text="Dodaj pitanje iz baze" (click)="openQuestionLibraryDialog()"></app-button>
     <!-- <button class="general-buttons" mat-raised-button (click)="openQuestionLibraryDialog()">
@@ -14,27 +14,22 @@
         <mat-expansion-panel-header>
 
           <mat-panel-description>
-            <strong>{{question.text}}</strong>
+            <strong>{{i+1}}. {{question.text}}</strong>
           </mat-panel-description>
         </mat-expansion-panel-header>
 
         <div class="answers">
           <div *ngFor="let answer of question.answers let i = index">
-            <mat-card [ngStyle]="{background:answer.isCorrect===true ? 'rgb(153, 211, 153)' : '' }">
-              {{i+1+"."}}{{question.answers[i].text}}
+            <mat-card class="answerCard" [ngStyle]="{background:answer.isCorrect===true ? 'rgb(153, 211, 153)' : '' }">
+              {{question.answers[i].text}}
             </mat-card>
           </div>
         </div>
         <mat-action-row>
-          <button  mat-icon-button (click)="openPutDialog(question)">
-            <mat-icon class="icon-button">edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="deleteQuestionFromSet(question,i)">
-            <mat-icon class="icon-button">delete</mat-icon>
-          </button>
-          <button mat-icon-button (click)="listOfSetNamesExeptThisOne()" [matMenuTriggerFor]="menu">
-            <mat-icon class="icon-button">drive_file_move_outline</mat-icon>
-          </button>
+          <app-button-icon icon="edit" (click)="openPutDialog(question)"></app-button-icon>
+          <app-button-icon icon="delete" (click)="deleteQuestionFromSet(question,i)"></app-button-icon>
+          <app-button-icon icon="drive_file_move_outline" (click)="listOfSetNamesExeptThisOne()" [matMenuTriggerFor]="menu"></app-button-icon>
+
           <mat-menu #menu="matMenu">
             <span>Premjesti u:</span>
             <div *ngFor="let set of questionSetList; let i = index">
