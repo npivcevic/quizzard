@@ -1,31 +1,13 @@
 <div class="content" [hidden]="quizCreatorMode">
 <div>
-    <button mat-raised-button 
-            (click)="openPostQuizDialog()"
-            >Dodaj kviz</button>
+    <app-button text="Dodaj kviz"
+                (click)="openPostQuizDialog()">
+    </app-button>
 </div>
 
 <table mat-table [dataSource]="dataSource"
        multiTemplateDataRows 
        class="mat-elevation-z8">
-
-    <!-- Checkbox Column -->
-    <ng-container matColumnDef="select">
-      <th  mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()"
-                      [aria-label]="checkboxLabel()">
-        </mat-checkbox>
-      </th>
-      <td mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()"
-                      (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)"
-                      [aria-label]="checkboxLabel(row)">
-        </mat-checkbox>
-      </td>
-    </ng-container>
   
     <!-- Position Column -->
     <ng-container matColumnDef="name">
@@ -39,16 +21,11 @@
       <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
     </ng-container>
 
-   
-
-
     <ng-container matColumnDef="expand">
         <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
         <td mat-cell *matCellDef="let element">
-            <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-            <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-            <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-            </button>
+            <app-button-icon icon="keyboard_arrow_up" *ngIf="expandedElement == element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>
+            <app-button-icon icon="keyboard_arrow_down" *ngIf="expandedElement !== element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>                
         </td>
     </ng-container>
 
@@ -67,29 +44,16 @@
   <ng-container matColumnDef="delete">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
-        <button mat-icon-button 
-                (click)="deleteQuiz(element.quizId)">
-            <mat-icon>
-                delete
-            </mat-icon>
-        </button>
-        <button mat-icon-button
-                (click)="editQuiz(element)">
-          <mat-icon>
-            edit
-          </mat-icon>
-        </button>
-        <!-- <a class="nav-link text-light" [routerLink]="['/quizzes', element.quizId]">
-      edit
-      </a> -->
-
+        <app-button-icon icon="delete"
+                          (click)="deleteQuiz(element.quizId)">
+        </app-button-icon>
+        <app-button-icon (click)="editQuiz(element)">
+        </app-button-icon>
     </td>
   </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-    
-    >
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;">
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>

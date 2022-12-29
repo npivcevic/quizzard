@@ -15,8 +15,6 @@ import { QuestionSetService } from '../services/question-set.service';
 import { MatDialog } from '@angular/material/dialog';
 import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component';
 
-
-
 @Component({
   selector: 'app-quiz-host',
   templateUrl: './quiz-host.component.html',
@@ -38,7 +36,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   quizzes!: Quiz[]
   quizId!: string
 
-  displayedColumns: string[] = ['select', 'name', 'numberOfQuestions']
+  displayedColumns: string[] = ['name', 'numberOfQuestions']
   dataSource = new MatTableDataSource<Quiz>(this.quizzes);
   selection = new SelectionModel<Quiz>(true, []);
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
@@ -50,10 +48,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     MoveToNextQuestionWhenAllPlayersAnswered: this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
-  quiz = this.fb.group({
-    quizId: this.fb.control(this.quizId, [Validators.required]),
-    randomQuestions: this.fb.control(false)
-  })
+  // quiz = this.fb.group({
+  //   quizId: this.fb.control(this.quizId, [Validators.required]),
+  //   randomQuestions: this.fb.control(false)
+  // })
 
   constructor(
     public quizHostService: QuizHostService,
@@ -93,22 +91,19 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       })
   }
 
-  setQuizId(quizId: string, numberOfQuestions: number) {
-    if (this.quizId === quizId) {
-      this.quiz.patchValue({
-        quizId: ""
-      })
-      this.quizId = ""
-      return
-    }
-    if (numberOfQuestions === 0) {
-      return
-    }
-    this.quiz.patchValue({
-      quizId: quizId
-    })
-    this.quizId = quizId
-    this.selection.clear()
+  setQuizId(quiz: Quiz) {
+    if (this.quizId === quiz.quizId) 
+      {
+        console.log("im deselection", quiz.quizId)
+        this.quizId = ""
+        this.selection.clear()
+        return
+      }
+    if (this.quizId !== quiz.quizId) 
+      {
+        this.quizId = quiz.quizId
+        return
+      }
   }
 
   questionSetName(questionSetId: string) {
@@ -118,11 +113,11 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       })
   }
 
-  startQuiz() {
+  startQuiz(quizId:string) {
     if (!this.quizSetup.valid) {
       return
     }
-    this.quizHostService.startQuiz_(this.quizSettings, this.quizId)
+    this.quizHostService.startQuiz_(this.quizSettings, quizId)
     this.selection.clear();
 
     this.currentSpinnerText = "Preostalo vrijeme"

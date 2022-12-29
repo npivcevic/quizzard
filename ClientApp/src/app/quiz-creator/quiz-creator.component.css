@@ -31,6 +31,10 @@
     width: 20%;
 }
 
+.panel-title{
+  margin-top: 13px;
+}
+
 .description{
     width: 100%;
 }

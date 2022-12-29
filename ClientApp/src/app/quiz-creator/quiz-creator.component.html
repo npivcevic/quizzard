@@ -21,8 +21,10 @@
       class="quiz-exp-panel">
 
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          <h1>{{questionSetOrder(item.questionSetId)+1+'.'}} {{item.name}}</h1>
+        <mat-panel-title> 
+          <div class="panel-title">
+            <h1>{{questionSetOrder(item.questionSetId)+1+'.'}} {{item.name}}</h1>
+          </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <app-questions [questionSet]="item" [quiz]="quiz" [questionSetId]="item.questionSetId" [quizId]="quiz.quizId">

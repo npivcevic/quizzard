@@ -14,10 +14,9 @@
             <span class="groupname-clipboard">
                 <span *ngIf="!quizHostService.quizData.copyedToCLipboard;then copyBlock else doneBlock"></span>
                 <ng-template #copyBlock>
-                    <button class="groupname-clipboard-button" [cdkCopyToClipboard]="quizHostService.quizData.groupName"
-                        (click)="quizHostService.quizData.copyedToCLipboard=true">
-                        <mat-icon>content_copy</mat-icon>
-                    </button>
+                    <app-button-icon icon="content_copy" 
+                                    (click)="quizHostService.quizData.copyedToCLipboard=true"
+                                    [cdkCopyToClipboard]="quizHostService.quizData.groupName"></app-button-icon>
                 </ng-template>
                 <ng-template #doneBlock>
                     <mat-icon class="succesfull-groupname-copy">done_all</mat-icon>
@@ -56,26 +55,6 @@
                 <table mat-table [dataSource]="dataSource" 
                 multiTemplateDataRows 
                 class="mat-elevation-z8">
-
-                <!-- Checkbox Column -->
-            <ng-container matColumnDef="select">
-            <th  mat-header-cell *matHeaderCellDef>
-                <!-- <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()"
-                            [aria-label]="checkboxLabel()">
-                </mat-checkbox> -->
-            </th>
-            <td mat-cell *matCellDef="let row">
-                <mat-checkbox (click)="setQuizId(row.quizId, row.numberOfQuestions)"
-                            (change)="$event ? selection.toggle(row) : null"
-                            [checked]="selection.isSelected(row)"
-                            [disabled]="row.numberOfQuestions===0"
-                            [aria-label]="checkboxLabel(row)">
-                </mat-checkbox>
-            </td>
-            </ng-container>
-        
             <!-- Position Column -->
             <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Ime kviza </th>
@@ -94,10 +73,10 @@
             <ng-container matColumnDef="expand">
                 <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
                 <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-                    </button>
+                    <app-button-icon icon="keyboard_arrow_up" *ngIf="expandedElement == element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>
+                    <app-button-icon icon="keyboard_arrow_down" *ngIf="expandedElement !== element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>                
+                    <app-button-icon icon="play_arrow"
+                                    (click)="startQuiz(element.quizId)"></app-button-icon>
                 </td>
             </ng-container>
 
@@ -123,11 +102,9 @@
         </table>
 
         <div style="text-align: center;">
-            <app-button text="Pokreni kviz" (click)="startQuiz()"></app-button>
-            <button mat-icon-button 
-                    (click)="openQuizSettingsDialog()">
-                <mat-icon class="icon-button" >settings</mat-icon>
-                </button>
+            <app-button-icon icon="settings" 
+                            (click)="openQuizSettingsDialog()">
+            </app-button-icon>
         </div>                
             </ng-template>
 
@@ -165,7 +142,7 @@
 
             <ng-template #scoreBoardBlock>
                 <div style="text-align: center;">
-                    <button mat-raised-button style="width: 80%;height: 100px;" (click)="startQuiz()">Pokreni novi
+                    <button mat-raised-button style="width: 80%;height: 100px;">Pokreni novi nerad itrenutno
                         kviz</button>
                 </div>
             </ng-template>

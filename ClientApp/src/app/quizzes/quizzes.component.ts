@@ -36,7 +36,7 @@ export class QuizzesComponent implements OnInit {
   description!: string
   quizId!: string
 
-  displayedColumns: string[] = ['select', 'name', 'numberOfQuestions']
+  displayedColumns: string[] = ['name', 'numberOfQuestions']
   dataSource = new MatTableDataSource<Quiz>(this.quizzes);
   selection = new SelectionModel<Quiz>(true, []);
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand', 'delete'];
