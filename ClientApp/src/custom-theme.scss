@@ -11,7 +11,7 @@ $my-custom-level: mat.define-typography-level(
   $letter-spacing: normal,
 );
 
-$my-custom-typography: mat.define-legacy-typography-config(
+$my-custom-typography: mat.define-typography-config(
   $button:  $my-custom-level,
 );
 
@@ -23,8 +23,8 @@ $my-custom-typography: mat.define-legacy-typography-config(
 //  If you don't need the default component typographies but still want the hierarchy styles,
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy($my-custom-typography);`
-@include mat.all-legacy-component-typographies($my-custom-typography);
-@include mat.legacy-core();
+@include mat.all-component-typographies($my-custom-typography);
+@include mat.core();
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -53,5 +53,5 @@ $quizzard-theme: mat.define-light-theme((
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-legacy-component-themes($quizzard-theme);
+@include mat.all-component-themes($quizzard-theme);
 

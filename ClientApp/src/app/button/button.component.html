@@ -1,4 +1,2 @@
-<button class="button" 
-        mat-raised-button
-        (click)="clickEvent()"
-        >{{text}}</button>
+<button class="button" [class.secondary]="buttonStyle === 'secondary'" [attr.type]="type">
+        {{text}}</button>

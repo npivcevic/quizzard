@@ -69,7 +69,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.quizHostService.quizData.quizState.subscribe({
       next: (data) => this.quizStateChanged(data)
     })
-    this.quizservice.getQuizzes()
+    this.quizservice.getPublishedQuizzes()
       .subscribe(data => this.dataSource.data = data)
   }
 

@@ -1,13 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PutQuiz, Quiz } from '../model/quiz';
+import { Quiz } from '../model/quiz';
 import { QuizzesService } from '../services/quizzes.service';
 import { Router } from '@angular/router';
 import { QuestionSetService } from '../services/question-set.service';
 import { PostQuestionSet } from '../model/question-set';
-
-
+import { QuizStatuses } from '../model/QuizStatus';
 
 @Component({
   selector: 'app-add-quiz',
@@ -18,83 +17,88 @@ export class AddQuizComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Quiz,
     private router: Router,
-    public fb: UntypedFormBuilder,
+    public fb: FormBuilder,
     private questionsetservice: QuestionSetService,
-    private quizservice: QuizzesService,
+    private quizzesService: QuizzesService,
     private dialogRef: MatDialogRef<AddQuizComponent>) { }
 
   defaultQuestionSet: PostQuestionSet = {
-    name: "My First Question Set",
+    name: "Set 1",
     order: 0,
     questions: [],
     quizId: ""
   }
 
-  addQuizForm = this.fb.group({
-    name: this.fb.control('', [Validators.required]),
-    description: this.fb.control('')
+  quizForm = this.fb.group({
+    name: this.fb.nonNullable.control('', [Validators.required]),
+    description: this.fb.nonNullable.control(''),
+    status: this.fb.nonNullable.control(0, [Validators.required]),
+    publishDate: this.fb.control(new Date(Date.now()))
   })
 
-  putQuiz:PutQuiz = {
-    quizId:"",
-    name: "",
-    description:""
-  }
-
-  isNew!:boolean
+  isNew!: boolean
+  quizStatuses = QuizStatuses
 
   ngOnInit(): void {
-    if(this.data){
+    console.log('data')
+    console.log(this.data)
+    if (this.data) {
       this.isNew = false
-      this.addQuizForm.setValue({
+      this.quizForm.setValue({
         name: this.data.name,
-        description : this.data.description
+        description: this.data.description,
+        status: this.data.status,
+        publishDate: this.data.publishDate
       })
       return
     }
     this.isNew = true
   }
 
-  saveQuiz(): void {
-    if(!this.isNew){
-      this.quizservice.putQuiz(Object.assign(this.addQuizForm.value,{
-        quizId: this.data.quizId
-      }))
+  save(): void {
+    if (!this.isNew) {
+      this.updateQuiz()
+      return
+    }
+    this.createQuiz()
+  }
+
+  updateQuiz() {
+    this.quizzesService.putQuiz(Object.assign(this.quizForm.getRawValue(), {
+      quizId: this.data.quizId
+    }))
       .subscribe({
         error: (err) => {
           console.log(err)
         },
-        complete:() =>{
-          this.dialogRef.close()
+        complete: () => {
+          this.dialogRef.close("OK")
         }
       })
-    return
-    }
-    this.createQuiz(this.addQuizForm.value)
   }
 
-  createDeafulatQuestionSet(questionSet: PostQuestionSet) {
-    this.questionsetservice.postQuestionSet(questionSet)
+  createQuiz(): void {
+    this.quizzesService.postQuiz(this.quizForm.getRawValue())
       .subscribe({
         next: (result) => {
+          this.dialogRef.close(result)
+          this.defaultQuestionSet.quizId = result.quizId
+          this.createDeafulatQuestionSet()
+        }
+      })
+  }
+
+  createDeafulatQuestionSet() {
+    this.questionsetservice.postQuestionSet(this.defaultQuestionSet)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['quizzes', this.defaultQuestionSet.quizId])
           return
         }
       })
   }
 
-  createQuiz(quiz: Quiz): void {
-    this.quizservice.postQuiz(quiz)
-      .subscribe({
-        next: (result) => {
-          this.dialogRef.close(result)
-          this.defaultQuestionSet.quizId = result.quizId
-          this.createDeafulatQuestionSet(this.defaultQuestionSet)
-          this.router.navigate(['quizzes', result.quizId])
-        }
-      })
-  }
-
-  cancelAdding() {
+  closeDialog() {
     this.dialogRef.close()
   }
 }

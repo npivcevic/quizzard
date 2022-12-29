@@ -9,6 +9,7 @@ import { Quiz } from '../model/quiz';
 import { ActivatedRoute } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AddQuizComponent } from '../add-quiz/add-quiz.component';
+import { QuizStatusNameByKey } from '../model/QuizStatus';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class QuizCreatorComponent implements OnInit {
 
   quiz!: Quiz
   panelOpenState = true;
+  QuizStatusNameByKey = QuizStatusNameByKey;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -84,16 +86,14 @@ export class QuizCreatorComponent implements OnInit {
 
   openPutQuizDialog(): void {
     const dialog = this.dialog.open(AddQuizComponent, {
-      width: '90%',
-      data: {
-        quizId: this.quiz.quizId,
-        name: this.quiz.name,
-        description: this.quiz.description
-      }
+      data: this.quiz
     })
 
     dialog.afterClosed().subscribe({
       next: result => {
+        if (result !== "OK") {
+          return
+        }
         this.quizservice.getQuiz(this.quiz.quizId)
           .subscribe({
             next: (data) => {
@@ -138,7 +138,6 @@ export class QuizCreatorComponent implements OnInit {
 
   openPutQuestionSetDialog(questionSet: QuestionSet): void {
     const dialog = this.dialog.open(AddQuestionSetComponent, {
-      width: '50%',
       data: questionSet
     })
 
@@ -159,7 +158,6 @@ export class QuizCreatorComponent implements OnInit {
 
   openPostQuestionSetDialog(): void {
     const dialog = this.dialog.open(AddQuestionSetComponent, {
-      width: '50%',
       data : {
         quizId:this.quiz.quizId,
         order:this.quiz.questionSets.length

@@ -64,4 +64,8 @@ export class AddQuestionSetComponent implements OnInit {
     this.questionsetservice.putQuestionSet(questionSet)
       .subscribe(() => { this.dialogRef.close(questionSet) })
   }
+
+  closeDialog(): void {
+    this.dialogRef.close()
+  }
 }

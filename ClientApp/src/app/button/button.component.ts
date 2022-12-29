@@ -1,4 +1,4 @@
-import { Component, Input, Output,EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -7,11 +7,7 @@ import { Component, Input, Output,EventEmitter } from '@angular/core';
 })
 export class ButtonComponent {
 
-@Input() text!:string
-@Output() click  = new EventEmitter()
-
-
-clickEvent() {
-  this.click.emit("");
-}
+  @Input() text!: string
+  @Input() buttonStyle: string = 'primary'
+  @Input() type: string = 'submit'
 }

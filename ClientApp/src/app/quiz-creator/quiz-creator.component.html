@@ -1,16 +1,20 @@
 <div class="content" *ngIf="this.quiz">
-<div>
-  {{'Quiz ID : '+quiz.quizId}}
-  <br>
-  {{'Ime kviza : ' + quiz.name}}
-  <br>
-  {{'Opis kviza : ' + quiz.description}}
+<div class="quizInfo">
+  <div class="quizInfoColumn">
+    <div class="quizInfoHeader">{{'Ime kviza : ' + quiz.name}}</div>
+    <div>{{'Opis kviza : ' + quiz.description}}</div>
+    <div>{{'Quiz ID : '+quiz.quizId}}</div>
+  </div>
+  <div class="quizInfoColumn">
+    <div>{{'Status : ' + QuizStatusNameByKey(quiz.status)}}</div>
+    <div>{{'Datum objave : ' + quiz.publishDate}}</div>
+    <app-button text="Uredi" (click)="openPutQuizDialog()"></app-button>
+  </div>
 </div>
-<app-button text="Promijeni" (click)="openPutQuizDialog()"></app-button>
 
-<mat-divider></mat-divider>
-
-<app-button text="Novi Set" (click)="openPostQuestionSetDialog()"></app-button>
+<div class="buttonAddSetWrapper">
+  <app-button class="buttonAddSet" text="Novi Set" (click)="openPostQuestionSetDialog()"></app-button>
+</div>
 
 <mat-divider></mat-divider>
 
