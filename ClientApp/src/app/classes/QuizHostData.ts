@@ -127,6 +127,7 @@ export class QuizHostData {
 
 export enum QuizState {
     Idle,
+    QuizPreview,
     QuestionShowing,
     AnswersShowing
 }

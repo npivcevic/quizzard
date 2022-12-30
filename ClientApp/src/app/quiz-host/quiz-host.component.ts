@@ -14,6 +14,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { QuestionSetService } from '../services/question-set.service';
 import { MatDialog } from '@angular/material/dialog';
 import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component';
+import { QuizCreatorComponent } from '../quiz-creator/quiz-creator.component';
 
 @Component({
   selector: 'app-quiz-host',
@@ -113,6 +114,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       })
   }
 
+  previewQuiz(quizId:string){
+    this.quizHostService.previewQuiz(quizId)
+  }
+
   startQuiz(quizId:string) {
     if (!this.quizSetup.valid) {
       return
@@ -147,6 +152,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   isShowingAnswers() {
     return this.quizHostService.quizData.quizState.getValue() === QuizState.AnswersShowing
+  }
+
+  isQuizPreview() {
+    return this.quizHostService.quizData.quizState.getValue() === QuizState.QuizPreview
   }
 
   isShowingQuestion() {

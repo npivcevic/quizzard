@@ -1,23 +1,25 @@
-<div class="close-dialog-button">
-    <button (click)="closeDialog()" mat-icon-button>
-      <mat-icon class="icon-button">close</mat-icon>
-    </button>
+<div class="dialog-content">
+    <form [formGroup]="quizSetup">
+        <mat-form-field appearance="fill">
+            <mat-label>Vrijeme za odgovor</mat-label>
+            <input matInput formControlName="totalTimePerQuestion" type="number">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Vrijeme između pitanja</mat-label>
+            <input matInput formControlName="nextQuestionDelay" type="number">
+        </mat-form-field>
+        <br>
+        <mat-checkbox formControlName="MoveToNextQuestionWhenAllPlayersAnswered">Slijedeće pitanje kad svi
+            igraci odgovore</mat-checkbox>
+        <br>
+        <app-button text="Spremi postavke" 
+                    (click)="saveSettings()">
+        </app-button>
+        <app-button type="button" 
+                    (click)="closeDialog()" 
+                    text="Odustani" 
+                    buttonStyle="secondary">
+        </app-button>
+    </form>
 </div>
-<form [formGroup]="quizSetup">
-    <mat-form-field appearance="fill">
-        <mat-label>Vrijeme za odgovor</mat-label>
-        <input matInput formControlName="totalTimePerQuestion" type="number">
-    </mat-form-field>
-    <br>
-    <mat-form-field appearance="outline">
-        <mat-label>Vrijeme između pitanja</mat-label>
-        <input matInput formControlName="nextQuestionDelay" type="number">
-    </mat-form-field>
-    <br>
-    <mat-checkbox formControlName="MoveToNextQuestionWhenAllPlayersAnswered">Slijedeće pitanje kad svi
-        igraci odgovore</mat-checkbox>
-    <br>
-    <button mat-stroked-button (click)="closeDialog()">
-        Spremi postavke
-    </button>
-</form>

@@ -16,7 +16,8 @@
                 <ng-template #copyBlock>
                     <app-button-icon icon="content_copy" 
                                     (click)="quizHostService.quizData.copyedToCLipboard=true"
-                                    [cdkCopyToClipboard]="quizHostService.quizData.groupName"></app-button-icon>
+                                    [cdkCopyToClipboard]="quizHostService.quizData.groupName">
+                    </app-button-icon>
                 </ng-template>
                 <ng-template #doneBlock>
                     <mat-icon class="succesfull-groupname-copy">done_all</mat-icon>
@@ -76,7 +77,7 @@
                     <app-button-icon icon="keyboard_arrow_up" *ngIf="expandedElement == element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>
                     <app-button-icon icon="keyboard_arrow_down" *ngIf="expandedElement !== element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>                
                     <app-button-icon icon="play_arrow"
-                                    (click)="startQuiz(element.quizId)"></app-button-icon>
+                                    (click)="previewQuiz(element.quizId)"></app-button-icon>
                 </td>
             </ng-container>
 
@@ -99,18 +100,32 @@
             >
             </tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-        </table>
-
-        <div style="text-align: center;">
-            <app-button-icon icon="settings" 
-                            (click)="openQuizSettingsDialog()">
-            </app-button-icon>
-        </div>                
+        </table>              
             </ng-template>
 
+            <div *ngIf="isQuizPreview(); then previewBlock"></div>
+            <ng-template #previewBlock>
+                <div class="preview-page">
+                    <div class="quiz-preview">
+                        <app-quiz-preview [quiz]="quizHostService.quizData.quiz" ></app-quiz-preview>
+                        <app-button text="Pokreni kviz" 
+                                    (click)="startQuiz(quizHostService.quizData.quiz.quizId)">
+                        </app-button>
+                        <app-button text="Odustani"
+                                    (click)="quizHostService.backFromPreview()"
+                                    buttonStyle="secondary">
+                        </app-button>
+                    </div>
+                    <div class="quiz-settings">
+                        <app-button-icon icon="settings" 
+                                (click)="openQuizSettingsDialog()">
+                        </app-button-icon>
+                    </div>
+                </div>
+            </ng-template>
             
 
-            <div *ngIf="!isIdle(); then questionBlock"></div>
+            <div *ngIf="!isIdle() && !isQuizPreview(); then questionBlock"></div>
 
             <ng-template #questionBlock>
                 <div style="text-align: left;">

@@ -267,3 +267,12 @@ table {
   .example-element-description-attribution {
     opacity: 0.5;
   }
+
+  .preview-page{
+    display: flex;
+    align-items: stretch;
+  }
+
+  .quiz-preview{
+    flex-grow: 8;
+  }

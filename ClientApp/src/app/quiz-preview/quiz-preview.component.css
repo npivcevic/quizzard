@@ -1,0 +1,43 @@
+.quizInfo {
+    border: solid 1px black;
+    border-radius: 1px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.quizInfoColumn {
+    width: 50%;
+    padding: 5px;
+    display: inline-block;
+}
+.quizInfoHeader {
+    font-size: 22px;
+}
+
+.quiz-sets{
+    padding: 5px;
+    margin: 5px;
+}
+
+.question-set-name{
+    background-color: whitesmoke;
+    text-align: center;
+}
+
+.question-set{
+    border: solid;
+}
+
+.question-card{
+    margin: 10px 0;
+}
+
+.question-text{
+    margin: 5px;
+    font-size: 22px;
+}
+
+.answer{
+    margin: 0 10px;
+    font-size: 17.5px;
+}

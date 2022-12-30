@@ -1,0 +1,43 @@
+<div class="quiz-preview">
+
+    <div class="quizInfo">
+        <div class="quizInfoColumn">
+          <div class="quizInfoHeader">{{'Ime kviza : ' + quiz.name}}</div>
+          <div>{{'Opis kviza : ' + quiz.description}}</div>
+          <div>{{'Datum objave : ' + quiz.publishDate}}</div>
+          <div>{{'Quiz ID : '+quiz.quizId}}</div>
+        </div>
+    </div>
+
+
+    <div *ngFor="let set of quiz.questionSets">
+        <mat-accordion >
+            <mat-expansion-panel class="question-set" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{set.name}}
+                </mat-panel-title>
+                <mat-panel-description>
+                  Number of questions : {{set.questions.length}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-card class="question-card" *ngFor="let question of set.questions, index as i">
+                <mat-card-header>
+                  <div class="question-text">
+                    {{i+1+"."}}{{question.text}}
+                  </div>
+                </mat-card-header>
+                <mat-divider></mat-divider>
+                <mat-card-content style="display: flex;">
+                    <div class="answer" 
+                          [ngStyle]="{background:answer.isCorrect===true ? 'rgb(153, 211, 153)' : '' }" 
+                          *ngFor="let answer of question.answers, index as i">
+                          {{getLetter(i) + ": "}}{{answer.text}}
+                    </div>
+                </mat-card-content>
+                <mat-divider></mat-divider>
+                </mat-card>
+            </mat-expansion-panel>
+          </mat-accordion>
+    </div>
+</div>  

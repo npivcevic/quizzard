@@ -38,7 +38,6 @@ export class QuizzesComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'numberOfQuestions']
   dataSource = new MatTableDataSource<Quiz>(this.quizzes);
-  selection = new SelectionModel<Quiz>(true, []);
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand', 'delete'];
   expandedElement!: Quiz | null;
 
@@ -102,32 +101,5 @@ export class QuizzesComponent implements OnInit {
 
   openSnackBar(message: string, duration: number = 2000): void {
     this.snack.open(message, "", { duration: duration });
-  }
-
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-
-      return;
-    }
-
-    this.selection.select(...this.dataSource.data);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: Quiz): string {
-    if (!row) {
-
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.name + 1}`;
   }
 }

@@ -32,6 +32,7 @@ import { QuestionLibraryComponent } from './question-library/question-library.co
 import { QuizSettingsComponent } from './quiz-settings/quiz-settings.component';
 import { ButtonComponent } from './button/button.component';
 import { ButtonIconComponent } from './button-icon/button-icon.component';
+import { QuizPreviewComponent } from './quiz-preview/quiz-preview.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ButtonIconComponent } from './button-icon/button-icon.component';
     QuizSettingsComponent,
     ButtonComponent,
     ButtonIconComponent,
+    QuizPreviewComponent,
   ],
   imports: [
     ClipboardModule,
@@ -71,12 +73,11 @@ import { ButtonIconComponent } from './button-icon/button-icon.component';
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quizzes', component: QuizzesComponent },
       { path: 'quizzes/:id', component: QuizCreatorComponent }
-
     ]),
     BrowserAnimationsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

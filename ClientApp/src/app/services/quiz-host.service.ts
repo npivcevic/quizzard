@@ -36,9 +36,11 @@ export class QuizHostService {
   //     })
   // }
 
-  startQuiz_(quizSettings: QuizSettings, quizId: string) {
-    this.quizSettings = quizSettings
-    console.log("from start quiz",this.quizSettings)
+  backFromPreview(){
+    this.quizData.quizState.next(QuizState.Idle)
+  }
+
+  previewQuiz(quizId: string){
     this.quizservice.getQuiz(quizId)
       .subscribe(data => {
         this.quizData.reset();
@@ -46,8 +48,13 @@ export class QuizHostService {
         this.quizData.quiz.questionSets = data.questionSets
         this.quizData.currentQuestionSet = data.questionSets[this.quizData.currentQuestionSetIndex]
         this.quizData.questions = data.questionSets[this.quizData.currentQuestionSetIndex].questions
-        this.nextQuestion();
+        this.quizData.quizState.next(QuizState.QuizPreview)
       })
+  }
+
+  startQuiz_(quizSettings: QuizSettings, quizId: string) {
+    this.quizSettings = quizSettings
+    this.nextQuestion();
   }
 
   nextQuestion() {

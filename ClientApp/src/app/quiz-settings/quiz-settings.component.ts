@@ -29,16 +29,10 @@ export class QuizSettingsComponent implements OnInit {
   }
 
   closeDialog(){
-    if(this.quizSetup.dirty){
-      console.log("SAving")
-      this.saveSettings()
-      return
-    }
     this.dialogRef.close()
   }
 
   saveSettings() {
     this.dialogRef.close(this.quizSetup.value)
-    console.log(this.quizSetup.dirty)
   }
 }
