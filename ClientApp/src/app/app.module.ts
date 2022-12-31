@@ -33,6 +33,7 @@ import { QuizSettingsComponent } from './quiz-settings/quiz-settings.component';
 import { ButtonComponent } from './button/button.component';
 import { ButtonIconComponent } from './button-icon/button-icon.component';
 import { QuizPreviewComponent } from './quiz-preview/quiz-preview.component';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { QuizPreviewComponent } from './quiz-preview/quiz-preview.component';
     ButtonComponent,
     ButtonIconComponent,
     QuizPreviewComponent,
+    DialogComponent,
   ],
   imports: [
     ClipboardModule,

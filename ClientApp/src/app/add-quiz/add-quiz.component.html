@@ -1,20 +1,22 @@
-<form [formGroup]="quizForm" (ngSubmit)="save()" class="add-quiz">
-    <mat-form-field appearance="fill">
-        <mat-label>Ime</mat-label>
-        <input matInput formControlName="name">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>Opis</mat-label>
-        <textarea matInput formControlName="description"></textarea>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>Status</mat-label>
-        <mat-select formControlName="status">
-            <mat-option *ngFor="let option of quizStatuses" [value]="option.key">
-                {{option.value}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <app-button type="submit" [text]="isNew ? 'Dodaj kviz' : 'Spremi'"></app-button>
-    <app-button type="button" (click)="closeDialog()" text="Odustani" buttonStyle="secondary"></app-button>
-</form>
+<app-dialog [title]="isNew ? 'Dodaj kviz' : 'Uredi kviz'">
+    <form [formGroup]="quizForm" (ngSubmit)="save()" class="add-quiz">
+        <mat-form-field appearance="fill">
+            <mat-label>Ime</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Opis</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+                <mat-option *ngFor="let option of quizStatuses" [value]="option.key">
+                    {{option.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <app-button type="submit" [text]="isNew ? 'Dodaj kviz' : 'Spremi'"></app-button>
+        <app-button type="button" (click)="closeDialog()" text="Odustani" buttonStyle="secondary"></app-button>
+    </form>
+</app-dialog>

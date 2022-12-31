@@ -1,4 +1,5 @@
-<div>
+<app-dialog title="Odaberi pitanja za kviz">
+  <div>
     <button mat-stroked-button
             (click)="addQuestionsToQuestionSet(questionSetId)">Dodaj</button>
 </div>
@@ -81,3 +82,4 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
   </div>
+</app-dialog>
