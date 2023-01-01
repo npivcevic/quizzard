@@ -41,3 +41,25 @@
     margin: 0 10px;
     font-size: 17.5px;
 }
+
+.sets-table{
+    display: flex;
+}
+
+.set-row{
+    width: 100%;
+    background-color: whitesmoke;
+}
+
+.number-of-questions{
+    margin-right: auto;
+}
+
+
+tr.mat-mdc-footer-row td {
+    font-weight: bold;
+  } 
+
+  tr.mat-mdc-footer-row  {
+    border-top: solid;
+  }
