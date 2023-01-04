@@ -1,0 +1,10 @@
+<app-dialog [title]="isNew ? 'Dodaj set' : 'Uredi set'">
+  <form class="add-question-set" [formGroup]="questionSetForm" (ngSubmit)="saveQuestionSet(questionSetForm.value)">
+    <mat-form-field appearance="fill">
+      <mat-label>Ime seta</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <app-button [text]="this.isNew ? 'Dodaj' : 'Promijeni'"></app-button>
+    <app-button type="button" (click)="closeDialog()" text="Odustani" buttonStyle="secondary"></app-button>
+  </form>
+</app-dialog>

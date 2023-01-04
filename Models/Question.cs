@@ -9,10 +9,15 @@ public class Question
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
-    public Guid ID { get; set; }
+    public Guid QuestionId { get; set; }
 
     [Required]
     public string Text { get; set; } = "";
 
-    public List<Answer> Answers {get; set;} = new List<Answer>();
+    public int Order { get; set; } = 0;
+
+    public List<Answer> Answers { get; set; } = new List<Answer>();
+    
+    public Guid? QuestionSetId { get; set; }
+    public QuestionSet? QuestionSet { get; set; }
 }

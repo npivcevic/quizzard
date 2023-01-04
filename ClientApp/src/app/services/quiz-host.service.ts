@@ -4,6 +4,7 @@ import { Player } from '../classes/Player';
 import { QuestionService } from '../question.service';
 import { QuizHostData, QuizState } from '../classes/QuizHostData';
 import { QuizSettings } from '../model/QuizSettings';
+import { QuizzesService } from './quizzes.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class QuizHostService {
   public quizData!: QuizHostData
   public quizSettings!: QuizSettings
 
-  constructor(public signalRService: SignalrService, public questionservice: QuestionService) { }
+  constructor(public signalRService: SignalrService,
+    public questionservice: QuestionService,
+    public quizservice: QuizzesService) { }
 
   public async initialize() {
     this.quizData = new QuizHostData()
@@ -23,18 +26,46 @@ export class QuizHostService {
     })
   }
 
-  startQuiz(quizSettings: QuizSettings) {
-    this.quizSettings = quizSettings
-    this.questionservice.getRandomQuestions(this.quizSettings.numberOfQuestions)
+  // startQuiz(quizSettings: QuizSettings, quizId:string) {
+  //   this.quizSettings = quizSettings
+  //   this.questionservice.getRandomQuestions(this.quizSettings.numberOfQuestions)
+  //     .subscribe(data => {
+  //       this.quizData.reset();
+  //       this.quizData.questions = data
+  //       this.nextQuestion();
+  //     })
+  // }
+
+  backFromPreview(){
+    this.quizData.quizState.next(QuizState.Idle)
+  }
+
+  previewQuiz(quizId: string){
+    this.quizservice.getQuiz(quizId)
       .subscribe(data => {
         this.quizData.reset();
-        this.quizData.questions = data
-        this.nextQuestion();
+        this.quizData.quiz = data
+        this.quizData.quiz.questionSets = data.questionSets
+        this.quizData.currentQuestionSet = data.questionSets[this.quizData.currentQuestionSetIndex]
+        this.quizData.questions = data.questionSets[this.quizData.currentQuestionSetIndex].questions
+        this.quizData.quizState.next(QuizState.QuizPreview)
       })
   }
 
+  startQuiz_(quizSettings: QuizSettings, quizId: string) {
+    this.quizSettings = quizSettings
+    this.nextQuestion();
+  }
+
   nextQuestion() {
-    if (this.quizData.isLastQuestion()) {
+    if (this.quizData.isLastQuestion() && !this.quizData.isLastQuestionSet()) {
+      this.quizData.nextQuestionSet()
+      this.quizData.nextQuestion()
+      this.sendQuestiontoGroup()
+      return
+    }
+
+    if (this.quizData.isLastQuestion() && this.quizData.isLastQuestionSet()) {
       this.quizEnd()
       return
     }
@@ -92,7 +123,7 @@ export class QuizHostService {
     const data = {
       action: "CorrectAnswer",
       data: {
-        correctAnswerId: this.quizData.getCorrectAnswerToCurrentQuestion()?.id,
+        correctAnswerId: this.quizData.getCorrectAnswerToCurrentQuestion()?.answerId,
         spinnerText: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
         spinnerTimer: this.quizSettings.nextQuestionDelay
       }

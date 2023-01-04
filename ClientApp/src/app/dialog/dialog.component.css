@@ -1,0 +1,22 @@
+.header{
+    height: 50px;
+    width: 100%;
+    background-color: #0a1d36 ;
+    display: flex;
+}
+
+.content{
+    padding: 10px;
+}
+
+.close-button{
+    margin-left: auto;
+}
+
+.title{
+    align-self: flex-start;
+    align-self: center;
+    padding-left: 20px;
+    font-size: 20px;
+    color: aliceblue;
+}
