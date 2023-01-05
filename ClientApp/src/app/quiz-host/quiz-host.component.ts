@@ -46,7 +46,8 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   quizSetup = this.fb.group({
     totalTimePerQuestion: this.fb.control(this.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
     nextQuestionDelay: this.fb.control(this.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
-    MoveToNextQuestionWhenAllPlayersAnswered: this.fb.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
+
+    MoveToNextQuestionWhenAllPlayersAnswered : this.fb.nonNullable.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
   // quiz = this.fb.group({
@@ -125,6 +126,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.quizHostService.startQuiz_(this.quizSettings, quizId)
     this.selection.clear();
 
+
     this.currentSpinnerText = "Preostalo vrijeme"
     this.currentSpinnerTimeout = this.quizSettings.totalTimePerQuestion
   }
@@ -175,7 +177,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       return player.hasAnswered(this.quizHostService.quizData.currentQuestion.questionId) ? "answered" : ""
     }
 
-    if (!player.hasAnswered(this.quizHostService.quizData.currentQuestion.questionId)) {
+    if (!player.hasAnswered(this.quizHostService.quizData.currentQuestion?.questionId)) {
       return ""
     }
 
