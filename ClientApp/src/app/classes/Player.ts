@@ -59,8 +59,8 @@ export class Player {
 
     getQuizReviewBoard(questions: Question[]) {
         return questions.map(q => {
-            const submitedAnswer = this.getSubmittedAnswer(q.id)
-            const answer = q.answers.find(a => a.id === submitedAnswer?.answerId)
+            const submitedAnswer = this.getSubmittedAnswer(q.questionId)
+            const answer = q.answers.find(a => a.answerId === submitedAnswer?.answerId)
             const correctAnswer = q.answers.find(a => a.isCorrect === true)
 
             return {
@@ -71,5 +71,4 @@ export class Player {
             }
         })
     }
-
 }

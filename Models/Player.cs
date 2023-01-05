@@ -17,11 +17,13 @@ public class Player
         this.isActive = true;
     }
 
-    public void Deactivate() {
+    public void Deactivate()
+    {
         this.isActive = false;
     }
 
-    public void Reconnect(String newConnectionId) {
+    public void Reconnect(String newConnectionId)
+    {
         this.connectionId = newConnectionId;
         this.isActive = true;
     }

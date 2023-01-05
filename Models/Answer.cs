@@ -9,7 +9,7 @@ public class Answer
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
-    public Guid ID { get; set; }
+    public Guid AnswerId { get; set; }
 
     [Required]
     public string Text { get; set; } = "";

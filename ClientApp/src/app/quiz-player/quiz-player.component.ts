@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuizPlayerState } from '../classes/QuizPlayerData';
 import { QuizPlayerService } from '../services/quiz-player.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { letterFromIndex } from '../utils/letterFromIndex';
 import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,7 +19,7 @@ export class QuizPlayerComponent implements OnInit {
     playerName: this.fb.control(localStorage.getItem('playerName') || "", [Validators.required, Validators.minLength(2), Validators.maxLength(25)])
   })
 
-  constructor(public quizPlayerService: QuizPlayerService, public dialog: MatDialog, public fb: FormBuilder) { }
+  constructor(public quizPlayerService: QuizPlayerService, public dialog: MatDialog, public fb: UntypedFormBuilder) { }
 
   async ngOnInit() {
     await this.quizPlayerService.initialize();
@@ -29,13 +29,6 @@ export class QuizPlayerComponent implements OnInit {
       })
     }
   }
-
-  private uppercase(x:string){
-
-    
-
-  }
-
   public openPlayerScoreDetails(details: PlayerScore[]) {
     const dialog = this.dialog.open(ScoreboardComponent, {
       data: details,
@@ -91,6 +84,7 @@ export class QuizPlayerComponent implements OnInit {
   }
 
   public sendAnswerToHost(id?: string) {
+    console.log(id)
     this.quizPlayerService.questionAnswered(id!)
   }
 

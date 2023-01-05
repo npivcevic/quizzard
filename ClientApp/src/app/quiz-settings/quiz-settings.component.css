@@ -1,0 +1,11 @@
+.close-dialog-button{
+    text-align: end;
+}
+
+.dialog-content{
+    padding: 10px;
+}
+
+mat-form-field{
+    width: 100%;
+}

@@ -1,33 +1,46 @@
 <div class="qustion-grid">
-  <mat-card class="general-buttons-card" align="start">
-    <button class="general-buttons" color="primary" mat-raised-button (click)="openPostDialog()">Add Question
-      No.{{questions.length+1}}</button>
-  </mat-card>
+  <div class="general-buttons-card">
+    <app-button text="Dodaj pitanje" (click)="openPostDialog()"></app-button>
+    <app-button text="Dodaj pitanje iz baze" (click)="openQuestionLibraryDialog()"></app-button>
+    <!-- <button class="general-buttons" mat-raised-button (click)="openQuestionLibraryDialog()">
+      Dodaj pitanje iz baze
+    </button> -->
+  </div>
   <br>
-  <div *ngFor="let question of questions; let i = index">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-  
-        <mat-panel-description>
-          <strong>{{question.text}}</strong>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-  
-      <div class="answers">
-        <div *ngFor="let answer of question.answers let i = index">
-          <mat-card [ngStyle]="{background:answer.isCorrect===true ? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)' }">
-            {{question.answers[i].text}}
-          </mat-card>
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let question of questions; let i = index" cdkDrag>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+
+          <mat-panel-description>
+            <strong>{{i+1}}. {{question.text}}</strong>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="answers">
+          <div *ngFor="let answer of question.answers let i = index">
+            <mat-card class="answerCard" [ngStyle]="{background:answer.isCorrect===true ? 'rgb(153, 211, 153)' : '' }">
+              {{question.answers[i].text}}
+            </mat-card>
+          </div>
         </div>
-      </div>
-      <mat-action-row>
-        <button mat-icon-button color="primary" (click)="openPutDialog(question)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="primary" (click)="deleteQuestion(question.id,i)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-action-row>
-    </mat-expansion-panel>
+        <mat-action-row>
+          <app-button-icon icon="edit" (click)="openPutDialog(question)"></app-button-icon>
+          <app-button-icon icon="delete" (click)="deleteQuestionFromSet(question,i)"></app-button-icon>
+          <app-button-icon icon="drive_file_move_outline" (click)="listOfSetNamesExeptThisOne()" [matMenuTriggerFor]="menu"></app-button-icon>
+
+          <mat-menu #menu="matMenu">
+            <span>Premjesti u:</span>
+            <div *ngFor="let set of questionSetList; let i = index">
+              <button class="menu-item" mat-menu-item (click)="moveQuestionToAnotherSet(question, set.questionSetId)">
+                {{set.name}}
+              </button>
+            </div>
+          </mat-menu>
+
+        </mat-action-row>
+      </mat-expansion-panel>
+    </div>
   </div>
 </div>

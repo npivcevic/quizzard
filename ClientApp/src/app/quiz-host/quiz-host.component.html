@@ -14,10 +14,10 @@
             <span class="groupname-clipboard">
                 <span *ngIf="!quizHostService.quizData.copyedToCLipboard;then copyBlock else doneBlock"></span>
                 <ng-template #copyBlock>
-                    <button class="groupname-clipboard-button" [cdkCopyToClipboard]="quizHostService.quizData.groupName"
-                        (click)="quizHostService.quizData.copyedToCLipboard=true">
-                        <mat-icon>content_copy</mat-icon>
-                    </button>
+                    <app-button-icon icon="content_copy" 
+                                    (click)="quizHostService.quizData.copyedToCLipboard=true"
+                                    [cdkCopyToClipboard]="quizHostService.quizData.groupName">
+                    </app-button-icon>
                 </ng-template>
                 <ng-template #doneBlock>
                     <mat-icon class="succesfull-groupname-copy">done_all</mat-icon>
@@ -53,35 +53,79 @@
             <div *ngIf="isIdle(); then startQuizButtonBlock"></div>
 
             <ng-template [formGroup]="quizSetup" #startQuizButtonBlock>
-                <mat-form-field appearance="outline">
-                    <mat-label>Broj pitanja</mat-label>
-                    <input matInput formControlName="numberOfQuestions" type="number">
-                </mat-form-field>
-                <br>
-                <mat-form-field appearance="outline">
-                    <mat-label>Vrijeme za odgovor</mat-label>
-                    <input matInput formControlName="totalTimePerQuestion" type="number">
-                </mat-form-field>
-                <br>
-                <mat-form-field appearance="outline">
-                    <mat-label>Vrijeme između pitanja</mat-label>
-                    <input matInput formControlName="nextQuestionDelay" type="number">
-                </mat-form-field>
-                <br>
-                <mat-checkbox formControlName="MoveToNextQuestionWhenAllPlayersAnswered">Slijedeće pitanje kad svi
-                    igraci odgovore</mat-checkbox>
-                <br>
-                
+                <table mat-table [dataSource]="dataSource" 
+                multiTemplateDataRows 
+                class="mat-elevation-z8">
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Ime kviza </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+        
+            <!-- Name Column -->
+            <ng-container matColumnDef="numberOfQuestions">
+            <th mat-header-cell *matHeaderCellDef> Broj Pitanja </th>
+            <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
+            </ng-container>
 
-                <div style="text-align: center;">
-                    <button (click)="startQuiz()" type="submit" style="width: 80%;height: 100px;" mat-raised-button
-                        [disabled]="!quizSetup.valid">Pokreni Kviz</button>
+        
+
+
+            <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                    <app-button-icon icon="keyboard_arrow_up" *ngIf="expandedElement == element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>
+                    <app-button-icon icon="keyboard_arrow_down" *ngIf="expandedElement !== element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>                
+                    <app-button-icon icon="play_arrow"
+                                    (click)="previewQuiz(element.quizId)"></app-button-icon>
+                </td>
+            </ng-container>
+
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+            <div class="example-element-detail"
+                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="example-element-description">
+                {{element.description}}
                 </div>
+            </div>
+            </td>
+        </ng-container>
+
+        
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+            
+            >
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>              
             </ng-template>
 
+            <div *ngIf="isQuizPreview(); then previewBlock"></div>
+            <ng-template #previewBlock>
+                <div class="preview-page">
+                    <div class="quiz-preview">
+                        <app-quiz-preview [quiz]="quizHostService.quizData.quiz" ></app-quiz-preview>
+                        <app-button text="Pokreni kviz" 
+                                    (click)="startQuiz(quizHostService.quizData.quiz.quizId)">
+                        </app-button>
+                        <app-button text="Odustani"
+                                    (click)="quizHostService.backFromPreview()"
+                                    buttonStyle="secondary">
+                        </app-button>
+                    </div>
+                    <div class="quiz-settings">
+                        <app-button-icon icon="settings" 
+                                (click)="openQuizSettingsDialog()">
+                        </app-button-icon>
+                    </div>
+                </div>
+            </ng-template>
             
 
-            <div *ngIf="!isIdle(); then questionBlock"></div>
+            <div *ngIf="!isIdle() && !isQuizPreview(); then questionBlock"></div>
 
             <ng-template #questionBlock>
                 <div style="text-align: left;">
@@ -89,6 +133,8 @@
                     <div class="questionTitleCard">
                         <div class="questionText">
                             <div class="questionNumber">
+                                Set pitanja : {{quizHostService.quizData.currentQuestionSet.name}}
+                                <br>
                                 Pitanje {{quizHostService.quizData.currentQuestionIndex + 1}}
                                 od {{quizHostService.quizData.questions.length}}
                             </div>
@@ -111,7 +157,7 @@
 
             <ng-template #scoreBoardBlock>
                 <div style="text-align: center;">
-                    <button mat-raised-button style="width: 80%;height: 100px;" (click)="startQuiz()">Pokreni novi
+                    <button mat-raised-button style="width: 80%;height: 100px;">Pokreni novi nerad itrenutno
                         kviz</button>
                 </div>
             </ng-template>

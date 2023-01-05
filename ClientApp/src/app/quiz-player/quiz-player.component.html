@@ -12,12 +12,13 @@
 
     <div *ngIf="isDisconnected()" class="container" [formGroup]="logInForm">
         <fieldset [disabled]="quizPlayerService.quizData.reconnectPossible">
-            <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
-                <input style="text-transform: uppercase;" matInput placeholder="Unesi kod" formControlName="groupName">
+            <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
+                <input matInput style="width: 100%; text-align: center;" placeholder="Unesi kod" formControlName="groupName">
             </mat-form-field>
             <br />
-            <mat-form-field style="width: 100%; text-align: center;" appearance="standard">
-                <input matInput placeholder="Unesi ime" formControlName="playerName">
+            <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
+                <input matInput style="width: 100%; text-align: center;" placeholder="Unesi ime" formControlName="playerName">
+
             </mat-form-field>
             <br />
         </fieldset>
@@ -74,8 +75,8 @@
         <div class="answerList">
             <div *ngFor="let answer of quizPlayerService.quizData.currentQuestion.answers; let i = index"
                 class="answer-wrapper">
-                <button class="answer-button" [class]="answerStyle(answer.id!)" mat-stroked-button
-                    [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost(answer.id)">
+                <button class="answer-button" [class]="answerStyle(answer.answerId!)" mat-stroked-button
+                    [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost(answer.answerId)">
                     <span class="answer-letter">{{getLetter(i)}}:</span> {{answer.text}}
                 </button>
             </div>

@@ -3,14 +3,20 @@ import { Player } from "../classes/Player";
 import { Answer } from "../model/answer";
 import { Question } from "../model/question";
 import { ScoreboardRow } from "../model/scoreboard-row";
+import { QuestionSet } from "../model/question-set";
+import { Quiz } from "../model/quiz";
 
 export class QuizHostData {
 
     groupName: string = ""
     players: Player[] = []
+    quiz!: Quiz
+    questionSets: QuestionSet[] = []
+    currentQuestionSet!: QuestionSet
+    currentQuestionSetIndex: number = 0
     questions: Question[] = []
     quizState: BehaviorSubject<QuizState> = new BehaviorSubject<QuizState>(QuizState.Idle)
-    currentQuestionIndex:number = -1;
+    currentQuestionIndex: number = -1;
     currentQuestion!: Question
     currentCorrectAnswer!: Answer | undefined
     copyedToCLipboard: boolean = false
@@ -53,8 +59,8 @@ export class QuizHostData {
         if (!player) {
             return
         }
-        const isCorrect = answerId === this.currentCorrectAnswer?.id
-        player.recordAnswer(answerId, this.currentQuestion.id, isCorrect)
+        const isCorrect = answerId === this.currentCorrectAnswer?.answerId
+        player.recordAnswer(answerId, this.currentQuestion.questionId, isCorrect)
     }
 
     findPlayerByConnectionId(connectionId: string): Player | undefined {
@@ -65,11 +71,22 @@ export class QuizHostData {
         return this.currentQuestionIndex + 1 >= this.questions.length
     }
 
+    isLastQuestionSet() {
+        return this.currentQuestionSetIndex + 1 >= this.quiz.questionSets.length
+    }
+
     nextQuestion() {
         this.currentQuestionIndex++
         this.currentQuestion = this.createCurrentQuestion()
         this.currentCorrectAnswer = this.getCorrectAnswerToCurrentQuestion()
         this.quizState.next(QuizState.QuestionShowing)
+    }
+
+    nextQuestionSet(){
+        this.currentQuestionSetIndex++
+        this.currentQuestionIndex = -1
+        this.currentQuestionSet = this.quiz.questionSets[this.currentQuestionSetIndex]
+        this.questions = this.quiz.questionSets[this.currentQuestionSetIndex].questions
     }
 
     createCurrentQuestion() {
@@ -83,7 +100,7 @@ export class QuizHostData {
         let qCopy = Object.assign({}, this.currentQuestion)
         qCopy.answers = this.currentQuestion.answers.map((answer) => {
             return {
-                id: answer.id,
+                answerId: answer.answerId,
                 text: answer.text
             }
         })
@@ -91,16 +108,15 @@ export class QuizHostData {
     }
 
     checkAnswersAndAssignPoints() {
-        this.players.forEach((player) => player.assignPoints(this.currentQuestion.id))
+        this.players.forEach((player) => player.assignPoints(this.currentQuestion.questionId))
         this.players.sort(function (a, b) { return b.score - a.score })
     }
 
     public checkIfAllPlayerAnsweredCurrentQuestion() {
         let x = true
         for (let i = 0; i < this.players.length; i++) {
-            if (!this.players[i].hasAnswered(this.currentQuestion.id)) {
-                x = false
-                return
+            if (this.players[i].hasAnswered(this.currentQuestion.questionId)) {
+                return false
             }
         }
         return x
@@ -122,6 +138,7 @@ export class QuizHostData {
 
 export enum QuizState {
     Idle,
+    QuizPreview,
     QuestionShowing,
     AnswersShowing
 }

@@ -1,0 +1,19 @@
+button{
+    color: whitesmoke ;
+    background-color: #0a1d36 !important;
+    border-style:solid;
+    border-radius: 5px;
+    border-width: 2px;
+    font-size: 20px;
+    padding: 5px 10px;
+}
+
+.secondary {
+    background-color: transparent !important;
+    border: none;
+    color: black !important;
+}
+
+button:hover {
+    color: #f4ce26;
+}

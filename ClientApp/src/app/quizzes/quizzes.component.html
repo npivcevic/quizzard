@@ -1,0 +1,66 @@
+<div class="content" [hidden]="quizCreatorMode">
+<div>
+    <app-button text="Dodaj kviz"
+                (click)="openPostQuizDialog()">
+    </app-button>
+</div>
+
+<table mat-table [dataSource]="dataSource"
+       multiTemplateDataRows 
+       class="mat-elevation-z8">
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Ime kviza </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="numberOfQuestions">
+      <th mat-header-cell *matHeaderCellDef> Broj Pitanja </th>
+      <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+        <td mat-cell *matCellDef="let element">
+            <app-button-icon icon="keyboard_arrow_up" *ngIf="expandedElement == element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>
+            <app-button-icon icon="keyboard_arrow_down" *ngIf="expandedElement !== element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>                
+        </td>
+    </ng-container>
+
+       <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="example-element-detail"
+           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="example-element-description">
+          {{element.description}}
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+        <app-button-icon icon="delete"
+                          (click)="deleteQuiz(element.quizId)">
+        </app-button-icon>
+        <app-button-icon (click)="editQuiz(element)">
+        </app-button-icon>
+    </td>
+  </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+</div>
+
+<!-- <app-quiz-creator [name]="name" 
+                  [description]="description" 
+                  [quizId]="quizId"
+                  [hidden]="!quizCreatorMode">
+</app-quiz-creator> -->

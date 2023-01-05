@@ -15,7 +15,8 @@ $my-custom-typography: mat.define-typography-config(
   $button:  $my-custom-level,
 );
 
-@include mat.core($my-custom-typography);
+
+@include mat.core();
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -38,7 +39,8 @@ $quizzard-theme: mat.define-light-theme((
     primary: $quizzard-primary,
     accent: $quizzard-accent,
     warn: $quizzard-warn,
-  )
+  ),
+  typography: $my-custom-typography
 ));
 
 // Include theme styles for core and each component used in your app.

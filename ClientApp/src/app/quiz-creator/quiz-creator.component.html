@@ -1,0 +1,46 @@
+<div class="content" *ngIf="this.quiz">
+  <div class="quizInfo">
+    <div class="quizInfoColumn">
+      <div class="quizInfoHeader">{{'Ime kviza : ' + quiz.name}}</div>
+      <div>{{'Opis kviza : ' + quiz.description}}</div>
+      <div>{{'Quiz ID : '+quiz.quizId}}</div>
+    </div>
+    <div class="quizInfoColumn">
+      <div>{{'Status : ' + QuizStatusNameByKey(quiz.status)}}</div>
+      <div>{{'Datum objave : ' + quiz.publishDate}}</div>
+      <app-button text="Uredi" (click)="openPutQuizDialog()"></app-button>
+    </div>
+  </div>
+
+  <div class="buttonAddSetWrapper">
+    <app-button class="buttonAddSet" text="Dodaj Set" (click)="openPostQuestionSetDialog()"></app-button>
+  </div>
+
+  <mat-accordion *ngFor="let item of quiz.questionSets; index as i">
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" [expanded]="true"
+      class="quiz-exp-panel">
+
+      <mat-expansion-panel-header>
+        <mat-panel-title> 
+          <div class="panel-title">
+            <h1>{{questionSetOrder(item.questionSetId)+1+'.'}} {{item.name}}</h1>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-questions [questionSet]="item" [quiz]="quiz" [questionSetId]="item.questionSetId" [quizId]="quiz.quizId">
+      </app-questions>
+      <mat-action-row>
+
+        <app-button-icon icon="edit" (click)="openPutQuestionSetDialog(item)"></app-button-icon>
+
+        <app-button-icon icon="delete" (click)="deleteQuestionSet(item.questionSetId)"></app-button-icon>
+
+        <app-button-icon *ngIf="i!==quiz.questionSets.length-1" icon="arrow_downward" (click)="moveQuestionSetDown(item,i)"></app-button-icon>
+
+        <app-button-icon *ngIf="i!==0" icon="arrow_upward" (click)="moveQuestionSetUp(item)"></app-button-icon>
+
+      </mat-action-row>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+</div>
