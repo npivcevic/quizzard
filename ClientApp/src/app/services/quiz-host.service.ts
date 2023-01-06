@@ -59,6 +59,9 @@ export class QuizHostService {
 
   nextQuestion() {
     if (this.quizData.isLastQuestion() && !this.quizData.isLastQuestionSet()) {
+      this.quizData.players.forEach((player) => {
+        this.sendScoreToPlayer(player)
+      })
       this.quizData.nextQuestionSet()
       this.quizData.nextQuestion()
       this.sendQuestiontoGroup()
@@ -135,7 +138,10 @@ export class QuizHostService {
   public sendScoreToPlayer(player: Player) {
     const data = {
       action: 'PlayerScore',
-      data: player.getQuizReviewBoard(this.quizData.questions)
+      data: {
+        questionSetName: this.quizData.currentQuestionSet.name,
+        score : player.getQuizReviewBoard(this.quizData.questions),
+      }
     }
     this.sendToPlayer(JSON.stringify(data), player.connectionId)
   }

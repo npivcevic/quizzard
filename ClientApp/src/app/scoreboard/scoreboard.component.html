@@ -1,5 +1,7 @@
 <app-dialog title="Tvoji odgovori na pitanja">
-  <mat-list *ngFor="let answer of answers">
+  <mat-tab-group>
+  <mat-tab *ngFor="let questionSet of answers" [label]="questionSet.questionSetName">
+    <mat-list *ngFor="let answer of questionSet.score">
     <mat-list-item>
       <div>
         <strong>{{answer.questionText}}</strong>
@@ -16,4 +18,7 @@
     </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>
+
+  </mat-tab>
+</mat-tab-group>
 </app-dialog>

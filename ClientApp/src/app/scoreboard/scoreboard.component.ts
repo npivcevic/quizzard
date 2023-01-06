@@ -11,7 +11,7 @@ export class ScoreboardComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data:any) { }
 
   //inputs
-  answers : PlayerScore[] = []
+  answers : any[] = []
   
 
   ngOnInit(): void {
