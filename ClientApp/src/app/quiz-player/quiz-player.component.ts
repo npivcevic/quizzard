@@ -3,6 +3,9 @@ import { QuizPlayerState } from '../classes/QuizPlayerData';
 import { QuizPlayerService } from '../services/quiz-player.service';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { letterFromIndex } from '../utils/letterFromIndex';
+import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
+import { MatDialog } from '@angular/material/dialog';
+import { PlayerScore } from '../model/player-score';
 
 @Component({
   selector: 'app-quiz-player',
@@ -16,7 +19,7 @@ export class QuizPlayerComponent implements OnInit {
     playerName: this.fb.control(localStorage.getItem('playerName') || "", [Validators.required, Validators.minLength(2), Validators.maxLength(25)])
   })
 
-  constructor(public quizPlayerService: QuizPlayerService, public fb: UntypedFormBuilder) { }
+  constructor(public quizPlayerService: QuizPlayerService, public dialog: MatDialog, public fb: UntypedFormBuilder) { }
 
   async ngOnInit() {
     await this.quizPlayerService.initialize();
@@ -25,6 +28,13 @@ export class QuizPlayerComponent implements OnInit {
         groupName: this.quizPlayerService.loadLastConnection()?.groupName || ""
       })
     }
+  }
+  public openPlayerScoreDetails(details: PlayerScore[]) {
+    const dialog = this.dialog.open(ScoreboardComponent, {
+      data: details,
+      width: '90%'
+    })
+    dialog.afterClosed()
   }
 
   public joinQuiz() {
@@ -74,6 +84,7 @@ export class QuizPlayerComponent implements OnInit {
   }
 
   public sendAnswerToHost(id?: string) {
+    console.log(id)
     this.quizPlayerService.questionAnswered(id!)
   }
 

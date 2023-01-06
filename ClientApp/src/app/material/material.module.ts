@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
@@ -31,6 +32,7 @@ const MaterialComponents = [
   MatProgressSpinnerModule,
   MatProgressBarModule,
   MatCheckboxModule,
+  MatListModule,
   MatMenuModule,
   MatStepperModule,
   MatSelectModule,

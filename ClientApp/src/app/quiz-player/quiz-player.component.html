@@ -83,8 +83,6 @@
         </div>
     </div>
 
-
-
     <div *ngIf="isQuizEnd()" class="container">
         <mat-card style="text-align: center;">
             <mat-card-title>
@@ -94,20 +92,25 @@
                     Molim te sačekaj početak nove igre
                 </strong>
             </mat-card-title>
-            <mat-card-content *ngIf="quizPlayerService.quizData.playerScore">
-                <strong>Ovdje možeš vidjeti svoje odogovore:</strong>
-                <br />
-                <div style="display: flex;" *ngFor="let answer of quizPlayerService.quizData.playerScore">
-                    <div style="border: solid;">
-                        <strong>{{answer.questionText}}</strong>
-                    </div>
-                    <div style="border: solid;"
-                        [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
-                        <strong>{{answer.answerText}}</strong>
-                    </div>
-                </div>
-            </mat-card-content>
         </mat-card>
+
+        <table mat-table [dataSource]="quizPlayerService.quizData.dataSource" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="playerName">
+                <th mat-header-cell *matHeaderCellDef> Igrač </th>
+                <td mat-cell *matCellDef="let element"> {{element.playerName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="points">
+                <th mat-header-cell *matHeaderCellDef> Bodovi </th>
+                <td mat-cell *matCellDef="let element"> {{element.points}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="quizPlayerService.quizData.displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: quizPlayerService.quizData.displayedColumns;"></tr>
+        </table>
+
+        <button mat-raised-button (click)="this.openPlayerScoreDetails(quizPlayerService.quizData.playerScore)">Vidi svoje odgovore</button>
+
     </div>
 </div>
-

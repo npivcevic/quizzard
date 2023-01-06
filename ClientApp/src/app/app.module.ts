@@ -24,6 +24,7 @@ import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component'
 import { LogoComponent } from './logo/logo.component';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
 import { AddQuizComponent } from './add-quiz/add-quiz.component';
 import { QuizCreatorComponent } from './quiz-creator/quiz-creator.component';
@@ -48,6 +49,7 @@ import { DialogComponent } from './dialog/dialog.component';
     SpinnerComponent,
     HostDisconnectedComponent,
     LogoComponent,
+    ScoreboardComponent,
     QuizzesComponent,
     AddQuizComponent,
     QuizCreatorComponent,

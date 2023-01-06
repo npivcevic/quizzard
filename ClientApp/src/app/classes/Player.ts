@@ -61,11 +61,13 @@ export class Player {
         return questions.map(q => {
             const submitedAnswer = this.getSubmittedAnswer(q.questionId)
             const answer = q.answers.find(a => a.answerId === submitedAnswer?.answerId)
+            const correctAnswer = q.answers.find(a => a.isCorrect === true)
 
             return {
                 questionText: q.text,
                 answerText: answer?.text,
-                isCorrect: answer?.isCorrect || false
+                isCorrect: answer?.isCorrect || false,
+                correctAnswer: correctAnswer?.text
             }
         })
     }

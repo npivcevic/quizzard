@@ -107,6 +107,7 @@ export class QuizPlayerService {
   }
 
   public processMessage(data: any) {
+    console.log(data)
     switch (data.action) {
       case 'SuccesfullyJoinedGroup':
         this.quizData.quizState = QuizPlayerState.WaitingForStart
@@ -137,6 +138,11 @@ export class QuizPlayerService {
         break
       case 'PlayerScore':
         this.quizData.playerScore = data.data
+        break
+      case 'PlayersScoreboard':
+        console.log(data.action,data.data)
+        this.quizData.dataSource = data.data
+        console.log(this.quizData.dataSource)
         break
       case 'ReconnectNotPossible':
         this.quizData.reconnectPossible = false;

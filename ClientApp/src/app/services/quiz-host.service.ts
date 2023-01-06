@@ -86,6 +86,7 @@ export class QuizHostService {
     this.quizData.players.forEach((player) => {
       this.sendScoreToPlayer(player)
     })
+    this.sendScoreBoardToPlayers()
   }
 
   public sendQuestiontoGroup() {
@@ -139,6 +140,15 @@ export class QuizHostService {
     this.sendToPlayer(JSON.stringify(data), player.connectionId)
   }
 
+  public sendScoreBoardToPlayers() {
+    const data = {
+      action: "PlayersScoreboard",
+      data: this.quizData.playersScoreboard()
+    }
+    
+    this.sendToGroup(JSON.stringify(data))
+  }
+
   public sendToPlayer(data: string, playerConnectionId: string) {
     this.signalRService.sendToPlayer(data, playerConnectionId)
   }
@@ -153,7 +163,9 @@ export class QuizHostService {
         break;
       case 'PlayerAnswered':
         this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId)
-        if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion()) {
+        if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion() &&
+            this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered) {
+              console.log( this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
           this.showCorrectAnswer()
         }
         break;

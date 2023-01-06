@@ -2,6 +2,7 @@ import { BehaviorSubject, Subject } from "rxjs";
 import { Player } from "../classes/Player";
 import { Answer } from "../model/answer";
 import { Question } from "../model/question";
+import { ScoreboardRow } from "../model/scoreboard-row";
 import { QuestionSet } from "../model/question-set";
 import { Quiz } from "../model/quiz";
 
@@ -28,6 +29,7 @@ export class QuizHostData {
         this.questions = []
         this.currentQuestionIndex = -1
         this.currentCorrectAnswer = undefined
+        this.currentQuestionSetIndex =  0
         this.quizState.next(QuizState.Idle)
     }
 
@@ -99,7 +101,7 @@ export class QuizHostData {
         let qCopy = Object.assign({}, this.currentQuestion)
         qCopy.answers = this.currentQuestion.answers.map((answer) => {
             return {
-                id: answer.answerId,
+                answerId: answer.answerId,
                 text: answer.text
             }
         })
@@ -112,12 +114,22 @@ export class QuizHostData {
     }
 
     public checkIfAllPlayerAnsweredCurrentQuestion() {
+        let x = true
         for (let i = 0; i < this.players.length; i++) {
             if (this.players[i].hasAnswered(this.currentQuestion.questionId)) {
                 return false
             }
         }
-        return true
+        return x
+    }
+
+    public playersScoreboard() {
+        return this.players.map(player =>{
+            return{
+                playerName:player.name,
+                points: player.score
+            }
+        })
     }
 
     getCorrectAnswerToCurrentQuestion() {

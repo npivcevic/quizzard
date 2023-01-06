@@ -58,6 +58,7 @@ input::placeholder{
     text-align: center;
     color: #0a1d36;
     font-family: 'Arvo';
+    text-transform: none;
 }
 
 .questionTitleCard {
