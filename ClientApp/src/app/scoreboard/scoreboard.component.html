@@ -1,17 +1,19 @@
-<mat-list *ngFor="let answer of answers">
-  <mat-list-item>
-    <div>
-      <strong>{{answer.questionText}}</strong>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <div [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
-      <strong>{{answer.answerText}}</strong>
-    </div>
-    <div [hidden]="answer.isCorrect"
-      [ngStyle]="{background: answer.isCorrect!==true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
-      <strong>{{answer.correctAnswer}}</strong>
-    </div>
-  </mat-list-item>
-  <mat-divider></mat-divider>
-</mat-list>
+<app-dialog title="Tvoji odgovori na pitanja">
+  <mat-list *ngFor="let answer of answers">
+    <mat-list-item>
+      <div>
+        <strong>{{answer.questionText}}</strong>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+        <strong>{{answer.answerText}}</strong>
+      </div>
+      <div [hidden]="answer.isCorrect"
+        [ngStyle]="{background: answer.isCorrect!==true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+        <strong>{{answer.correctAnswer}}</strong>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+</app-dialog>

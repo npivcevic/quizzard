@@ -8,7 +8,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogComponent {
 
-  @Input() title:string = "asdas"
+  @Input() title:string = ""
 
   constructor(private dialogRef: MatDialogRef<DialogComponent>){}
 

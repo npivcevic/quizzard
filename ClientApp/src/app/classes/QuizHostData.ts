@@ -29,6 +29,7 @@ export class QuizHostData {
         this.questions = []
         this.currentQuestionIndex = -1
         this.currentCorrectAnswer = undefined
+        this.currentQuestionSetIndex =  0
         this.quizState.next(QuizState.Idle)
     }
 
