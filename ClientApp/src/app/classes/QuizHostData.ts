@@ -88,6 +88,7 @@ export class QuizHostData {
         this.currentQuestionIndex = -1
         this.currentQuestionSet = this.quiz.questionSets[this.currentQuestionSetIndex]
         this.questions = this.quiz.questionSets[this.currentQuestionSetIndex].questions
+        this.quizState.next(QuizState.SetDelayShowing)
     }
 
     createCurrentQuestion() {
@@ -114,13 +115,12 @@ export class QuizHostData {
     }
 
     public checkIfAllPlayerAnsweredCurrentQuestion() {
-        let x = true
         for (let i = 0; i < this.players.length; i++) {
-            if (this.players[i].hasAnswered(this.currentQuestion.questionId)) {
+            if (!this.players[i].hasAnswered(this.currentQuestion.questionId)) {
                 return false
             }
         }
-        return x
+        return true
     }
 
     public playersScoreboard() {
@@ -141,5 +141,6 @@ export enum QuizState {
     Idle,
     QuizPreview,
     QuestionShowing,
-    AnswersShowing
+    AnswersShowing,
+    SetDelayShowing
 }

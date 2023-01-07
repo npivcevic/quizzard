@@ -125,7 +125,7 @@
             </ng-template>
             
 
-            <div *ngIf="!isIdle() && !isQuizPreview(); then questionBlock"></div>
+            <div *ngIf="isShowingAnswers() || isShowingQuestion(); then questionBlock"></div>
 
             <ng-template #questionBlock>
                 <div style="text-align: left;">
@@ -152,6 +152,17 @@
                             </mat-card>
                         </div>
                     </div>
+                </div>
+            </ng-template>
+
+
+            <div *ngIf="isShowingSetDelay(); then questionSetDelayBlock"></div>
+
+            <ng-template #questionSetDelayBlock>
+                <div style="text-align: left;">
+                    <app-spinner [time]="currentSpinnerTimeout" [text]="currentSpinnerText"
+                        (timeout)="spinnerTimeout()">
+                    </app-spinner>
                 </div>
             </ng-template>
 

@@ -160,6 +160,11 @@ export class QuizPlayerService {
       case 'RejoinedInADifferentTab':
         this.initialize()
         break
+      case "NextSetDelay":
+        this.quizData.quizState = QuizPlayerState.SetDelayShowing
+        this.currentSpinnerText = data.data.text
+        this.currentSpinnerTimeout = data.data.timer
+        break;
       default:
         console.log(`Action not implemented: ${data.action}.`)
     }

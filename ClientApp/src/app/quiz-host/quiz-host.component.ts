@@ -88,6 +88,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
         if (data) {
           this.quizSettings.nextQuestionDelay = data.nextQuestionDelay! * 1000
           this.quizSettings.totalTimePerQuestion = data.totalTimePerQuestion! * 1000
+          this.quizSettings.nextSetDelay = data.nextSetDelay! * 1000
           this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = data.MoveToNextQuestionWhenAllPlayersAnswered!
         }
       })
@@ -133,7 +134,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   public quizStateChanged(state: QuizState) {
     if (state === QuizState.AnswersShowing) {
-      this.currentSpinnerText = this.quizHostService.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje"
+      this.currentSpinnerText = this.quizHostService.quizData.isLastQuestion() ? "Set gotov za" : "Sljedece pitanje"
       this.currentSpinnerTimeout = this.quizSettings.nextQuestionDelay
       return;
     }
@@ -142,10 +143,15 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       this.currentSpinnerTimeout = this.quizSettings.totalTimePerQuestion
       return;
     }
+    if (state === QuizState.SetDelayShowing) {
+      this.currentSpinnerText = "Novi set za"
+      this.currentSpinnerTimeout = this.quizSettings.nextSetDelay
+      return;
+    }
   }
 
   public spinnerTimeout() {
-    if (this.quizHostService.quizData.quizState.getValue() === QuizState.AnswersShowing) {
+    if (this.quizHostService.quizData.quizState.getValue() === QuizState.AnswersShowing || this.quizHostService.quizData.quizState.getValue() === QuizState.SetDelayShowing) {
       this.quizHostService.nextQuestion();
       return;
     }
@@ -166,6 +172,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   isIdle() {
     return this.quizHostService.quizData.quizState.getValue() === QuizState.Idle
+  }
+
+  isShowingSetDelay() {
+    return this.quizHostService.quizData.quizState.getValue() === QuizState.SetDelayShowing
   }
 
   playerCardClass(player: Player) {

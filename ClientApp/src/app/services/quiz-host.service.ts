@@ -59,9 +59,7 @@ export class QuizHostService {
 
   nextQuestion() {
     if (this.quizData.isLastQuestion() && !this.quizData.isLastQuestionSet()) {
-      this.quizData.nextQuestionSet()
-      this.quizData.nextQuestion()
-      this.sendQuestiontoGroup()
+      this.nextQuestionSet()
       return
     }
 
@@ -72,6 +70,11 @@ export class QuizHostService {
 
     this.quizData.nextQuestion()
     this.sendQuestiontoGroup()
+  }
+
+  public nextQuestionSet() {
+    this.quizData.nextQuestionSet()
+    this.sendNextSetDelay()
   }
 
   public showCorrectAnswer() {
@@ -107,6 +110,17 @@ export class QuizHostService {
       data: {
         text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
         timer: this.quizSettings.nextQuestionDelay
+      }
+    }
+    this.sendToGroup(JSON.stringify(data))
+  }
+
+  public sendNextSetDelay() {
+    const data = {
+      action: "NextSetDelay",
+      data: {
+        text: "Sljedeci set za",
+        timer: this.quizSettings.nextSetDelay
       }
     }
     this.sendToGroup(JSON.stringify(data))
