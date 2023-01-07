@@ -136,9 +136,7 @@ export class QuizPlayerService {
         this.quizData.quizState = QuizPlayerState.End
         break
       case 'PlayerScore':
-        console.log("quiz score", data)
-        // this.quizData.playerScore = data.data.score
-        this.quizData.playerScore.push(data.data)
+        this.quizData.playerScore = data.data
         break
       case 'PlayersScoreboard':
         this.quizData.dataSource = data.data
