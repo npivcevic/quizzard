@@ -8,8 +8,7 @@
 </div>
 <div class="progressBar" *ngIf="type==='progressBar'">
     <h4 class="progress-bar-text">{{text}}</h4>
-    <mat-progress-bar class="mat-progress-bar" [color]="color" mode="determinate" strokeWidth="12" [value]="timeLeft">
-    </mat-progress-bar>
+    <mat-progress-bar class="mat-progress-bar" [color]="color" mode="determinate" strokeWidth="12" [value]="timeLeft"></mat-progress-bar>
     <span class="progress-bar-timeLeft">
         {{timeLeftInSeconds}}
     </span>

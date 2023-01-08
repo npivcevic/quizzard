@@ -149,11 +149,11 @@
                         </app-spinner>
                     </div>
                     <div class="answer-cards">
-                        <div *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index"
-                            style="width: 50%;">
-                            <mat-card class="answer-card" [class.correct]="answer.isCorrect && isShowingAnswers()">
-                                <span class="answer-letter">{{getLetter(i)}}:</span> {{answer.text}}
-                            </mat-card>
+                        <div *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index" class="answer-card-wrapper">
+                            <div class="answer-card" [class.correct]="answer.isCorrect && isShowingAnswers()">
+                                <span class="answer-letter">{{getLetter(i)}}:</span> 
+                                <span class="answer-text">{{answer.text}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
