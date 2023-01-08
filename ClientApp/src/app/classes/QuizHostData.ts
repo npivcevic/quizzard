@@ -135,6 +135,10 @@ export class QuizHostData {
     getCorrectAnswerToCurrentQuestion() {
         return this.questions[this.currentQuestionIndex].answers.find((a) => a.isCorrect === true)
     }
+
+    getPlayerNameByConnectionId(connectionId:string){
+        return this.players.find(p =>p.connectionId === connectionId)
+    }
 }
 
 export enum QuizState {

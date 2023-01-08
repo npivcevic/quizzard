@@ -1,4 +1,4 @@
-<app-dialog title="Tvoji odgovori na pitanja">
+<app-dialog [title]="openedFromPlayer ? 'Tvoji odgovori na pitanja' : returnPlayerName()">
   <mat-tab-group>
   <mat-tab *ngFor="let questionSet of answers" [label]="questionSet.questionSetName">
     <div *ngFor="let answer of questionSet.score">
@@ -10,7 +10,8 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div *ngIf="answer.answerText" >
-            <strong>Tvoj odgovor : <span>{{answer.answerText}}</span></strong>
+            <strong *ngIf="openedFromPlayer">Tvoj odgovor : <span>{{answer.answerText}}</span></strong>
+            <strong *ngIf="!openedFromPlayer">Odgovor od {{playerName}} : <span>{{answer.answerText}}</span></strong>
             <div [hidden]="answer.isCorrect">
             <strong>Točan odgovor : <span>{{answer.correctAnswer}}</span></strong>
           </div>

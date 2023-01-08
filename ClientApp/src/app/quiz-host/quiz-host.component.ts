@@ -15,6 +15,8 @@ import { QuestionSetService } from '../services/question-set.service';
 import { MatDialog } from '@angular/material/dialog';
 import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component';
 import { QuizCreatorComponent } from '../quiz-creator/quiz-creator.component';
+import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
+import { PlayerScore } from '../model/player-score';
 
 @Component({
   selector: 'app-quiz-host',
@@ -148,6 +150,17 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       this.currentSpinnerTimeout = this.quizSettings.nextSetDelay
       return;
     }
+  }
+
+  public openPlayerScoreDetails(details: any,playerName:string) {
+    const dialog = this.dialog.open(ScoreboardComponent, {
+      data:{
+        playerName:playerName,
+        score:details
+      },
+      width: '90%'
+    })
+    dialog.afterClosed()
   }
 
   public spinnerTimeout() {
