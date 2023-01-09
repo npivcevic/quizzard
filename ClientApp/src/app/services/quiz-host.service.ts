@@ -11,7 +11,7 @@ import { QuizzesService } from './quizzes.service';
 })
 export class QuizHostService {
   public quizData!: QuizHostData
-  public quizSettings!: QuizSettings
+  public quizSettings:QuizSettings = new QuizSettings()
 
   constructor(public signalRService: SignalrService,
     public questionservice: QuestionService,

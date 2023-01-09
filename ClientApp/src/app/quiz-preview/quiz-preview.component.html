@@ -1,33 +1,50 @@
 <div class="quiz-preview">
 
     <div class="quizInfo">
-        <div class="quizInfoColumn">
-          <div class="quizInfoHeader">{{'Ime kviza : ' + quiz.name}}</div>
-          <div>{{'Opis kviza : ' + quiz.description}}</div>
-          <div>{{'Quiz ID : '+quiz.quizId}}</div>
-        </div>
+      <div class="quizInfoHeader">{{'Kviz: ' + quiz.name}}</div>
+      <div class="quizInfoDescription">{{quiz.description}}</div>
+    </div>
+    <!-- totalTimePerQuestion: number = 10000
+    nextQuestionDelay: number = 4000
+    nextSetDelay: number = 5000
+    MoveToNextQuestionWhenAllPlayersAnswered : boolean = true -->
+
+    <div class="quizInfo">
+      <div class="quizInfoColumn">
+        <div class="quizInfoDescription">{{'Ukupno pitanja: ' + getTotalNumberOfQuestions()}}</div>
+        <div class="quizInfoDescription">{{'Ukupno setova: ' + getTotalNumberOfSets()}}</div>
+        <!-- <div class="quizInfoDescription">{{quiz.description}}</div> -->
+      </div>
+      <div class="quizInfoColumn">
+        <app-button-icon class="quizSettingsIcon" icon="settings" (click)="settingsIconClicked()"></app-button-icon>
+        <div class="quizInfoDescription">{{'Vrijeme za odgovor: ' + quizSettings.totalTimePerQuestion/1000 + ' s'}}</div>
+        <div class="quizInfoDescription">{{'Pauza između setova: ' + quizSettings.nextSetDelay/1000 + ' s'}}</div>
+        <!-- <div class="quizInfoDescription">{{quiz.description}}</div> -->
+      </div>
     </div>
 
-    <table mat-table [dataSource]="this.quiz.questionSets" class="mat-elevation-z8">
 
-      <!-- - Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition"
-    
-      Position Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Ime seta</th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        <td mat-footer-cell *matFooterCellDef> Ukupan broj pitanja </td>
-      </ng-container>
+    <div class="setsTable">
+        <table mat-table [dataSource]="this.quiz.questionSets" class="mat-elevation-z8">
 
-      <ng-container matColumnDef="questions">
-        <th mat-header-cell *matHeaderCellDef>Broj pitanja</th>
-        <td mat-cell *matCellDef="let element"> {{element.questions.length}} </td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotalCost()}} </td>
-      </ng-container>
+          <!-- - Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition"
+        
+          Position Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Setovi</th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
     
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
-    </table>
+          <ng-container matColumnDef="questions">
+            <th mat-header-cell *matHeaderCellDef>Broj pitanja</th>
+            <td mat-cell *matCellDef="let element"> {{element.questions.length}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+    
 </div>  

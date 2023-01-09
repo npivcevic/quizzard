@@ -34,7 +34,6 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   currentSpinnerTimeout!: number
   currentSpinnerText!: string
-  quizSettings: QuizSettings = new QuizSettings()
 
   quizzes!: Quiz[]
   quizId!: string
@@ -46,10 +45,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   expandedElement!: Quiz | null;
 
   quizSetup = this.fb.group({
-    totalTimePerQuestion: this.fb.control(this.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
-    nextQuestionDelay: this.fb.control(this.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
+    totalTimePerQuestion: this.fb.control(this.quizHostService.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
+    nextQuestionDelay: this.fb.control(this.quizHostService.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
 
-    MoveToNextQuestionWhenAllPlayersAnswered : this.fb.nonNullable.control(this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
+    MoveToNextQuestionWhenAllPlayersAnswered : this.fb.nonNullable.control(this.quizHostService.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
   // quiz = this.fb.group({
@@ -82,16 +81,20 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   openQuizSettingsDialog() {
     const dialog = this.dialog.open(QuizSettingsComponent, {
       width: "30%",
-      data: this.quizSettings
+      data: this.quizHostService.quizSettings
     })
 
     dialog.afterClosed()
       .subscribe(data => {
         if (data) {
-          this.quizSettings.nextQuestionDelay = data.nextQuestionDelay! * 1000
-          this.quizSettings.totalTimePerQuestion = data.totalTimePerQuestion! * 1000
-          this.quizSettings.nextSetDelay = data.nextSetDelay! * 1000
-          this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered = data.MoveToNextQuestionWhenAllPlayersAnswered!
+          const newSettings = new QuizSettings()
+
+          newSettings.nextQuestionDelay = data.nextQuestionDelay! * 1000
+          newSettings.totalTimePerQuestion = data.totalTimePerQuestion! * 1000
+          newSettings.nextSetDelay = data.nextSetDelay! * 1000
+          newSettings.MoveToNextQuestionWhenAllPlayersAnswered = data.MoveToNextQuestionWhenAllPlayersAnswered!
+
+          this.quizHostService.quizSettings = newSettings
         }
       })
   }
@@ -126,28 +129,28 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     if (!this.quizSetup.valid) {
       return
     }
-    this.quizHostService.startQuiz_(this.quizSettings, quizId)
+    this.quizHostService.startQuiz_(this.quizHostService.quizSettings, quizId)
     this.selection.clear();
 
 
     this.currentSpinnerText = "Preostalo vrijeme"
-    this.currentSpinnerTimeout = this.quizSettings.totalTimePerQuestion
+    this.currentSpinnerTimeout = this.quizHostService.quizSettings.totalTimePerQuestion
   }
 
   public quizStateChanged(state: QuizState) {
     if (state === QuizState.AnswersShowing) {
       this.currentSpinnerText = this.quizHostService.quizData.isLastQuestion() ? "Set gotov za" : "Sljedece pitanje"
-      this.currentSpinnerTimeout = this.quizSettings.nextQuestionDelay
+      this.currentSpinnerTimeout = this.quizHostService.quizSettings.nextQuestionDelay
       return;
     }
     if (state === QuizState.QuestionShowing) {
       this.currentSpinnerText = "Preostalo vrijeme"
-      this.currentSpinnerTimeout = this.quizSettings.totalTimePerQuestion
+      this.currentSpinnerTimeout = this.quizHostService.quizSettings.totalTimePerQuestion
       return;
     }
     if (state === QuizState.SetDelayShowing) {
       this.currentSpinnerText = "Novi set za"
-      this.currentSpinnerTimeout = this.quizSettings.nextSetDelay
+      this.currentSpinnerTimeout = this.quizHostService.quizSettings.nextSetDelay
       return;
     }
   }

@@ -13,6 +13,17 @@ $my-custom-level: mat.define-typography-level(
 
 $my-custom-typography: mat.define-typography-config(
   $button:  $my-custom-level,
+  $body-1: $my-custom-level,
+  $body-2: $my-custom-level,
+  $headline-1: $my-custom-level,
+  $headline-2: $my-custom-level,
+  $headline-3: $my-custom-level,
+  $headline-4: $my-custom-level,
+  $headline-5: $my-custom-level,
+  $headline-6: $my-custom-level,
+  $subtitle-1: $my-custom-level,
+  $subtitle-2: $my-custom-level,
+  $caption: $my-custom-level,
 );
 
 
