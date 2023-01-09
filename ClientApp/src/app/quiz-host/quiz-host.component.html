@@ -152,23 +152,23 @@
             <div *ngIf="isAfterQuiz(); then afterQuizBlock"></div>
 
             <ng-template #afterQuizBlock>
-                <div class="questions-row">
-                    <div style="width: 200px;">
+                <mat-tab-group>
+                    <mat-tab [label]="set.name" *ngFor="let set of quizHostService.quizData.quiz.questionSets; index as i">
+                        <div class="questions-row">
+                            <div style="width: 200px;">
+                                Broj pitanja
+                            </div>
+                            <div *ngFor="let question of set.questions; index as i">
+                                {{i+1}}
+                            </div>
+                        </div>
+                        <div class="players-row" *ngFor="let player of quizHostService.quizData.players">
+                            <div class="player-name-score">{{player.name}}</div>
+                            <div *ngFor="let answers of player.getQuizReviewBoardForOneQuestionSet(set.questions)" 
+                                [ngStyle]="{background: answers.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}"></div>
                     </div>
-                    <div *ngFor="let question of quizHostService.quizData.allQuizQuestions, index as i">
-                        {{i}}
-                    </div>
-                </div>
-                <div class="players-row" *ngFor="let player of quizHostService.quizData.players">
-                        <div class="player-name-score">{{player.name}}</div>
-                        <div *ngFor="let answers of player.submitedAnswers" 
-                            [ngStyle]="{background: answers.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}"></div>
-                </div>
-                <!-- <div class="player" *ngFor="let player of quizHostService.quizData.players">
-                    <div class="player-answers" *ngFor="let answers of player.submitedAnswers">
-                        <div>{{answers.isCorrect}}</div>
-                    </div>
-                </div> -->
+                    </mat-tab>
+                </mat-tab-group>
             </ng-template>
 
         </div>

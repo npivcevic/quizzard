@@ -302,6 +302,7 @@ table {
   .questions-row>div{
     border: solid;
     width: 50px;
+    border-width: 1px;
   }
 
   .players-row{
@@ -310,6 +311,7 @@ table {
   .players-row>div{
     border: solid;
     width: 50px;
+    border-width: 1px;
   }
 
   .player-name-score{
