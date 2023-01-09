@@ -203,6 +203,14 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       return ""
     }
 
+    if (this.quizHostService.quizData.quizState.getValue() === QuizState.AfterQuiz) {
+      return ""
+    }
+
+    if (this.quizHostService.quizData.quizState.getValue() === QuizState.SetDelayShowing) {
+      return ""
+    }
+
     if (this.quizHostService.quizData.quizState.getValue() === QuizState.QuestionShowing) {
       return player.hasAnswered(this.quizHostService.quizData.currentQuestion.questionId) ? "answered" : ""
     }
