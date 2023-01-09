@@ -194,6 +194,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     return this.quizHostService.quizData.quizState.getValue() === QuizState.SetDelayShowing
   }
 
+  isAfterQuiz() {
+    return this.quizHostService.quizData.quizState.getValue() === QuizState.AfterQuiz
+  }
+
   playerCardClass(player: Player) {
     if (this.quizHostService.quizData.quizState.getValue() === QuizState.Idle) {
       return ""

@@ -21,6 +21,8 @@ export class QuizHostData {
     currentCorrectAnswer!: Answer | undefined
     copyedToCLipboard: boolean = false
 
+    allQuizQuestions:any[]=[]
+
     constructor() {
     }
 
@@ -79,6 +81,8 @@ export class QuizHostData {
     nextQuestion() {
         this.currentQuestionIndex++
         this.currentQuestion = this.createCurrentQuestion()
+        this.allQuizQuestions.push(this.currentQuestion)
+        console.log("ccccc",this.allQuizQuestions)
         this.currentCorrectAnswer = this.getCorrectAnswerToCurrentQuestion()
         this.quizState.next(QuizState.QuestionShowing)
     }
@@ -146,5 +150,6 @@ export enum QuizState {
     QuizPreview,
     QuestionShowing,
     AnswersShowing,
-    SetDelayShowing
+    SetDelayShowing,
+    AfterQuiz
 }

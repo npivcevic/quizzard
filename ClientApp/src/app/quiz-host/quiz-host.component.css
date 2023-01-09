@@ -292,3 +292,29 @@ table {
   .quiz-preview{
     flex-grow: 8;
   }
+
+  .questions-row{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+  }
+
+  .questions-row>div{
+    border: solid;
+    width: 50px;
+  }
+
+  .players-row{
+    display: flex;
+  }
+  .players-row>div{
+    border: solid;
+    width: 50px;
+  }
+
+  .player-name-score{
+    width: 200px !important;
+  }
+
+
+

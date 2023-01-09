@@ -44,8 +44,8 @@
                         {{player.score}}
                     </div>
                     <app-button-icon icon="assessment"
-                        (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)"
-                        *ngIf="isIdle()">
+                                    (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)"
+                                    *ngIf="isAfterQuiz()">
                     </app-button-icon>
                 </div>
             </div>
@@ -147,7 +147,32 @@
                         (timeout)="spinnerTimeout()">
                     </app-spinner>
                 </div>
-            </div>
+
+            <div *ngIf="isAfterQuiz(); then afterQuizBlock"></div>
+
+            <ng-template #afterQuizBlock>
+                <div class="questions-row">
+                    <div style="width: 200px;">
+                    </div>
+                    <div *ngFor="let question of quizHostService.quizData.allQuizQuestions, index as i">
+                        {{i}}
+                    </div>
+                </div>
+                <div class="players-row" *ngFor="let player of quizHostService.quizData.players">
+                        <div class="player-name-score">{{player.name}}</div>
+                        <div *ngFor="let answers of player.submitedAnswers" 
+                            [ngStyle]="{background: answers.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}"></div>
+                </div>
+                <!-- <div class="player" *ngFor="let player of quizHostService.quizData.players">
+                    <div class="player-answers" *ngFor="let answers of player.submitedAnswers">
+                        <div>{{answers.isCorrect}}</div>
+                    </div>
+                </div> -->
+            </ng-template>
+
+        </div>
+
+    </div>
 
         </div>
     </div>

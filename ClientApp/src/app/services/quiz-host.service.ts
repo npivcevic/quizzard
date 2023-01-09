@@ -84,7 +84,8 @@ export class QuizHostService {
   }
 
   private quizEnd() {
-    this.quizData.quizState.next(QuizState.Idle)
+    // this.quizData.quizState.next(QuizState.Idle)
+    this.quizData.quizState.next(QuizState.AfterQuiz)
     this.sendQuizEndedToGroup()
     this.quizData.players.forEach((player) => {
       this.sendScoreToPlayer(player)
