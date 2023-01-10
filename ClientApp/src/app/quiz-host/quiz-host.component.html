@@ -166,9 +166,11 @@
                             <div class="player-name-score">{{player.name}}</div>
                             <div *ngFor="let answers of player.getQuizReviewBoardForOneQuestionSet(set.questions)" 
                                 [ngStyle]="{background: answers.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}"></div>
-                    </div>
+                        </div>
                     </mat-tab>
                 </mat-tab-group>
+                <app-button text="Natrag na tablicu kvizova"
+                            (click)="setQuizStateToIdle()"></app-button>
             </ng-template>
 
         </div>

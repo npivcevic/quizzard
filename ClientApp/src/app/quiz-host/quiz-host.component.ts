@@ -155,6 +155,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     }
   }
 
+  setQuizStateToIdle(){
+    this.quizHostService.quizData.quizState.next(QuizState.Idle)
+  }
+
   public openPlayerScoreDetails(details: any,playerName:string) {
     const dialog = this.dialog.open(ScoreboardComponent, {
       data:{
