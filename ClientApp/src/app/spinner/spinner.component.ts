@@ -11,6 +11,7 @@ export class SpinnerComponent implements OnInit, OnChanges {
 
   @Input() time!: number
   @Input() text!: string
+  @Input() isLarge: boolean = false
   @Output() timeout = new EventEmitter<string>();
   @Input() type: string = "spinner"
 
@@ -18,8 +19,9 @@ export class SpinnerComponent implements OnInit, OnChanges {
   public mode = "determinate"
   public value = "value"
 
-  public timeLeft: number = 100
-  public timeLeftInSeconds: number = Math.ceil(this.time / this.timeLeft)
+  public timeLeft: number = this.time;
+  public percentageLeft: number = 100
+  public timeLeftString: string = "0"
   constructor() { }
 
   ngOnInit(): void {
@@ -28,18 +30,34 @@ export class SpinnerComponent implements OnInit, OnChanges {
 
   public spinnerControl() {
     clearInterval(this.intervalRef)
-    this.timeLeft = 100
+    this.percentageLeft = 100
+    this.timeLeft = this.time
+    this.timeLeftString = this.secondsToMinutesAndSeconds(this.timeLeft)
     this.intervalRef = setInterval(() => {
-      this.timeLeft -= 0.5
-      this.timeLeftInSeconds = Math.ceil(this.time * this.timeLeft / 100000)
+      this.timeLeft -= 200
+      this.percentageLeft = (this.timeLeft / this.time) * 100
+      this.timeLeftString = this.secondsToMinutesAndSeconds(this.timeLeft)
       if (this.timeLeft <= 0) {
         clearInterval(this.intervalRef)
         this.timeout.emit();
       }
-    }, this.time / (100 * 2))
+    }, 200)
   }
 
   ngOnChanges() {
     this.spinnerControl();
+  }
+
+  secondsToMinutesAndSeconds(timeInMiliseconds: number): string {
+    const timeInSeconds = Math.ceil(timeInMiliseconds/1000)
+    const minutes = Math.floor(timeInSeconds / 60)
+    const seconds = Math.ceil(timeInSeconds % 60)
+    if (minutes === 0) {
+      return seconds.toString();
+    }
+    if (seconds<10) {
+      return `${minutes.toString()}:0${seconds.toString()}`
+    }
+    return `${minutes.toString()}:${seconds.toString()}`
   }
 }

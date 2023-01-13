@@ -1,15 +1,15 @@
-<div class="spinner" *ngIf="type==='spinner'">
-    <mat-progress-spinner class="mat-spinner" [color]="color" mode="determinate" strokeWidth="12" [value]="timeLeft">
+<div class="spinner" *ngIf="type==='spinner'" [ngClass]="{'large' : isLarge}">
+    <mat-progress-spinner class="mat-spinner" [ngClass]="{'large' : isLarge}" [color]="color" mode="determinate" strokeWidth="12" [value]="percentageLeft">
     </mat-progress-spinner>
     <span class="timeLeft">
-        {{timeLeftInSeconds}}
+        {{timeLeftString}}
     </span>
     <h4 class="spinner-text">{{text}}</h4>
 </div>
 <div class="progressBar" *ngIf="type==='progressBar'">
     <h4 class="progress-bar-text">{{text}}</h4>
-    <mat-progress-bar class="mat-progress-bar" [color]="color" mode="determinate" strokeWidth="12" [value]="timeLeft"></mat-progress-bar>
+    <mat-progress-bar class="mat-progress-bar" [color]="color" spinnerColor="#09ff00" mode="determinate" strokeWidth="12" [value]="percentageLeft"></mat-progress-bar>
     <span class="progress-bar-timeLeft">
-        {{timeLeftInSeconds}}
+        {{timeLeftString}}
     </span>
 </div>

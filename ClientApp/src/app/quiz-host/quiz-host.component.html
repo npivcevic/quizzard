@@ -145,7 +145,7 @@
                 <div class="setDelay">
                     <div class="setDelay_pauseText">Kratka pauza!</div>
                     <app-spinner class="setDelay_spinner" [time]="currentSpinnerTimeout" [text]="currentSpinnerText"
-                        (timeout)="spinnerTimeout()">
+                        (timeout)="spinnerTimeout()" [isLarge]='true'>
                     </app-spinner>
                     <div class="setDelay_info">
                         <div class="setDelay_info_setname">Slijedi: {{quizHostService.quizData.currentQuestionSet.name}}</div>

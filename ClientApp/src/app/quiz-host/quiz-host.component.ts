@@ -149,7 +149,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       return;
     }
     if (state === QuizState.SetDelayShowing) {
-      this.currentSpinnerText = "Novi set za"
+      this.currentSpinnerText = ""
       this.currentSpinnerTimeout = this.quizHostService.quizSettings.nextSetDelay
       return;
     }
