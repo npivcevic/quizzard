@@ -116,8 +116,8 @@
                     title = "Pipremite se, kviz počinje uskoro!"
                     [description1] = "'Slijedi: ' +  quizHostService.quizData.currentQuestionSet.name"
                     [description2] = "'Broj pitanja: ' + quizHostService.quizData.currentQuestionSet.questions.length"
-                    [spinnerTimeout] = "currentSpinnerTimeout"
-                    [spinnerText] = "currentSpinnerText"
+                    [spinnerTimeout] = "this.quizHostService.quizSettings.quizStartDelay"
+                    spinnerText = ""
                     (timeout)="spinnerTimeout()"
                 ></app-quiz-host-transition-display>
             </div>
