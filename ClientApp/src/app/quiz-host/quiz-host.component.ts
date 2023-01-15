@@ -17,6 +17,8 @@ import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component'
 import { QuizCreatorComponent } from '../quiz-creator/quiz-creator.component';
 import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
 import { PlayerScore } from '../model/player-score';
+import anime from 'animejs/lib/anime.es.js';
+import { AnimeTimelineInstance } from 'animejs'
 
 @Component({
   selector: 'app-quiz-host',
@@ -44,11 +46,14 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Quiz | null;
 
+  quizState: QuizState = QuizState.Idle
+
+
   quizSetup = this.fb.group({
     totalTimePerQuestion: this.fb.control(this.quizHostService.quizSettings.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
     nextQuestionDelay: this.fb.control(this.quizHostService.quizSettings.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
 
-    MoveToNextQuestionWhenAllPlayersAnswered : this.fb.nonNullable.control(this.quizHostService.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
+    MoveToNextQuestionWhenAllPlayersAnswered: this.fb.nonNullable.control(this.quizHostService.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
   // quiz = this.fb.group({
@@ -100,18 +105,16 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   }
 
   setQuizId(quiz: Quiz) {
-    if (this.quizId === quiz.quizId) 
-      {
-        console.log("im deselection", quiz.quizId)
-        this.quizId = ""
-        this.selection.clear()
-        return
-      }
-    if (this.quizId !== quiz.quizId) 
-      {
-        this.quizId = quiz.quizId
-        return
-      }
+    if (this.quizId === quiz.quizId) {
+      console.log("im deselection", quiz.quizId)
+      this.quizId = ""
+      this.selection.clear()
+      return
+    }
+    if (this.quizId !== quiz.quizId) {
+      this.quizId = quiz.quizId
+      return
+    }
   }
 
   questionSetName(questionSetId: string) {
@@ -121,11 +124,11 @@ export class QuizHostComponent implements OnInit, OnDestroy {
       })
   }
 
-  previewQuiz(quizId:string){
+  previewQuiz(quizId: string) {
     this.quizHostService.previewQuiz(quizId)
   }
 
-  startQuiz(quizId:string) {
+  startQuiz(quizId: string) {
     if (!this.quizSetup.valid) {
       return
     }
@@ -137,7 +140,17 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     this.currentSpinnerTimeout = this.quizHostService.quizSettings.totalTimePerQuestion
   }
 
+  public quizStateChangedAnimated(state: QuizState) {
+    if (state === QuizState.QuestionShowing) {
+      this.showOverlay(() => this.quizStateChanged(state))
+      return
+    }
+    this.quizStateChanged(state)
+  }
+
   public quizStateChanged(state: QuizState) {
+    this.quizState = state
+
     if (state === QuizState.AnswersShowing) {
       this.currentSpinnerText = this.quizHostService.quizData.isLastQuestion() ? "Set gotov za" : "Sljedece pitanje"
       this.currentSpinnerTimeout = this.quizHostService.quizSettings.nextQuestionDelay
@@ -155,15 +168,15 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     }
   }
 
-  setQuizStateToIdle(){
+  setQuizStateToIdle() {
     this.quizHostService.quizData.quizState.next(QuizState.Idle)
   }
 
-  public openPlayerScoreDetails(details: any,playerName:string) {
+  public openPlayerScoreDetails(details: any, playerName: string) {
     const dialog = this.dialog.open(ScoreboardComponent, {
-      data:{
-        playerName:playerName,
-        score:details
+      data: {
+        playerName: playerName,
+        score: details
       },
       width: '90%'
     })
@@ -171,51 +184,55 @@ export class QuizHostComponent implements OnInit, OnDestroy {
   }
 
   public spinnerTimeout() {
-    if (this.quizHostService.quizData.quizState.getValue() === QuizState.AnswersShowing || this.quizHostService.quizData.quizState.getValue() === QuizState.SetDelayShowing) {
-      this.quizHostService.nextQuestion();
+    if (this.quizState === QuizState.AnswersShowing || this.quizState === QuizState.SetDelayShowing || this.quizState === QuizState.QuizStartDelayShowing) {
+      this.showOverlay(() => this.quizHostService.nextQuestion())
       return;
     }
     this.quizHostService.showCorrectAnswer();
   }
 
   isShowingAnswers() {
-    return this.quizHostService.quizData.quizState.getValue() === QuizState.AnswersShowing
+    return this.quizState === QuizState.AnswersShowing
   }
 
   isQuizPreview() {
-    return this.quizHostService.quizData.quizState.getValue() === QuizState.QuizPreview
+    return this.quizState === QuizState.QuizPreview
   }
 
   isShowingQuestion() {
-    return this.quizHostService.quizData.quizState.getValue() === QuizState.QuestionShowing
+    return this.quizState === QuizState.QuestionShowing
   }
 
   isIdle() {
-    return this.quizHostService.quizData.quizState.getValue() === QuizState.Idle
+    return this.quizState === QuizState.Idle
   }
 
   isShowingSetDelay() {
-    return this.quizHostService.quizData.quizState.getValue() === QuizState.SetDelayShowing
+    return this.quizState === QuizState.SetDelayShowing
   }
 
   isAfterQuiz() {
-    return this.quizHostService.quizData.quizState.getValue() === QuizState.AfterQuiz
+    return this.quizState === QuizState.AfterQuiz
+  }
+
+  isQuizStartDelayShowing() {
+    return this.quizState === QuizState.QuizStartDelayShowing
   }
 
   playerCardClass(player: Player) {
-    if (this.quizHostService.quizData.quizState.getValue() === QuizState.Idle) {
+    if (this.quizState === QuizState.Idle) {
       return ""
     }
 
-    if (this.quizHostService.quizData.quizState.getValue() === QuizState.AfterQuiz) {
+    if (this.quizState === QuizState.AfterQuiz) {
       return ""
     }
 
-    if (this.quizHostService.quizData.quizState.getValue() === QuizState.SetDelayShowing) {
+    if (this.quizState === QuizState.SetDelayShowing) {
       return ""
     }
 
-    if (this.quizHostService.quizData.quizState.getValue() === QuizState.QuestionShowing) {
+    if (this.quizState === QuizState.QuestionShowing) {
       return player.hasAnswered(this.quizHostService.quizData.currentQuestion.questionId) ? "answered" : ""
     }
 
@@ -259,5 +276,37 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     }
 
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.name + 1}`;
+  }
+
+  showOverlay(callback: () => void) {
+    let overlay = document.querySelector('.quizOverlay') as HTMLElement;
+
+    let animation = anime.timeline({
+      autoplay: true,
+      duration: 1000
+    });
+
+    animation
+      .add({
+        targets: overlay,
+        duration: 1000,
+        width: "100%",
+        easing: 'easeInOutExpo',
+        complete: function (tl) {
+          overlay.style.right = "0";
+          overlay.style.left = "auto";
+          callback()
+        }
+      })
+      .add({
+        targets: overlay,
+        duration: 800,
+        width: "0",
+        easing: 'easeInOutExpo',
+        complete: function (tl) {
+          overlay.style.right = "auto";
+          overlay.style.left = "0";
+        }
+      })
   }
 }

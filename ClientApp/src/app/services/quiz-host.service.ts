@@ -54,7 +54,7 @@ export class QuizHostService {
 
   startQuiz_(quizSettings: QuizSettings, quizId: string) {
     this.quizSettings = quizSettings
-    this.nextQuestion();
+    this.quizData.quizState.next(QuizState.QuizStartDelayShowing)
   }
 
   nextQuestion() {
@@ -84,7 +84,6 @@ export class QuizHostService {
   }
 
   private quizEnd() {
-    // this.quizData.quizState.next(QuizState.Idle)
     this.quizData.quizState.next(QuizState.AfterQuiz)
     this.sendQuizEndedToGroup()
     this.quizData.players.forEach((player) => {

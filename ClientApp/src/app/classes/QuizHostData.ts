@@ -151,5 +151,6 @@ export enum QuizState {
     QuestionShowing,
     AnswersShowing,
     SetDelayShowing,
-    AfterQuiz
+    AfterQuiz,
+    QuizStartDelayShowing
 }

@@ -111,47 +111,41 @@
             </div>
 
 
-            <div *ngIf="isShowingAnswers() || isShowingQuestion()">
-                <div style="text-align: left;">
+            <div *ngIf="isQuizStartDelayShowing()">
+                <app-quiz-host-transition-display
+                    title = "Pipremite se, kviz počinje uskoro!"
+                    [description1] = "'Slijedi: ' +  quizHostService.quizData.currentQuestionSet.name"
+                    [description2] = "'Broj pitanja: ' + quizHostService.quizData.currentQuestionSet.questions.length"
+                    [spinnerTimeout] = "currentSpinnerTimeout"
+                    [spinnerText] = "currentSpinnerText"
+                    (timeout)="spinnerTimeout()"
+                ></app-quiz-host-transition-display>
+            </div>
 
-                    <div class="questionTitleCard">
-                        <div class="questionText">
-                            <div class="questionNumber">
-                                Set pitanja : {{quizHostService.quizData.currentQuestionSet.name}}
-                                <br>
-                                Pitanje {{quizHostService.quizData.currentQuestionIndex + 1}}
-                                od {{quizHostService.quizData.questions.length}}
-                            </div>
-                            {{quizHostService.quizData.currentQuestion.text}}
-                        </div>
-                        <app-spinner [time]="currentSpinnerTimeout" [text]="currentSpinnerText"
-                            (timeout)="spinnerTimeout()">
-                        </app-spinner>
-                    </div>
-                    <div class="answer-cards">
-                        <div *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index"
-                            class="answer-card-wrapper">
-                            <div class="answer-card" [class.correct]="answer.isCorrect && isShowingAnswers()">
-                                <span class="answer-letter">{{getLetter(i)}}:</span>
-                                <span class="answer-text">{{answer.text}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+            <div *ngIf="isShowingAnswers() || isShowingQuestion()">
+                <app-quiz-host-question-display
+                    [questionSetName] = 'quizHostService.quizData.currentQuestionSet.name'
+                    [currentQuestionNumber] = 'quizHostService.quizData.currentQuestionIndex + 1'
+                    [totalQuestionsInSet] = 'quizHostService.quizData.questions.length'
+                    [question] = 'quizHostService.quizData.currentQuestion'
+                    [spinnerTimeout] = 'currentSpinnerTimeout'
+                    [spinnerText] = 'currentSpinnerText'
+                    [showAnswers] = 'isShowingAnswers()'
+                    (spinnerElapsed) = "spinnerTimeout()"
+                ></app-quiz-host-question-display>
             </div>
 
 
             <div *ngIf="isShowingSetDelay()">
-                <div class="setDelay">
-                    <div class="setDelay_pauseText">Kratka pauza!</div>
-                    <app-spinner class="setDelay_spinner" [time]="currentSpinnerTimeout" [text]="currentSpinnerText"
-                        (timeout)="spinnerTimeout()" [isLarge]='true'>
-                    </app-spinner>
-                    <div class="setDelay_info">
-                        <div class="setDelay_info_setname">Slijedi: {{quizHostService.quizData.currentQuestionSet.name}}</div>
-                        <div class="setDelay_info_numberofquestions">Broj pitanja: {{quizHostService.quizData.currentQuestionSet.questions.length}}</div>
-                    </div>
-                </div>
+                <app-quiz-host-transition-display
+                    title = "Kratka pauza!"
+                    [description1] = "'Sljedi: ' +  quizHostService.quizData.currentQuestionSet.name"
+                    [description2] = "'Broj pitanja: ' + quizHostService.quizData.currentQuestionSet.questions.length"
+                    [spinnerTimeout] = "currentSpinnerTimeout"
+                    [spinnerText] = "currentSpinnerText"
+                    (timeout)="spinnerTimeout()"
+                ></app-quiz-host-transition-display>
             </div>
 
             <div *ngIf="isAfterQuiz(); then afterQuizBlock"></div>
@@ -177,7 +171,7 @@
                 <app-button text="Natrag na tablicu kvizova"
                             (click)="setQuizStateToIdle()"></app-button>
             </ng-template>
-
+            <div class="quizOverlay"></div>
         </div>
 
     </div>

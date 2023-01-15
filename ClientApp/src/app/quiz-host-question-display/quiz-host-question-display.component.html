@@ -1,0 +1,27 @@
+<div class="QuizHostQuestionDisplay">
+    <div class="questionTitleCard">
+        <div class="questionText">
+            <div class="questionNumber">
+                Set pitanja : {{questionSetName}}
+                <br>
+                Pitanje {{currentQuestionNumber}}
+                od {{totalQuestionsInSet}}
+            </div>
+            <div class="questionWrapper">
+                <div class="questionTextWrapper">{{question.text}}</div>
+            </div>
+        </div>
+        <app-spinner [time]="spinnerTimeout" [text]="spinnerText"
+            (timeout)="timeout()">
+        </app-spinner>
+    </div>
+    <div class="answer-cards">
+        <div *ngFor="let answer of question.answers; let i = index"
+            class="answer-card-wrapper">
+            <div class="answer-card" [class.correct]="answer.isCorrect && showAnswers">
+                <span class="answer-letter">{{getLetter(i)}}:</span>
+                <span class="answer-text" >{{answer.text}}</span>
+            </div>
+        </div>
+    </div>
+</div>
