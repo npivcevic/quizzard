@@ -6,10 +6,10 @@ using quizzard.Models;
 
 namespace quizzard.Data;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
-        : base(options, operationalStoreOptions)
+    public ApplicationDbContext(DbContextOptions options)
+        : base(options)
     {
         
     }
