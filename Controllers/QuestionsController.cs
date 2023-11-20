@@ -36,7 +36,7 @@ namespace quizzard.Controllers
         }
 
         // GET: api/Questions
-        [HttpGet,Authorize]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
             if (_context.Questions == null)

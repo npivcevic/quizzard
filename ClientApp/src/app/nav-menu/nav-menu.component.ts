@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { NavBarService } from '../nav-bar.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -9,7 +10,7 @@ import { NavBarService } from '../nav-bar.service';
 export class NavMenuComponent {
   isExpanded = false;
 
-  constructor(public navbarservice: NavBarService){}
+  constructor(public navbarservice: NavBarService, public authService: AuthService) { }
 
   collapse() {
     this.isExpanded = false;
@@ -17,5 +18,11 @@ export class NavMenuComponent {
 
   toggle() {
     this.isExpanded = !this.isExpanded;
+  }
+
+  logout() {
+    this.authService.logout(localStorage.getItem("username")!).subscribe(() => {
+      localStorage.clear();      
+    });
   }
 }

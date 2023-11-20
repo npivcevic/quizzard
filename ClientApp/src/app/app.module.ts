@@ -73,12 +73,12 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     FormsModule,
     //ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: QuizPlayerComponent, pathMatch: 'full' },
+      { path: 'quiz-player', component: QuizPlayerComponent },
       { path: 'app-question', component: QuestionsComponent },
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quizzes', component: QuizzesComponent },
       { path: 'quizzes/:id', component: QuizCreatorComponent },
-      { path: 'login', component: LoginComponent }
+      { path: '', component: LoginComponent, pathMatch: 'full' }
     ]),
     BrowserAnimationsModule
   ],

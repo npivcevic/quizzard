@@ -11,21 +11,30 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class LoginComponent {
 
   loginForm = this.fb.group({
-    email: this.fb.nonNullable.control('', [Validators.required]),
+    username: this.fb.nonNullable.control('', [Validators.required]),
     password: this.fb.nonNullable.control('', [Validators.required])
   })
   constructor(
     public fb: FormBuilder,
     private _router: Router,
-    private loginService: AuthService) { }
+    private authService: AuthService) { }
 
   login() {
-    this.loginService.login(this.loginForm.value).subscribe({
+    this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
         localStorage.setItem("token", res.token)
-        localStorage.setItem("username", this.loginForm.value.email!)
+        localStorage.setItem("username", this.loginForm.value.username!)
+        this.authService.getUserRole(this.loginForm.value.username!).subscribe((vv) => {
+          this.authService.isUserLoggedIn = true;
 
-        this._router.navigate(['']);
+          if (vv.role == "Player") {
+            this._router.navigate(['quiz-player']);
+          }
+
+          if (vv.role == "Host") {
+            this._router.navigate(['quiz-host']);
+          }
+        })
       },
       error: (err) => {
         console.log(err);

@@ -9,8 +9,21 @@ export class AuthService {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
-  login(userCredentials:any): Observable<any> {
-    return this.http.post<any>(this.baseUrl + "api/Auth/login", userCredentials)
+  isUserLoggedIn: boolean = false;
+
+  public userRole = ""
+
+  login(userCredentials: any): Observable<any> {
+    let formData: FormData = new FormData();
+    formData.append('username', userCredentials.username);
+    formData.append('password', userCredentials.password);
+    return this.http.post<any>(this.baseUrl + "api/Auth/login", formData)
+  }
+
+  logout(username: string): Observable<any> {
+    let formData: FormData = new FormData();
+    formData.append('username', username);
+    return this.http.post<any>(this.baseUrl + "api/Auth/logout", formData)
   }
 
   generateRefreshToken(): Observable<any> {
@@ -23,7 +36,7 @@ export class AuthService {
     return this.http.post<any>(this.baseUrl + "api/Auth/remove-token", formData)
   }
 
-  auth(): Observable<any> {
-    return this.http.get<any>(this.baseUrl + "api/Auth")
+  getUserRole(username: string): Observable<any> {
+    return this.http.get<any>(this.baseUrl + `api/Auth/get-user-role?username=${username}`)
   }
 }

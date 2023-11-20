@@ -21,18 +21,19 @@ export class TokenInterceptor implements HttpInterceptor {
     })
     return next.handle(request).pipe(catchError((e) => {
       let servis = this.inject.get(AuthService);
-      if (e.status === 401 && this.count !=1) {
+      if (e.status === 401 && this.count != 1) {
         this.count++
         return servis.generateRefreshToken().pipe(
           switchMap((res: any) => {
-            localStorage.setItem("token", res.token) 
+            localStorage.setItem("token", res.token)
             return next.handle(request.clone({
-              setHeaders: {Authorization: `bearer ${res.token}`}
+              setHeaders: { Authorization: `bearer ${res.token}` }
             }))
           })
         )
       }
       this.count = 0;
+      this.router.navigate(['']);
       return throwError(() => new Error(e.message));
     }))
 

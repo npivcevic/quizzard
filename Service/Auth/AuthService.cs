@@ -47,14 +47,14 @@ namespace quizzard.Service.AuthService
         }
 
 
-        public async Task<AuthResponseDto> Login(UserDto request)
+        public async Task<AuthResponseDto> Login(string username,string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);  
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == username);  
             if(user == null) 
             {
                 return new AuthResponseDto { Message="User not found."};
             }
-            if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 return new AuthResponseDto { Message = "Wrong Password." };
             }
@@ -69,6 +69,22 @@ namespace quizzard.Service.AuthService
                 RefreshToken = refreshToken.Token,
                 TokenExpires = refreshToken.Expires,
             };
+        }
+        public async Task<AuthResponseDto> Logout(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == username);  
+            if(user == null) 
+            {
+                return new AuthResponseDto { Success = false, Message ="User not found."};
+            }
+            _httpContextAccessor?.HttpContext?.Response
+                .Cookies.Delete("refreshToken");
+            user.RefreshToken = "";
+            user.TokenExpires = DateTime.MinValue;
+            user.TokenCreated = DateTime.MinValue;
+
+            _context.SaveChanges();
+            return new AuthResponseDto { Success=true,Message = "User Logged Out" };
         }
 
         private bool VerifyPasswordHash(string password,byte[] passwordHash,byte[] passwordSalt)
@@ -201,5 +217,16 @@ namespace quizzard.Service.AuthService
             else
                 return new AuthResponseDto { Success = false, Message = "Deleting token failed." };
         }
+
+        public async Task<AuthResponseDto> GetUserRole(string username)
+        {
+            var user = await _context.Users.Where(u => u.Email == username).FirstOrDefaultAsync();
+
+            if(user == null)
+                return new AuthResponseDto { Success = false, Message = "User does not exists." };
+            return new AuthResponseDto { Success = true,Role = user.Role };
+        }
+
+
     }
 }
