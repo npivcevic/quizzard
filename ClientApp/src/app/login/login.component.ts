@@ -26,7 +26,7 @@ export class LoginComponent {
         localStorage.setItem("username", this.loginForm.value.username!)
         this.authService.getUserRole(this.loginForm.value.username!).subscribe((vv) => {
           this.authService.isUserLoggedIn = true;
-
+          this.authService.userRole = vv.role;
           if (vv.role == "Player") {
             this._router.navigate(['quiz-player']);
           }

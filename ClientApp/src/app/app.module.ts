@@ -36,6 +36,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { LoginComponent } from './login/login.component';
 import { AuthorizeInterceptor } from '../api-authorization/authorize.interceptor';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { quizzesGuard } from './guards/quizzes.guard';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
       { path: 'quiz-player', component: QuizPlayerComponent },
       { path: 'app-question', component: QuestionsComponent },
       { path: 'quiz-host', component: QuizHostComponent },
-      { path: 'quizzes', component: QuizzesComponent },
+      { path: 'quizzes', component: QuizzesComponent, canActivate:[quizzesGuard] },
       { path: 'quizzes/:id', component: QuizCreatorComponent },
       { path: '', component: LoginComponent, pathMatch: 'full' }
     ]),
