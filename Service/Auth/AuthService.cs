@@ -175,7 +175,7 @@ namespace quizzard.Service.AuthService
 
         public async Task<AuthResponseDto> SelectRole(string userEmail, string role)
         {
-            var user = _context.Users.Where(u => u.Email == userEmail).FirstOrDefault();
+            var user = await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync();
             user.Role = role;
             _context.Update(user);
             var saved = _context.SaveChanges();
@@ -185,6 +185,21 @@ namespace quizzard.Service.AuthService
                 return new AuthResponseDto { Success = false, Message = "Selecting plan failed." };
 
 
+        }
+
+        public async Task<AuthResponseDto> DeleteToken(string userEmail)
+        {
+            var user = await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync();
+            if(user == null)
+            {
+                return new AuthResponseDto { Success = false, Message = "User does not exist." };
+            }
+            user.RefreshToken = "";
+            var saved = _context.SaveChanges();
+            if (saved > 0)
+                return new AuthResponseDto { Success = true, Message = "Succesfully deleted token." };
+            else
+                return new AuthResponseDto { Success = false, Message = "Deleting token failed." };
         }
     }
 }

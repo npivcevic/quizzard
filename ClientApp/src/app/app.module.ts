@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material/material.module';
 
@@ -33,6 +33,9 @@ import { ButtonComponent } from './button/button.component';
 import { ButtonIconComponent } from './button-icon/button-icon.component';
 import { QuizPreviewComponent } from './quiz-preview/quiz-preview.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { LoginComponent } from './login/login.component';
+import { AuthorizeInterceptor } from '../api-authorization/authorize.interceptor';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -58,6 +61,7 @@ import { DialogComponent } from './dialog/dialog.component';
     ButtonIconComponent,
     QuizPreviewComponent,
     DialogComponent,
+    LoginComponent,
   ],
   imports: [
     ClipboardModule,
@@ -70,17 +74,17 @@ import { DialogComponent } from './dialog/dialog.component';
     //ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: QuizPlayerComponent, pathMatch: 'full' },
-      { path: 'app-question', component: QuestionsComponent, canActivate: [AuthorizeGuard] },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      { path: 'app-question', component: QuestionsComponent },
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quizzes', component: QuizzesComponent },
-      { path: 'quizzes/:id', component: QuizCreatorComponent }
+      { path: 'quizzes/:id', component: QuizCreatorComponent },
+      { path: 'login', component: LoginComponent }
     ]),
     BrowserAnimationsModule
   ],
-  //providers: [
-  //  { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
-  //],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

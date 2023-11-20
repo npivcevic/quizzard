@@ -1,0 +1,13 @@
+<div class="login-form-wrap">
+  <form [formGroup]="loginForm" class="w-300" (ngSubmit)="login()">
+    <input type="text" class="form-control" placeholder="email" aria-label="email" formControlName="email">
+    <input type="password" class="form-control" placeholder="password" aria-label="password" formControlName="password">
+
+    <div class="login-button">
+      <app-button class="login-button" text="Login"></app-button>
+    </div>
+    <!--<div *ngIf="loginStart" class="loader-container">
+      <span class="loader"></span>
+    </div>-->
+  </form>
+</div>

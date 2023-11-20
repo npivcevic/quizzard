@@ -51,6 +51,15 @@ namespace AuthentificationJwtRefreshToken.Controllers
             var response = await _authService.RefreshToken();
             if (response.Success)
                 return Ok(response);
+            return Unauthorized(response);
+        }
+
+        [HttpDelete("remove-token")]
+        public async Task<ActionResult> DeleteToken([FromForm] string userEmail)
+        {
+            var response = await _authService.DeleteToken(userEmail);
+            if (response.Success)
+                return Ok(response);
             return BadRequest(response);
         }
 

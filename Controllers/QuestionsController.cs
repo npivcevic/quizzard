@@ -19,7 +19,6 @@ namespace quizzard.Controllers
         }
 
         // GET: api/Questions/random
-        [AllowAnonymous]
         [HttpGet("Random")]
         public async Task<ActionResult<IEnumerable<Question>>> GetRandomQuestions(int size = 20)
         {
@@ -37,7 +36,7 @@ namespace quizzard.Controllers
         }
 
         // GET: api/Questions
-        [HttpGet]
+        [HttpGet,Authorize]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
             if (_context.Questions == null)

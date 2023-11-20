@@ -9,5 +9,6 @@ namespace quizzard.Service.AuthService
         Task<AuthResponseDto> SelectRole(string userEmail, string role);
         Task<AuthResponseDto> Login(UserDto request);
         Task<AuthResponseDto> RefreshToken();
+        Task<AuthResponseDto> DeleteToken(string userEmail);
     }
 }

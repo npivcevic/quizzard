@@ -1,0 +1,19 @@
+.login-form-wrap {
+  display: flex;
+  justify-content: center ;
+  padding-top: 100px;
+}
+
+form {
+  width: 300px;
+}
+
+.form-control{
+    margin:10px;
+    text-align:center;
+}
+
+.login-button {
+  display: flex;
+  justify-content: center;
+}
