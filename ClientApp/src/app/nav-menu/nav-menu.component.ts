@@ -22,7 +22,8 @@ export class NavMenuComponent {
 
   logout() {
     this.authService.logout(localStorage.getItem("username")!).subscribe(() => {
-      localStorage.clear();      
+      localStorage.clear();
+      this.authService.isUserLoggedIn = false;
     });
   }
 }

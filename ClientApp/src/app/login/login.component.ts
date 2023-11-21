@@ -24,17 +24,15 @@ export class LoginComponent {
       next: (res) => {
         localStorage.setItem("token", res.token)
         localStorage.setItem("username", this.loginForm.value.username!)
-        this.authService.getUserRole(this.loginForm.value.username!).subscribe((vv) => {
-          this.authService.isUserLoggedIn = true;
-          this.authService.userRole = vv.role;
-          if (vv.role == "Player") {
-            this._router.navigate(['quiz-player']);
-          }
+        this.authService.isUserLoggedIn = true;
+        this.authService.userRole = res.role;
+        if (res.role == "Player") {
+          this._router.navigate(['quiz-player']);
+        }
 
-          if (vv.role == "Host") {
-            this._router.navigate(['quiz-host']);
-          }
-        })
+        if (res.role == "Host") {
+          this._router.navigate(['quiz-host']);
+        }
       },
       error: (err) => {
         console.log(err);

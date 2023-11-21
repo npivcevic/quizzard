@@ -68,6 +68,7 @@ namespace quizzard.Service.AuthService
                 Token = token,
                 RefreshToken = refreshToken.Token,
                 TokenExpires = refreshToken.Expires,
+                Role = user.Role
             };
         }
         public async Task<AuthResponseDto> Logout(string username)
