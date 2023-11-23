@@ -35,6 +35,8 @@ import { ButtonComponent } from './button/button.component';
 import { ButtonIconComponent } from './button-icon/button-icon.component';
 import { QuizPreviewComponent } from './quiz-preview/quiz-preview.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { QuizHostQuestionDisplayComponent } from './quiz-host-question-display/quiz-host-question-display.component';
+import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-display/quiz-host-transition-display.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { DialogComponent } from './dialog/dialog.component';
     ButtonIconComponent,
     QuizPreviewComponent,
     DialogComponent,
+    QuizHostQuestionDisplayComponent,
+    QuizHostTransitionDisplayComponent,
   ],
   imports: [
     ClipboardModule,

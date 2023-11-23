@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { QuizzesService } from '../services/quizzes.service';
 import { Quiz } from '../model/quiz';
-import { letterFromIndex } from '../utils/letterFromIndex';
-import { QuestionSet } from '../model/question-set';
+import { QuizSettings } from '../model/QuizSettings';
 
 @Component({
   selector: 'app-quiz-preview',
@@ -12,18 +11,29 @@ import { QuestionSet } from '../model/question-set';
 })
 export class QuizPreviewComponent {
 
-  @Input() quiz!:Quiz
+  @Input() quiz!: Quiz
+  @Input() quizSettings!: QuizSettings
+
+  @Output() openSettings = new EventEmitter<string>();
 
   displayedColumns: string[] = ['name', "questions"];
-  
+
   constructor(private route: ActivatedRoute,
-              private quizservice: QuizzesService){}
+    private quizservice: QuizzesService) { }
 
   getTotalCost() {
+    return this.getTotalNumberOfQuestions()
+  }
+
+  getTotalNumberOfQuestions() {
     return this.quiz.questionSets.map(t => t.questions.length).reduce((acc, value) => acc + value, 0);
   }
 
-  getLetter(n: number) {
-    return letterFromIndex(n)
+  getTotalNumberOfSets() {
+    return this.quiz.questionSets.length;
+  }
+
+  settingsIconClicked() {
+    this.openSettings.emit()
   }
 }

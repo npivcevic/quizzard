@@ -122,6 +122,17 @@ body{
 .quiz{
     padding: 20px;
     width: 80%;
+    position: relative;
+    height: 100%;
+}
+
+.quizOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: white;
 }
 
 button{
@@ -165,54 +176,6 @@ mat-card{
     width: 106px;
 }
 
-.questionTitleCard {
-    display: flex;
-    margin: 5px;
-}
-
-.questionNumber {
-    font-size: 18px;
-}
-
-.questionText {
-    display: inline-block;
-    text-align: left;
-    font-size: 38px;
-    padding: 0;
-    padding-right: 30px;
-    margin-right: auto;
-}
-
-.answer-cards {
-    display: flex;
-    flex-wrap: wrap;
-    /* position: absolute;
-    bottom: 0;
-    right: 10px;
-    width: calc(100vw - 400px); */
-}
-
-.answer-card{
-    font-size: 28px;
-    margin: 5px;
-    text-align: left;
-    background-color: #0a1d36;
-    color: whitesmoke;
-}
-
-.answer-letter {
-    color: #f4ce26;
-}
-
-.correct {
-    background-color: rgb(22 107 22)
-}
-.incorrect {
-    background-color: rgb(152 57 57);
-}
-.answered {
-    background-color: rgb(116 98 27);
-}
 
 .logoKviz {
     color:#f4ce26;
@@ -276,3 +239,29 @@ table {
   .quiz-preview{
     flex-grow: 8;
   }
+
+  .questions-row{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+  }
+
+  .questions-row>div{
+    border: solid;
+    width: 50px;
+    border-width: 1px;
+  }
+
+  .players-row{
+    display: flex;
+  }
+  .players-row>div{
+    border: solid;
+    width: 50px;
+    border-width: 1px;
+  }
+
+  .player-name-score{
+    width: 200px !important;
+  }
+

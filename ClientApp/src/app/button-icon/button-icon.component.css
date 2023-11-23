@@ -6,3 +6,7 @@ button{
 button:hover {
     color: #f4ce26;
 }
+
+.icon-button {
+    margin-bottom: 3px;
+}

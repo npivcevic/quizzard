@@ -11,7 +11,7 @@ import { QuizzesService } from './quizzes.service';
 })
 export class QuizHostService {
   public quizData!: QuizHostData
-  public quizSettings!: QuizSettings
+  public quizSettings:QuizSettings = new QuizSettings()
 
   constructor(public signalRService: SignalrService,
     public questionservice: QuestionService,
@@ -54,14 +54,12 @@ export class QuizHostService {
 
   startQuiz_(quizSettings: QuizSettings, quizId: string) {
     this.quizSettings = quizSettings
-    this.nextQuestion();
+    this.quizData.quizState.next(QuizState.QuizStartDelayShowing)
   }
 
   nextQuestion() {
     if (this.quizData.isLastQuestion() && !this.quizData.isLastQuestionSet()) {
-      this.quizData.nextQuestionSet()
-      this.quizData.nextQuestion()
-      this.sendQuestiontoGroup()
+      this.nextQuestionSet()
       return
     }
 
@@ -74,6 +72,11 @@ export class QuizHostService {
     this.sendQuestiontoGroup()
   }
 
+  public nextQuestionSet() {
+    this.quizData.nextQuestionSet()
+    this.sendNextSetDelay()
+  }
+
   public showCorrectAnswer() {
     this.quizData.quizState.next(QuizState.AnswersShowing)
     this.quizData.checkAnswersAndAssignPoints()
@@ -81,7 +84,7 @@ export class QuizHostService {
   }
 
   private quizEnd() {
-    this.quizData.quizState.next(QuizState.Idle)
+    this.quizData.quizState.next(QuizState.AfterQuiz)
     this.sendQuizEndedToGroup()
     this.quizData.players.forEach((player) => {
       this.sendScoreToPlayer(player)
@@ -112,6 +115,17 @@ export class QuizHostService {
     this.sendToGroup(JSON.stringify(data))
   }
 
+  public sendNextSetDelay() {
+    const data = {
+      action: "NextSetDelay",
+      data: {
+        text: "Sljedeci set za",
+        timer: this.quizSettings.nextSetDelay
+      }
+    }
+    this.sendToGroup(JSON.stringify(data))
+  }
+
   public sendQuizEndedToGroup() {
     const data = {
       action: 'QuizEnded',
@@ -135,7 +149,7 @@ export class QuizHostService {
   public sendScoreToPlayer(player: Player) {
     const data = {
       action: 'PlayerScore',
-      data: player.getQuizReviewBoard(this.quizData.questions)
+      data: player.getQuizReviewBoard(this.quizData.quiz.questionSets)
     }
     this.sendToPlayer(JSON.stringify(data), player.connectionId)
   }

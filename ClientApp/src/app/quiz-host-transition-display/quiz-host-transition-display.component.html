@@ -1,0 +1,10 @@
+<div class="QuizHostTransitionDisplay">
+    <div class="title">{{title}}</div>
+    <app-spinner class="spinner" [time]="spinnerTimeout" [text]="spinnerText"
+        (timeout)="timeout.emit()" [isLarge]='true'>
+    </app-spinner>
+    <div class="info">
+        <div class="description1">{{description1}}</div>
+        <div class="description2">{{description2}}</div>
+    </div>
+</div>
