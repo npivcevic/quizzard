@@ -74,12 +74,13 @@ import { quizzesGuard } from './guards/quizzes.guard';
     FormsModule,
     //ApiAuthorizationModule,
     RouterModule.forRoot([
+      { path: '', component: QuizPlayerComponent },
       { path: 'quiz-player', component: QuizPlayerComponent },
       { path: 'app-question', component: QuestionsComponent },
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quizzes', component: QuizzesComponent, canActivate:[quizzesGuard] },
       { path: 'quizzes/:id', component: QuizCreatorComponent },
-      { path: '', component: LoginComponent, pathMatch: 'full' }
+      { path: 'login', component: LoginComponent, pathMatch: 'full' }
     ]),
     BrowserAnimationsModule
   ],
