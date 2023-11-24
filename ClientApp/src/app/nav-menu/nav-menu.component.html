@@ -35,9 +35,9 @@
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-light" [routerLink]="['/quiz-player']">Join Quiz</a>
           </li>
-          <li *ngIf="!this.authService.isUserLoggedIn" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" [routerLink]="['']">Login</a>
-          </li>
+          <!-- <li *ngIf="!this.authService.isUserLoggedIn" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-light" [routerLink]="['/login']">Login</a>
+          </li> -->
           <li *ngIf="this.authService.isUserLoggedIn" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-light" (click)="logout()" [routerLink]="['']">Logout</a>
           </li>
