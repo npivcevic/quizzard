@@ -1,0 +1,10 @@
+<app-dialog title="Uvezi pitanja">
+    <div class='dialog_wapper'>
+        <h1>Import a tsv file of questions.</h1>
+        <input type="file" class="file-upload" (change)="fileChanged($event)">
+        <div>Broj pitanja u datoteci: {{ this.questionsToImport.length }}</div>
+        <div>Broj pitanja sa greskama: {{ this.questionsWithErrors.length }}</div>
+        <div *ngIf="this.questionsWithErrors.length > 0">Pitanja sa greskama: {{ this.questionsWithErrors.join(',') }}</div>
+        <app-button text="Import" (click)="importQuestions()" *ngIf="this.questionsWithErrors.length === 0 && this.questionsToImport.length > 1"></app-button>
+    </div>
+</app-dialog>

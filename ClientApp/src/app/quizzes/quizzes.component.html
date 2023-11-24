@@ -3,6 +3,9 @@
     <app-button text="Dodaj kviz"
                 (click)="openPostQuizDialog()">
     </app-button>
+    <app-button text="Uvezi pitanja iz CSV-a"
+                (click)="openQuestionImportDialog()">
+    </app-button>
 </div>
 
 <table mat-table [dataSource]="dataSource"
