@@ -1,0 +1,7 @@
+.table {
+}
+
+.dialog_wapper {
+    max-height: 500px;
+    overflow: scroll;
+}

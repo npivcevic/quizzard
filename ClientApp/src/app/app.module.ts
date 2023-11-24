@@ -37,6 +37,7 @@ import { QuizPreviewComponent } from './quiz-preview/quiz-preview.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { QuizHostQuestionDisplayComponent } from './quiz-host-question-display/quiz-host-question-display.component';
 import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-display/quiz-host-transition-display.component';
+import { QuestionsImporterComponent } from './questions-importer/questions-importer.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-displ
     DialogComponent,
     QuizHostQuestionDisplayComponent,
     QuizHostTransitionDisplayComponent,
+    QuestionsImporterComponent,
   ],
   imports: [
     ClipboardModule,

@@ -16,6 +16,8 @@ public class Question
 
     public int Order { get; set; } = 0;
 
+    public string? Fact { get; set; } = null;
+
     public List<Answer> Answers { get; set; } = new List<Answer>();
     
     public Guid? QuestionSetId { get; set; }
