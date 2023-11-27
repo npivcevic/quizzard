@@ -22,6 +22,7 @@ export class QuizSettingsComponent implements OnInit {
   quizSetup = this.fb.group({
     totalTimePerQuestion: this.fb.control(this.data.totalTimePerQuestion / 1000, [Validators.required, Validators.min(1)]),
     nextQuestionDelay: this.fb.control(this.data.nextQuestionDelay / 1000, [Validators.required, Validators.min(1)]),
+    nextSetDelay: this.fb.control(this.data.nextSetDelay / 1000, [Validators.required, Validators.min(1)]),
     MoveToNextQuestionWhenAllPlayersAnswered: this.fb.control(this.data.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
@@ -33,6 +34,9 @@ export class QuizSettingsComponent implements OnInit {
   }
 
   saveSettings() {
+    if (!this.quizSetup.valid) {
+      return
+    }
     this.dialogRef.close(this.quizSetup.value)
   }
 }

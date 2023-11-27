@@ -1,19 +1,61 @@
-<app-dialog title="Tvoji odgovori na pitanja">
-  <mat-list *ngFor="let answer of answers">
+<app-dialog [title]="openedFromPlayer ? 'Tvoji odgovori na pitanja' : returnPlayerName()">
+  <mat-tab-group>
+  <mat-tab *ngFor="let questionSet of answers" [label]="questionSet.questionSetName">
+    <div *ngFor="let answer of questionSet.score">
+      <mat-accordion>
+        <mat-expansion-panel class="answer-panel" hideToggle>
+          <mat-expansion-panel-header [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+            <mat-panel-title >
+              {{answer.questionText}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngIf="answer.answerText" >
+            <strong *ngIf="openedFromPlayer">Tvoj odgovor : <span>{{answer.answerText}}</span></strong>
+            <strong *ngIf="!openedFromPlayer">Odgovor od {{playerName}} : <span>{{answer.answerText}}</span></strong>
+            <div [hidden]="answer.isCorrect">
+            <strong>Točan odgovor : <span>{{answer.correctAnswer}}</span></strong>
+          </div>
+          </div>
+          <div *ngIf="!answer.answerText">
+            <span>Ovo pitanje nije odgovoreno. Točan odgovor je : </span>
+            <div>
+              <strong>{{answer.correctAnswer}}</strong>
+    
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-divider></mat-divider>
+    </div>
+    <!-- <mat-list *ngFor="let answer of questionSet.score">
     <mat-list-item>
       <div>
         <strong>{{answer.questionText}}</strong>
       </div>
     </mat-list-item>
     <mat-list-item>
-      <div [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+      <div *ngIf="answer.answerText" [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
         <strong>{{answer.answerText}}</strong>
+        <div [hidden]="answer.isCorrect"
+        [ngStyle]="{background: answer.isCorrect!==true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+        <strong>{{answer.correctAnswer}}</strong>
+      </div>
+      </div>
+      <div *ngIf="!answer.answerText">
+        <span>Ovo pitanje nije odgovoreno. Točan odgovor je : </span>
+        <div>
+          <strong>{{answer.correctAnswer}}</strong>
+
+        </div>
       </div>
       <div [hidden]="answer.isCorrect"
         [ngStyle]="{background: answer.isCorrect!==true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
         <strong>{{answer.correctAnswer}}</strong>
       </div>
-    </mat-list-item>
+     </mat-list-item>
     <mat-divider></mat-divider>
-  </mat-list>
+  </mat-list> -->
+
+  </mat-tab>
+</mat-tab-group>
 </app-dialog>

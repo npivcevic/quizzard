@@ -102,6 +102,7 @@ input::placeholder{
 }
 
 .answer-button {
+    justify-content: left;
     width: 100%;
     min-height: 80px;
     background-color: #0a1d36;
@@ -114,4 +115,9 @@ input::placeholder{
 .answer-letter {
     display: contents;
     color: #f4ce26;
+}
+
+.setDelay_pauseText {
+    font-size: 45px;
+    margin: 120px 0 50px 0;
 }

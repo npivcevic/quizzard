@@ -14,9 +14,8 @@
             <span class="groupname-clipboard">
                 <span *ngIf="!quizHostService.quizData.copyedToCLipboard;then copyBlock else doneBlock"></span>
                 <ng-template #copyBlock>
-                    <app-button-icon icon="content_copy" 
-                                    (click)="quizHostService.quizData.copyedToCLipboard=true"
-                                    [cdkCopyToClipboard]="quizHostService.quizData.groupName">
+                    <app-button-icon icon="content_copy" (click)="quizHostService.quizData.copyedToCLipboard=true"
+                        [cdkCopyToClipboard]="quizHostService.quizData.groupName">
                     </app-button-icon>
                 </ng-template>
                 <ng-template #doneBlock>
@@ -44,146 +43,137 @@
                     <div class="player-score" [class.disconnected]="!player.isActive">
                         {{player.score}}
                     </div>
+                    <app-button-icon icon="assessment"
+                                    (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)"
+                                    *ngIf="isAfterQuiz()">
+                    </app-button-icon>
                 </div>
             </div>
         </div>
 
 
         <div class="quiz">
-            <div *ngIf="isIdle(); then startQuizButtonBlock"></div>
+            <div *ngIf="isIdle()" [formGroup]="quizSetup">
+                <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
 
-            <ng-template [formGroup]="quizSetup" #startQuizButtonBlock>
-                <table mat-table [dataSource]="dataSource" 
-                multiTemplateDataRows 
-                class="mat-elevation-z8">
-            <!-- Position Column -->
-            <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Ime kviza </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-            </ng-container>
-        
-            <!-- Name Column -->
-            <ng-container matColumnDef="numberOfQuestions">
-            <th mat-header-cell *matHeaderCellDef> Broj Pitanja </th>
-            <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
-            </ng-container>
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Ime kviza </th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
 
-        
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="numberOfQuestions">
+                        <th mat-header-cell *matHeaderCellDef> Broj Pitanja </th>
+                        <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="expand">
+                        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                        <td mat-cell *matCellDef="let element">
+                            <!-- <app-button-icon icon="keyboard_arrow_up" *ngIf="expandedElement == element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>
+                    <app-button-icon icon="keyboard_arrow_down" *ngIf="expandedElement !== element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>                 -->
+                            <app-button-icon icon="play_arrow" (click)="previewQuiz(element.quizId)"></app-button-icon>
+                        </td>
+                    </ng-container>
+
+                    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                    <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                            <div class="example-element-detail"
+                                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                <div class="example-element-description">
+                                    {{element.description}}
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
 
 
-            <ng-container matColumnDef="expand">
-                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-                <td mat-cell *matCellDef="let element">
-                    <app-button-icon icon="keyboard_arrow_up" *ngIf="expandedElement == element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>
-                    <app-button-icon icon="keyboard_arrow_down" *ngIf="expandedElement !== element" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()"></app-button-icon>                
-                    <app-button-icon icon="play_arrow"
-                                    (click)="previewQuiz(element.quizId)"></app-button-icon>
-                </td>
-            </ng-container>
-
-            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-            <div class="example-element-detail"
-                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                <div class="example-element-description">
-                {{element.description}}
-                </div>
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                </table>
             </div>
-            </td>
-        </ng-container>
 
-        
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-            
-            >
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-        </table>              
-            </ng-template>
-
-            <div *ngIf="isQuizPreview(); then previewBlock"></div>
-            <ng-template #previewBlock>
+            <div *ngIf="isQuizPreview()">
                 <div class="preview-page">
                     <div class="quiz-preview">
-                        <app-quiz-preview [quiz]="quizHostService.quizData.quiz" ></app-quiz-preview>
-                        <app-button text="Pokreni kviz" 
-                                    (click)="startQuiz(quizHostService.quizData.quiz.quizId)">
+                        <app-quiz-preview [quiz]="quizHostService.quizData.quiz"
+                            [quizSettings]="quizHostService.quizSettings" (openSettings)="openQuizSettingsDialog()"></app-quiz-preview>
+                        <app-button text="Pokreni kviz" (click)="startQuiz(quizHostService.quizData.quiz.quizId)">
                         </app-button>
-                        <app-button text="Odustani"
-                                    (click)="quizHostService.backFromPreview()"
-                                    buttonStyle="secondary">
+                        <app-button text="Odustani" (click)="quizHostService.backFromPreview()" buttonStyle="secondary">
                         </app-button>
-                    </div>
-                    <div class="quiz-settings">
-                        <app-button-icon icon="settings" 
-                                (click)="openQuizSettingsDialog()">
-                        </app-button-icon>
                     </div>
                 </div>
-            </ng-template>
-            
+            </div>
 
-            <div *ngIf="!isIdle() && !isQuizPreview(); then questionBlock"></div>
 
-            <ng-template #questionBlock>
-                <div style="text-align: left;">
+            <div *ngIf="isQuizStartDelayShowing()">
+                <app-quiz-host-transition-display
+                    title = "Pipremite se, kviz počinje uskoro!"
+                    [description1] = "'Slijedi: ' +  quizHostService.quizData.currentQuestionSet.name"
+                    [description2] = "'Broj pitanja: ' + quizHostService.quizData.currentQuestionSet.questions.length"
+                    [spinnerTimeout] = "this.quizHostService.quizSettings.quizStartDelay"
+                    spinnerText = ""
+                    (timeout)="spinnerTimeout()"
+                ></app-quiz-host-transition-display>
+            </div>
 
-                    <div class="questionTitleCard">
-                        <div class="questionText">
-                            <div class="questionNumber">
-                                Set pitanja : {{quizHostService.quizData.currentQuestionSet.name}}
-                                <br>
-                                Pitanje {{quizHostService.quizData.currentQuestionIndex + 1}}
-                                od {{quizHostService.quizData.questions.length}}
+
+            <div *ngIf="isShowingAnswers() || isShowingQuestion()">
+                <app-quiz-host-question-display
+                    [questionSetName] = 'quizHostService.quizData.currentQuestionSet.name'
+                    [currentQuestionNumber] = 'quizHostService.quizData.currentQuestionIndex + 1'
+                    [totalQuestionsInSet] = 'quizHostService.quizData.questions.length'
+                    [question] = 'quizHostService.quizData.currentQuestion'
+                    [spinnerTimeout] = 'currentSpinnerTimeout'
+                    [spinnerText] = 'currentSpinnerText'
+                    [showAnswers] = 'isShowingAnswers()'
+                    (spinnerElapsed) = "spinnerTimeout()"
+                ></app-quiz-host-question-display>
+            </div>
+
+
+            <div *ngIf="isShowingSetDelay()">
+                <app-quiz-host-transition-display
+                    title = "Kratka pauza!"
+                    [description1] = "'Sljedi: ' +  quizHostService.quizData.currentQuestionSet.name"
+                    [description2] = "'Broj pitanja: ' + quizHostService.quizData.currentQuestionSet.questions.length"
+                    [spinnerTimeout] = "currentSpinnerTimeout"
+                    [spinnerText] = "currentSpinnerText"
+                    (timeout)="spinnerTimeout()"
+                ></app-quiz-host-transition-display>
+            </div>
+
+            <div *ngIf="isAfterQuiz(); then afterQuizBlock"></div>
+
+            <ng-template #afterQuizBlock>
+                <mat-tab-group>
+                    <mat-tab [label]="set.name" *ngFor="let set of quizHostService.quizData.quiz.questionSets; index as i">
+                        <div class="questions-row">
+                            <div style="width: 200px;">
+                                Broj pitanja
                             </div>
-                            {{quizHostService.quizData.currentQuestion.text}}
+                            <div *ngFor="let question of set.questions; index as i">
+                                {{i+1}}
+                            </div>
                         </div>
-                        <app-spinner [time]="currentSpinnerTimeout" [text]="currentSpinnerText"
-                            (timeout)="spinnerTimeout()">
-                        </app-spinner>
-                    </div>
-                    <div class="answer-cards">
-                        <div *ngFor="let answer of quizHostService.quizData.currentQuestion.answers; let i = index"
-                            style="width: 50%;">
-                            <mat-card class="answer-card" [class.correct]="answer.isCorrect && isShowingAnswers()">
-                                <span class="answer-letter">{{getLetter(i)}}:</span> {{answer.text}}
-                            </mat-card>
+                        <div class="players-row" *ngFor="let player of quizHostService.quizData.players">
+                            <div class="player-name-score">{{player.name}}</div>
+                            <div *ngFor="let answers of player.getQuizReviewBoardForOneQuestionSet(set.questions)" 
+                                [ngStyle]="{background: answers.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}"></div>
                         </div>
-                    </div>
-                </div>
+                    </mat-tab>
+                </mat-tab-group>
+                <app-button text="Natrag na tablicu kvizova"
+                            (click)="setQuizStateToIdle()"></app-button>
             </ng-template>
-
-            <ng-template #scoreBoardBlock>
-                <div style="text-align: center;">
-                    <button mat-raised-button style="width: 80%;height: 100px;">Pokreni novi nerad itrenutno
-                        kviz</button>
-                </div>
-            </ng-template>
-
+            <div class="quizOverlay"></div>
         </div>
 
     </div>
 
-    <!-- <div class="log">
-        Activity Log:
-        <mat-divider></mat-divider>
-        <div *ngFor="let message of quizHostService.signalRService.dataHistory">
-            {{message}}
-        </div>
-    </div>
-
 </div>
-
-
-<div>
-    ConnectionId: {{quizHostService.signalRService.connectionId}}
-</div>
-
-<mat-form-field>
-    <input matInput name="question" [(ngModel)]="inputData" required>
-</mat-form-field>
-<button class="general-buttons" color="primary" mat-raised-button (click)="sendDataToGroup()">
-    Send data to group
-</button> -->

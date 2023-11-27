@@ -68,6 +68,10 @@ export class QuizPlayerComponent implements OnInit {
     return this.quizPlayerService.quizData.quizState === QuizPlayerState.End
   }
 
+  public isSetDelayShowing() {
+    return this.quizPlayerService.quizData.quizState === QuizPlayerState.SetDelayShowing
+  }
+
   public answerStyle(answerId: string) {
     if (this.quizPlayerService.quizData.currentCorrectAnswerId === answerId) {
       return 'correct'

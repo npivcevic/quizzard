@@ -8,6 +8,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatDialog } from '@angular/material/dialog';
 import { AddQuizComponent } from '../add-quiz/add-quiz.component';
 import { Router } from '@angular/router';
+import { QuestionsImporterComponent } from '../questions-importer/questions-importer.component';
 
 
 @Component({
@@ -68,6 +69,12 @@ export class QuizzesComponent implements OnInit {
       error: (error) => {
         this.openSnackBar("Kviz nije stvoren")
       }
+    })
+  }
+
+  openQuestionImportDialog(): void {
+    const dialog = this.dialog.open(QuestionsImporterComponent, {
+      width: '90%',
     })
   }
 

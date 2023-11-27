@@ -132,6 +132,19 @@ namespace quizzard.Controllers
             return CreatedAtAction("GetQuestion", new { id = question.QuestionId }, question);
         }
 
+        [HttpPost("Bulk")]
+        public async Task<ActionResult<Question>> PostQuestionBulk(Question[] questions)
+        {
+            if (_context.Questions == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Questions'  is null.");
+            }
+            _context.Questions.AddRange(questions);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         // DELETE: api/Questions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQuestion(Guid id)

@@ -83,6 +83,15 @@
         </div>
     </div>
 
+    <div *ngIf="isSetDelayShowing()" class="container">
+        <div class="player-spinner">
+            <div class="setDelay_pauseText">Kratka pauza!</div>
+            <app-spinner [time]="quizPlayerService.currentSpinnerTimeout"
+                [text]="quizPlayerService.currentSpinnerText">
+            </app-spinner>
+        </div>
+    </div>
+
     <div *ngIf="isQuizEnd()" class="container">
         <mat-card style="text-align: center;">
             <mat-card-title>

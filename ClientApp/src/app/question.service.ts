@@ -14,6 +14,10 @@ export class QuestionService {
     return this.http.post<Question>(this.baseUrl + "api/Questions", question)
   }
 
+  postQuestionBulk(question: PostQuestion[]): Observable<null> {
+    return this.http.post<null>(this.baseUrl + "api/Questions/Bulk", question)
+  }
+
   getQuestions(): Observable<Question[]> {
     return this.http.get<Question[]>(this.baseUrl + "api/Questions")
   }

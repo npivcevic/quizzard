@@ -107,7 +107,6 @@ export class QuizPlayerService {
   }
 
   public processMessage(data: any) {
-    console.log(data)
     switch (data.action) {
       case 'SuccesfullyJoinedGroup':
         this.quizData.quizState = QuizPlayerState.WaitingForStart
@@ -137,12 +136,11 @@ export class QuizPlayerService {
         this.quizData.quizState = QuizPlayerState.End
         break
       case 'PlayerScore':
+        console.log(data.data)
         this.quizData.playerScore = data.data
         break
       case 'PlayersScoreboard':
-        console.log(data.action,data.data)
         this.quizData.dataSource = data.data
-        console.log(this.quizData.dataSource)
         break
       case 'ReconnectNotPossible':
         this.quizData.reconnectPossible = false;
@@ -163,6 +161,11 @@ export class QuizPlayerService {
       case 'RejoinedInADifferentTab':
         this.initialize()
         break
+      case "NextSetDelay":
+        this.quizData.quizState = QuizPlayerState.SetDelayShowing
+        this.currentSpinnerText = data.data.text
+        this.currentSpinnerTimeout = data.data.timer
+        break;
       default:
         console.log(`Action not implemented: ${data.action}.`)
     }

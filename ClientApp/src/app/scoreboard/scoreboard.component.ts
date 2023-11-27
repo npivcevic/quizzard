@@ -10,13 +10,25 @@ export class ScoreboardComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:any) { }
 
-  //inputs
-  answers : PlayerScore[] = []
+  openedFromPlayer:boolean = true
+  answers : any[] = []
+  playerName:string = ""
   
 
   ngOnInit(): void {
-    this.answers = this.data
-    console.log(this.answers)
+    console.log(this.data)
+    if(!this.data.playerName){
+      this.answers = this.data
+      return 
+    }
+    this.openedFromPlayer = false
+    this.playerName = this.data.playerName
+    this.answers = this.data.score
+    console.log("this is passed",this.data)
+  }
+
+  returnPlayerName(){
+      return `Odgovori od : ${this.playerName}`
   }
 
 }

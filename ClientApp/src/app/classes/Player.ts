@@ -1,4 +1,5 @@
 import { Question } from "../model/question"
+import { QuestionSet } from "../model/question-set"
 import { SubmitedAnswer } from "../model/submitedAnswer"
 
 export class Player {
@@ -57,7 +58,7 @@ export class Player {
         return this.submitedAnswers.some(sa => sa.questionId === questionId && sa.isCorrect)
     }
 
-    getQuizReviewBoard(questions: Question[]) {
+    getQuizReviewBoardForOneQuestionSet(questions: Question[]) {
         return questions.map(q => {
             const submitedAnswer = this.getSubmittedAnswer(q.questionId)
             const answer = q.answers.find(a => a.answerId === submitedAnswer?.answerId)
@@ -68,6 +69,15 @@ export class Player {
                 answerText: answer?.text,
                 isCorrect: answer?.isCorrect || false,
                 correctAnswer: correctAnswer?.text
+            }
+        })
+    }
+
+    getQuizReviewBoard(questionSets: QuestionSet[]) {
+        return questionSets.map(q => {
+            return {
+                questionSetName: q.name,
+                score : this.getQuizReviewBoardForOneQuestionSet(q.questions),
             }
         })
     }

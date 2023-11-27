@@ -37,6 +37,9 @@ import { LoginComponent } from './login/login.component';
 import { AuthorizeInterceptor } from '../api-authorization/authorize.interceptor';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { quizzesGuard } from './guards/quizzes.guard';
+import { QuizHostQuestionDisplayComponent } from './quiz-host-question-display/quiz-host-question-display.component';
+import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-display/quiz-host-transition-display.component';
+import { QuestionsImporterComponent } from './questions-importer/questions-importer.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +66,9 @@ import { quizzesGuard } from './guards/quizzes.guard';
     QuizPreviewComponent,
     DialogComponent,
     LoginComponent,
+    QuizHostQuestionDisplayComponent,
+    QuizHostTransitionDisplayComponent,
+    QuestionsImporterComponent,
   ],
   imports: [
     ClipboardModule,

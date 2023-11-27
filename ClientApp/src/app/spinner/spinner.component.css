@@ -6,8 +6,17 @@
     min-height: 175px;
 }
 
-.spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
-    stroke: rgb(22 107 22) !important;
+.spinner.large {
+    width: 180px;
+}
+
+.mat-spinner.large {
+    width: 180px !important;
+    height: 180px !important;
+}
+
+.spinner::ng-deep circle {
+    stroke: rgb(22 107 22);
 }
 
 .timeLeft {
@@ -18,20 +27,24 @@
     font-size: 22px;
 }
 
+.large .timeLeft {
+    top: -120px;
+    font-size: 42px;
+}
+
 .spinner-text {
     font-family: 'Arvo';
     margin-top: -24px;
 }
 
-
-::ng-deep .mat-progress-bar-fill::after {
-    background-color: green;
+.large .spinner-text {
+    margin-top: -50px;
 }
 
-::ng-deep .mat-progress-bar-buffer {
-    background: lightgreen;
+.mat-progress-bar {
+    text-align: left;
+    background-color: lightgreen;
 }
-
-::ng-deep .mat-progress-bar {
-    border-radius: 2px;
+.mat-progress-bar::ng-deep .mdc-linear-progress__bar-inner {
+    border-color: rgb(22 107 22) !important;
 }
