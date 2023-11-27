@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace quizzard.Controllers
         }
 
         // GET: api/Quizzes
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Host")]
         public async Task<ActionResult<IEnumerable<QuizDto>>> GetQuizzes()
         {
             if (_context.Quizzes == null)
@@ -78,7 +79,7 @@ namespace quizzard.Controllers
 
         // PUT: api/Quizzes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "Host")]
         public async Task<IActionResult> PutQuiz(Guid id, Quiz quiz)
         {
             if (id != quiz.QuizId)
@@ -109,7 +110,7 @@ namespace quizzard.Controllers
 
         // POST: api/Quizzes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Host")]
         public async Task<ActionResult<Quiz>> PostQuiz(Quiz quiz)
         {
             if (_context.Quizzes == null)
@@ -123,7 +124,7 @@ namespace quizzard.Controllers
         }
 
         // DELETE: api/Quizzes/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Host")]
         public async Task<IActionResult> DeleteQuiz(Guid id)
         {
             if (_context.Quizzes == null)

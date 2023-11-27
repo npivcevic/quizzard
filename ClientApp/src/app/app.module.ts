@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material/material.module';
 
@@ -13,9 +13,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
-import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionsComponent } from './questions/questions.component';
@@ -35,6 +33,10 @@ import { ButtonComponent } from './button/button.component';
 import { ButtonIconComponent } from './button-icon/button-icon.component';
 import { QuizPreviewComponent } from './quiz-preview/quiz-preview.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { LoginComponent } from './login/login.component';
+import { AuthorizeInterceptor } from '../api-authorization/authorize.interceptor';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import { quizzesGuard } from './guards/quizzes.guard';
 import { QuizHostQuestionDisplayComponent } from './quiz-host-question-display/quiz-host-question-display.component';
 import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-display/quiz-host-transition-display.component';
 import { QuestionsImporterComponent } from './questions-importer/questions-importer.component';
@@ -63,6 +65,7 @@ import { QuestionsImporterComponent } from './questions-importer/questions-impor
     ButtonIconComponent,
     QuizPreviewComponent,
     DialogComponent,
+    LoginComponent,
     QuizHostQuestionDisplayComponent,
     QuizHostTransitionDisplayComponent,
     QuestionsImporterComponent,
@@ -75,19 +78,20 @@ import { QuestionsImporterComponent } from './questions-importer/questions-impor
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    ApiAuthorizationModule,
+    //ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: QuizPlayerComponent, pathMatch: 'full' },
-      { path: 'app-question', component: QuestionsComponent, canActivate: [AuthorizeGuard] },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      { path: '', component: QuizPlayerComponent },
+      { path: 'quiz-player', component: QuizPlayerComponent },
+      { path: 'app-question', component: QuestionsComponent },
       { path: 'quiz-host', component: QuizHostComponent },
-      { path: 'quizzes', component: QuizzesComponent },
-      { path: 'quizzes/:id', component: QuizCreatorComponent }
+      { path: 'quizzes', component: QuizzesComponent, canActivate:[quizzesGuard] },
+      { path: 'quizzes/:id', component: QuizCreatorComponent },
+      { path: 'login', component: LoginComponent, pathMatch: 'full' }
     ]),
     BrowserAnimationsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

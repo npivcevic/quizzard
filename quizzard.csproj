@@ -26,6 +26,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +37,9 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\guards\" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

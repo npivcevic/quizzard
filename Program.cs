@@ -7,30 +7,61 @@ using System.Text.Json.Serialization;
 using quizzard.Data;
 using quizzard.Models;
 using quizzard.Hubs;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using quizzard.Service.AuthService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+
+
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-
-builder.Services.AddIdentityServer()
-    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
-builder.Services.AddAuthentication()
-    .AddIdentityServerJwt();
 
 builder.Services.AddControllersWithViews().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddSignalR();
-builder.Services.AddRazorPages();
 
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authorization header using Bearer scheme",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+    });
+
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(connectionString));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8
+                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
+builder.Services.AddHttpContextAccessor();
+
+
 builder.Services.AddSwaggerGen();
 
  builder.Services.AddCors(options =>
@@ -59,17 +90,16 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 app.UseRouting();
+app.UseAuthorization();
 
 app.UseCors("CorsPolicy");
-app.UseAuthentication();
-app.UseIdentityServer();
-app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
-app.MapRazorPages();
 
 app.MapFallbackToFile("index.html");;
 

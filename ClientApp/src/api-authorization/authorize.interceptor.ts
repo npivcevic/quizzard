@@ -22,7 +22,7 @@ export class AuthorizeInterceptor implements HttpInterceptor {
     if (!!token && this.isSameOriginUrl(req)) {
       req = req.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`
+          Authorization: `bearer ${token}`
         }
       });
     }

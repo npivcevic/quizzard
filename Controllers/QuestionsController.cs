@@ -9,6 +9,8 @@ namespace quizzard.Controllers
     // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Host")]
+
     public class QuestionsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +21,6 @@ namespace quizzard.Controllers
         }
 
         // GET: api/Questions/random
-        [AllowAnonymous]
         [HttpGet("Random")]
         public async Task<ActionResult<IEnumerable<Question>>> GetRandomQuestions(int size = 20)
         {
