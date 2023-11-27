@@ -9,6 +9,8 @@ namespace quizzard.Controllers
     // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Host")]
+
     public class QuestionsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

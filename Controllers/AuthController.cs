@@ -45,7 +45,7 @@ namespace AuthentificationJwtRefreshToken.Controllers
             return BadRequest(response);
         }
 
-        [HttpPost("logout")]
+        [HttpPost("logout"), Authorize]
         public async Task<ActionResult<User>> LogoutUser([FromForm] string username)
         {
             var response = await _authService.Logout(username);
@@ -54,7 +54,7 @@ namespace AuthentificationJwtRefreshToken.Controllers
             return BadRequest(response);
         }
 
-        [HttpPost("refresh-token")]
+        [HttpPost("refresh-token"), Authorize]
         public async Task<ActionResult<string>> RefreshToken()
         {
             var response = await _authService.RefreshToken();
@@ -63,7 +63,7 @@ namespace AuthentificationJwtRefreshToken.Controllers
             return Unauthorized(response);
         }
 
-        [HttpDelete("remove-token")]
+        [HttpDelete("remove-token"), Authorize]
         public async Task<ActionResult> DeleteToken([FromForm] string userEmail)
         {
             var response = await _authService.DeleteToken(userEmail);
@@ -81,7 +81,7 @@ namespace AuthentificationJwtRefreshToken.Controllers
             return BadRequest(response);
         }
 
-        [HttpGet, Authorize(Roles ="Host,Player")]
+        [HttpGet, Authorize]
         public ActionResult AuthorizationCheck()
         {
             return Ok("User is authorized");
