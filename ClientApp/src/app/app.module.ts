@@ -8,7 +8,6 @@ import { MaterialModule } from './material/material.module';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -22,7 +21,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { QuizHostComponent } from './quiz-host/quiz-host.component';
 import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component'
+import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component';
 import { LogoComponent } from './logo/logo.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
@@ -38,6 +37,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { QuizHostQuestionDisplayComponent } from './quiz-host-question-display/quiz-host-question-display.component';
 import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-display/quiz-host-transition-display.component';
 import { QuestionsImporterComponent } from './questions-importer/questions-importer.component';
+import { ContactPageComponent } from './contact-page/contact-page.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +66,7 @@ import { QuestionsImporterComponent } from './questions-importer/questions-impor
     QuizHostQuestionDisplayComponent,
     QuizHostTransitionDisplayComponent,
     QuestionsImporterComponent,
+    ContactPageComponent,
   ],
   imports: [
     ClipboardModule,
@@ -78,17 +79,26 @@ import { QuestionsImporterComponent } from './questions-importer/questions-impor
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: QuizPlayerComponent, pathMatch: 'full' },
-      { path: 'app-question', component: QuestionsComponent, canActivate: [AuthorizeGuard] },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      {
+        path: 'app-question',
+        component: QuestionsComponent,
+        canActivate: [AuthorizeGuard],
+      },
+      {
+        path: 'fetch-data',
+        component: FetchDataComponent,
+        canActivate: [AuthorizeGuard],
+      },
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quizzes', component: QuizzesComponent },
-      { path: 'quizzes/:id', component: QuizCreatorComponent }
+      { path: 'quizzes/:id', component: QuizCreatorComponent },
+      { path: 'contact-page', component: ContactPageComponent },
     ]),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
