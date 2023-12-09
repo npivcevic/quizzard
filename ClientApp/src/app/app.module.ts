@@ -37,7 +37,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { QuizHostQuestionDisplayComponent } from './quiz-host-question-display/quiz-host-question-display.component';
 import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-display/quiz-host-transition-display.component';
 import { QuestionsImporterComponent } from './questions-importer/questions-importer.component';
-import { ContactPageComponent } from './contact-page/contact-page.component';
+import { ContactPageComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +92,7 @@ import { ContactPageComponent } from './contact-page/contact-page.component';
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quizzes', component: QuizzesComponent },
       { path: 'quizzes/:id', component: QuizCreatorComponent },
-      { path: 'contact-page', component: ContactPageComponent },
+      { path: 'contact', component: ContactPageComponent },
     ]),
     BrowserAnimationsModule,
   ],
