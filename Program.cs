@@ -1,17 +1,13 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.SignalR;
 using System.Text.Json.Serialization;
 using quizzard.Data;
-using quizzard.Models;
 using quizzard.Hubs;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using quizzard.Service.AuthService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,7 +63,7 @@ builder.Services.AddSwaggerGen();
  builder.Services.AddCors(options =>
  {
     options.AddPolicy("CorsPolicy", builder => builder
-        .WithOrigins("https://localhost:44400", "http://localhost:44400")
+        .SetIsOriginAllowed(_ => true)
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());
@@ -82,13 +78,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-else
-{
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseRouting();
@@ -96,18 +87,8 @@ app.UseAuthorization();
 
 app.UseCors("CorsPolicy");
 
+app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapFallbackToFile("index.html");;
-
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = string.Empty;
-});
 
 app.MapHub<QuizHub>("/quizhub");
 
