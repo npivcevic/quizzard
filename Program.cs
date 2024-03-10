@@ -90,6 +90,7 @@ app.UseCors("CorsPolicy");
 app.MapControllers();
 
 
+
 app.MapHub<QuizHub>("/quizhub");
 
 app.Run();
