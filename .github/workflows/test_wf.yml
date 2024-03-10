@@ -3,7 +3,10 @@ name: Manual Trigger Workflow
 # Configure Manual Trigger
 on:
   workflow_dispatch:
-
+  push:
+    branches: 
+      - main
+      - aws
 jobs:
   build:
     runs-on: ubuntu-latest
