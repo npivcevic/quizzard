@@ -19,7 +19,17 @@ jobs:
         uses: burnett01/rsync-deployments@5.1
         with:
           switches: -avzr --delete
-          path: ./*
+          path: ./bin/Release/net6.0/linux-x64/publish
+          remote_path: /var/www/
+          remote_host: ec2-3-75-248-230.eu-central-1.compute.amazonaws.com
+          remote_user: ubuntu
+          remote_key: "${{ secrets.PUBKVIZPROD_SSH_KEY }}"
+          
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@5.1
+        with:
+          switches: -avzr --delete
+          path: ./ClientApp/dist
           remote_path: /var/www/
           remote_host: ec2-3-75-248-230.eu-central-1.compute.amazonaws.com
           remote_user: ubuntu
