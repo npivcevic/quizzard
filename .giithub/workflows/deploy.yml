@@ -2,9 +2,9 @@ name: deploy
 on:
   workflow_dispatch:
   push:
-  branches: 
-    - main
-    - aws
+    branches: 
+      - main
+      - aws
 jobs:
   deploy-to-aws:
     runs-on: ubuntu-latest
