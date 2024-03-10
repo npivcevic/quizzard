@@ -40,11 +40,8 @@ jobs:
           remote_host: ec2-18-199-93-252.eu-central-1.compute.amazonaws.com
           remote_user: ubuntu
           remote_key: "${{ secrets.PUBKVIZPROD_SSH_KEY }}"
-        env:
-              PRIVATE_KEY: ${{ secrets.PUBKVIZPROD_SSH_KEY }}
       - run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@ec2-18-199-93-252.eu-central-1.compute.amazonaws.com
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.PUBKVIZPROD_SSH_KEY }} ubuntu@ec2-18-199-93-252.eu-central-1.compute.amazonaws.com
 
               # Now we have got the access of EC2 and we will start the deploy 
               sudo su &&
