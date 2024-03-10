@@ -1,0 +1,12 @@
+name: Manual Trigger Workflow
+
+# Configure Manual Trigger
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the purpose of run
+        run: echo  ${{ inputs.tags }} purpose
