@@ -11,7 +11,7 @@
     "quizzard": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7181;http://localhost:5211",
+      "applicationUrl": "https://localhost:7181;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
         //"ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
