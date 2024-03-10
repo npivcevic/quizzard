@@ -5,15 +5,15 @@ on:
 jobs:
   deploy-to-aws:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+        dotnet-version: [6.0.x]
     steps:
       - uses: actions/checkout@v2
       - run: dotnet publish -c Release -f net6.0  -r linux-x64 --self-contained false
       - run : cd ClientApp
-      - run : ng build --configuration=aws
-      # - run: cd ClientApp && npm ci
-      # - run: npm run build
-      # - run: cd .. && dotnet publish
-      # - run: npm run test
+      - run : npm run build -- --c aws
 
       - name: rsync deployments
         uses: burnett01/rsync-deployments@5.1
