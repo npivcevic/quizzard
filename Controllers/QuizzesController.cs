@@ -42,7 +42,7 @@ namespace quizzard.Controllers
         [HttpGet("deploy")]
         public async Task<string> Deploy()
         {
-            return await Task.FromResult("dobro je sve");
+            return await Task.FromResult("dobro je sve edited");
         }
 
         // GET: api/Quizzes
