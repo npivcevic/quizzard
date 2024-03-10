@@ -10,6 +10,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+        dotnet-version: [6.0.x]
     steps:
-      - name: Print the purpose of run
-        run: echo  ${{ inputs.tags }} purpose
+      - uses: actions/checkout@v2
+      - run: dotnet publish -c Release -f net6.0  -r linux-x64 --self-contained false
+      - run : cd ClientApp
+      - run : npm run build -- --c aws
