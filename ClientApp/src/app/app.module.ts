@@ -40,6 +40,7 @@ import { quizzesGuard } from './guards/quizzes.guard';
 import { QuizHostQuestionDisplayComponent } from './quiz-host-question-display/quiz-host-question-display.component';
 import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-display/quiz-host-transition-display.component';
 import { QuestionsImporterComponent } from './questions-importer/questions-importer.component';
+import { ContactPageComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { QuestionsImporterComponent } from './questions-importer/questions-impor
     QuizHostQuestionDisplayComponent,
     QuizHostTransitionDisplayComponent,
     QuestionsImporterComponent,
+    ContactPageComponent,
   ],
   imports: [
     ClipboardModule,
@@ -86,7 +88,8 @@ import { QuestionsImporterComponent } from './questions-importer/questions-impor
       { path: 'quiz-host', component: QuizHostComponent },
       { path: 'quizzes', component: QuizzesComponent, canActivate:[quizzesGuard] },
       { path: 'quizzes/:id', component: QuizCreatorComponent },
-      { path: 'login', component: LoginComponent, pathMatch: 'full' }
+      { path: 'login', component: LoginComponent, pathMatch: 'full' },
+      { path: 'contact', component: ContactPageComponent },
     ]),
     BrowserAnimationsModule
   ],
