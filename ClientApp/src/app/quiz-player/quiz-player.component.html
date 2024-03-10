@@ -11,6 +11,7 @@
     </div>
 
     <div *ngIf="isDisconnected()" class="container" [formGroup]="logInForm">
+      <div>jeli se ovo dobro deployalo?</div>
         <fieldset [disabled]="quizPlayerService.quizData.reconnectPossible">
             <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
                 <input matInput style="width: 100%; text-align: center;" placeholder="Unesi kod" formControlName="groupName">
