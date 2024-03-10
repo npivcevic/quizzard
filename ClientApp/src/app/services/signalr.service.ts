@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class SignalrService {
     //   TODO: handle case when connection is already established
     // }
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${this.baseUrl}quizhub`, {
+      .withUrl(`${environment.apiUrl}quizhub`, {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
       })
