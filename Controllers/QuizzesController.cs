@@ -39,6 +39,12 @@ namespace quizzard.Controllers
                 .ToListAsync();
         }
 
+        [HttpGet("deploy")]
+        public async Task<string> Deploy()
+        {
+            return await Task.FromResult("dobro je sve");
+        }
+
         // GET: api/Quizzes
         [HttpGet, Authorize(Roles = "Host")]
         public async Task<ActionResult<IEnumerable<QuizDto>>> GetQuizzes()
