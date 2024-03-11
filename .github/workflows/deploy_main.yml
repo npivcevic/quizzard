@@ -6,7 +6,6 @@ on:
   push:
     branches: 
       - main
-      - aws
 jobs:
   build:
     runs-on: ubuntu-latest
