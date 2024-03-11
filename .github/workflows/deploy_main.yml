@@ -27,7 +27,7 @@ jobs:
           switches: -avzr --delete
           path: ./bin/Release/net6.0/linux-x64/publish
           remote_path: /var/www
-          remote_host: ec2-18-199-93-252.eu-central-1.compute.amazonaws.com
+          remote_host: ec2-3-67-90-82.eu-central-1.compute.amazonaws.com
           remote_user: ubuntu
           remote_key: "${{ secrets.PUBKVIZPROD_SSH_KEY }}"
       - name: deploy frontend
@@ -36,13 +36,13 @@ jobs:
           switches: -avzr --delete
           path: ./ClientApp/dist
           remote_path: /var/www
-          remote_host: ec2-18-199-93-252.eu-central-1.compute.amazonaws.com
+          remote_host: ec2-3-67-90-82.eu-central-1.compute.amazonaws.com
           remote_user: ubuntu
           remote_key: "${{ secrets.PUBKVIZPROD_SSH_KEY }}"
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ec2-18-199-93-252.eu-central-1.compute.amazonaws.com
+          host: ec2-3-67-90-82.eu-central-1.compute.amazonaws.com
           username: ubuntu
           key: "${{ secrets.PUBKVIZPROD_SSH_KEY }}"
           port: 22
