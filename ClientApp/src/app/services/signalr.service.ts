@@ -21,7 +21,6 @@ export class SignalrService {
     // }
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl}quizhub`, {
-        skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling
       })
       .build();
