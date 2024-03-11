@@ -47,6 +47,6 @@ jobs:
           username: ubuntu
           key: "${{ secrets.PUBKVIZPROD_SSH_KEY }}"
           port: 22
-          script: whoami
+          script: sudo systemctl restart pubkviz.service
 
               
