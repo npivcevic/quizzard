@@ -178,6 +178,10 @@ export class QuizPlayerService {
         this.quizData.quizState = QuizPlayerState.Disconnected
         this.joinErrorMessage = "Neuspješno spajanje. Kviz '" + this.quizData.groupName + "' ne postoji."
         break;
+      case "ErrorGroupHasPlayerWithSameName":
+        this.quizData.quizState = QuizPlayerState.Disconnected
+        this.joinErrorMessage = "Neuspješno spajanje. Igrač s imenom " + this.quizData.playerName + " na kvizu '" + this.quizData.groupName + "' već postoji. Molimo odaberite neko drugo ime i pokušajte ponovno."
+        break;
       default:
         console.log(`Action not implemented: ${data.action}.`)
     }

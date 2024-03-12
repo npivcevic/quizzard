@@ -17,12 +17,12 @@ public class QuizHubGroup
     {
         this.Name = name;
         this.HostConnectionId = hostConnectionId;
-        this.players.Add(new Player(hostConnectionId));
+        this.players.Add(new Player(hostConnectionId, ""));
     }
 
-    public void AddConnectionId(String connectionId)
+    public void AddPlayer(String connectionId, String playerName)
     {
-        this.players.Add(new Player(connectionId));
+        this.players.Add(new Player(connectionId, playerName));
     }
 
     public void DeactivateConnectionId(String connectionId)
@@ -38,6 +38,11 @@ public class QuizHubGroup
     public Player? FindPlayer(String connectionId)
     {
         return this.players.Find(p => p.connectionId == connectionId);
+    }
+
+    public Player? FindPlayerByName(String playerName)
+    {
+        return this.players.Find(p => p.playerName.ToLower() == playerName.ToLower());
     }
 
     public void ReconnectConnectionId(String newConnectionId, String oldConnectionId)

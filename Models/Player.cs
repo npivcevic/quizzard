@@ -11,10 +11,13 @@ public class Player
 
     public bool isActive { get; set; }
 
-    public Player(String connectionId)
+    public string playerName { get; set; }
+
+    public Player(String connectionId, String playerName)
     {
         this.connectionId = connectionId;
         this.isActive = true;
+        this.playerName = playerName;
     }
 
     public void Deactivate()

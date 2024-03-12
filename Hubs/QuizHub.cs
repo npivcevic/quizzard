@@ -34,7 +34,13 @@ public class QuizHub : Hub
             return;
         }
 
-        group.AddConnectionId(Context.ConnectionId);
+        if (group.FindPlayerByName(playerName) != null) {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorGroupHasPlayerWithSameName}\", \"data\":\"{groupName}\"}}");
+            return;
+        }
+
+        group.AddPlayer(Context.ConnectionId, playerName);
         await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 
         var playerJoinedDTO = new
@@ -201,6 +207,7 @@ static class ActionTypes
     public const string PlayerJoined = "PlayerJoined";
     public const string PlayerDisconnected = "PlayerDisconnected";
     public const string ErrorTryingToJoinNonExistingGroup = "ErrorTryingToJoinNonExistingGroup";
+    public const string ErrorGroupHasPlayerWithSameName = "ErrorGroupHasPlayerWithSameName";
     public const string ErrorSendingToHost = "ErrorSendingToHost";
     public const string ErrorSendingToPlayer = "ErrorSendingToPlayer";
     public const string HostDisconnected = "HostDisconnected";
