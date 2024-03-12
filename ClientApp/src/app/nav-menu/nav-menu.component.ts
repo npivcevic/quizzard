@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { NavBarService } from '../nav-bar.service';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-menu',
@@ -8,16 +9,14 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  isExpanded = false;
-
-  constructor(public navbarservice: NavBarService, public authService: AuthService) { }
-
-  collapse() {
-    this.isExpanded = false;
+  constructor(public navbarservice: NavBarService, public authService: AuthService, private router: Router) {
+    router.events.subscribe((val) => {
+      this.navbarservice.collapse();
+    })
   }
 
   toggle() {
-    this.isExpanded = !this.isExpanded;
+    this.navbarservice.toggle();
   }
 
   logout() {
