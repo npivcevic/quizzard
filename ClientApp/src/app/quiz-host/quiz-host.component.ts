@@ -56,11 +56,6 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     MoveToNextQuestionWhenAllPlayersAnswered: this.fb.nonNullable.control(this.quizHostService.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
-  // quiz = this.fb.group({
-  //   quizId: this.fb.control(this.quizId, [Validators.required]),
-  //   randomQuestions: this.fb.control(false)
-  // })
-
   constructor(
     public quizHostService: QuizHostService,
     private quizservice: QuizzesService,
