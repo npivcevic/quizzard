@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PostQuestion } from '../model/question';
+import { PostQuestion, } from '../model/question';
 import { QuestionService } from '../question.service';
 import { CSVToArray } from '../utils/csvParser';
 
@@ -48,10 +48,11 @@ export class QuestionsImporterComponent {
           oneCorrect = true;
         }
       });
-
+      //***Handel question type enum properly***/
       this.questionsToImport.push(
         {
         text: parsedContent[i][2],
+        questionType : "Abcd",
         order: 0,
         answers: answersObjects,
         questionSetId: null,

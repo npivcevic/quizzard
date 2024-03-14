@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PostQuestion, Question } from '../model/question';
+import { PostQuestion, Question, } from '../model/question';
 import { QuestionService } from '../question.service';
 import { Answer } from '../model/answer';
 
@@ -16,9 +16,9 @@ export class AddQuestionComponent implements OnInit {
               private dialogRef: MatDialogRef<AddQuestionComponent>) {}
 
   isNew: boolean = true
-
   question: PostQuestion | Question = {
     text: "",
+    questionType: "Abcd",
     order: this.data.order,
     answers: [
       { text: "", isCorrect: true },
@@ -33,6 +33,29 @@ export class AddQuestionComponent implements OnInit {
     if (this.data.questionId) {
       this.isNew = false
       this.question = this.copyQuestion(this.data)
+    }
+  }
+
+  doSomething(e:any){
+    console.log(e.target.value)
+    if(e.target.value === 'TypeAnswer'){
+      this.question.answers = [
+        { text: "", isCorrect: true }
+      ]
+    }
+    if(e.target.value === 'YesNo'){
+      this.question.answers = [
+        { text: "Yes", isCorrect: true },
+        { text: "No", isCorrect: false }
+      ]
+    }
+    if(e.target.value === 'Abcd'){
+      this.question.answers = [
+      { text: "", isCorrect: true },
+      { text: "", isCorrect: false },
+      { text: "", isCorrect: false },
+      { text: "", isCorrect: false }
+      ]
     }
   }
 
@@ -80,3 +103,5 @@ export class AddQuestionComponent implements OnInit {
     });
   }
 }
+
+

@@ -13,7 +13,7 @@
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-light" [routerLink]="['/quiz-host']">Host Quiz</a>
           </li>
-          <li *ngIf="this.authService.isUserLoggedIn && this.authService.userRole === 'Host'" class="nav-item"
+          <li  *ngIf="this.authService.isUserLoggedIn && this.authService.userRole === 'Host'"  class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
             <a  class="nav-link text-light" [routerLink]="['/quizzes']">Quizzes</a>

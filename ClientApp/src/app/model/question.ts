@@ -2,6 +2,7 @@ import { Answer, PostAnswer } from "./answer"
 
 export interface Question {
     questionId: string,
+    questionType:string
     text: string,
     order : number,
     answers: Answer[],
@@ -12,3 +13,5 @@ export interface Question {
 export interface PostQuestion extends Omit<Question, 'questionId'> { 
     answers: PostAnswer[]
 }
+
+

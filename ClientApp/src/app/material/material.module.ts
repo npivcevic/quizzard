@@ -19,7 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
-
+import {MatChipsModule} from '@angular/material/chips';
 const MaterialComponents = [
   MatButtonModule,
   MatInputModule,
@@ -40,7 +40,8 @@ const MaterialComponents = [
   MatSelectModule,
   MatDatepickerModule,
   MatTabsModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatChipsModule
 ]
 
 @NgModule({

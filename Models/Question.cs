@@ -12,6 +12,9 @@ public class Question
     public Guid QuestionId { get; set; }
 
     [Required]
+    public string QuestionType { get; set; } = string.Empty;
+
+    [Required]
     public string Text { get; set; } = "";
 
     public int Order { get; set; } = 0;
@@ -23,3 +26,4 @@ public class Question
     public Guid? QuestionSetId { get; set; }
     public QuestionSet? QuestionSet { get; set; }
 }
+

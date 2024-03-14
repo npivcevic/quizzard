@@ -86,7 +86,7 @@ import { ContactPageComponent } from './contact/contact.component';
       { path: 'quiz-player', component: QuizPlayerComponent },
       { path: 'app-question', component: QuestionsComponent },
       { path: 'quiz-host', component: QuizHostComponent },
-      { path: 'quizzes', component: QuizzesComponent, canActivate:[quizzesGuard] },
+      { path: 'quizzes', component: QuizzesComponent/*, canActivate:[quizzesGuard]*/ },
       { path: 'quizzes/:id', component: QuizCreatorComponent },
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'contact', component: ContactPageComponent },
