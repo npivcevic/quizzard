@@ -38,7 +38,7 @@ public class QuizData
         this.groups.Remove(groupName);
     }
 
-    public bool AddConnectionToGroup(String groupName, String connectionId)
+    public bool AddPlayerToGroup(String groupName, String connectionId, String playerName)
     {
         QuizHubGroup group;
         try
@@ -49,7 +49,7 @@ public class QuizData
         {
             return false;
         }
-        group.AddConnectionId(connectionId);
+        group.AddPlayer(connectionId, playerName);
         return true;
     }
 

@@ -13,12 +13,11 @@
     <div *ngIf="isDisconnected()" class="container" [formGroup]="logInForm">
         <fieldset [disabled]="quizPlayerService.quizData.reconnectPossible">
             <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
-                <input matInput style="width: 100%; text-align: center;" placeholder="Unesi kod" formControlName="groupName">
+                <input matInput style="width: 100%; text-align: center;" placeholder="Šifra kviza" formControlName="groupName" (input)="quizPlayerService.removeErrorMessages()">
             </mat-form-field>
             <br />
             <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
-                <input matInput style="width: 100%; text-align: center;" placeholder="Unesi ime" formControlName="playerName">
-
+                <input matInput style="width: 100%; text-align: center;" placeholder="Ime" formControlName="playerName" (input)="quizPlayerService.removeErrorMessages()">
             </mat-form-field>
             <br />
         </fieldset>
@@ -26,6 +25,7 @@
             mat-stroked-button (click)="joinQuiz()" type="submit" [disabled]="this.logInForm.invalid">
             Igraj
         </button>
+        <mat-error *ngIf="quizPlayerService.joinErrorMessage">{{quizPlayerService.joinErrorMessage}}</mat-error>
 
         <div *ngIf="quizPlayerService.quizData.reconnectPossible">
             <span *ngIf="!quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz, klikom na 'vrati

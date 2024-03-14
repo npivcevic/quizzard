@@ -18,6 +18,7 @@ export class QuizPlayerService {
 
   public currentSpinnerTimeout = 0
   public currentSpinnerText = ""
+  public joinErrorMessage = "";
   
   constructor(public signalRService: SignalrService, public fb : UntypedFormBuilder, private dialog: MatDialog ) { }
 
@@ -39,6 +40,7 @@ export class QuizPlayerService {
   public joinQuiz(groupName: string, playerName: string) {
     this.quizData.groupName = groupName
     this.quizData.playerName = playerName
+    this.removeErrorMessages();
     this.signalRService.joinQuiz(groupName, playerName)
   }
 
@@ -108,6 +110,10 @@ export class QuizPlayerService {
     this.signalRService.sendToHost(data)
   }
 
+  public removeErrorMessages() {
+    this.joinErrorMessage = ""
+  }
+
   public processMessage(data: any) {
     switch (data.action) {
       case 'SuccesfullyJoinedGroup':
@@ -167,6 +173,14 @@ export class QuizPlayerService {
         this.quizData.quizState = QuizPlayerState.SetDelayShowing
         this.currentSpinnerText = data.data.text
         this.currentSpinnerTimeout = data.data.timer
+        break;
+      case "ErrorTryingToJoinNonExistingGroup":
+        this.quizData.quizState = QuizPlayerState.Disconnected
+        this.joinErrorMessage = "Neuspješno spajanje. Kviz '" + this.quizData.groupName + "' ne postoji."
+        break;
+      case "ErrorGroupHasPlayerWithSameName":
+        this.quizData.quizState = QuizPlayerState.Disconnected
+        this.joinErrorMessage = "Neuspješno spajanje. Igrač s imenom " + this.quizData.playerName + " na kvizu '" + this.quizData.groupName + "' već postoji. Molimo odaberite neko drugo ime i pokušajte ponovno."
         break;
       default:
         console.log(`Action not implemented: ${data.action}.`)

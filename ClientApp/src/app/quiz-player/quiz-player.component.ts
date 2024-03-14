@@ -38,7 +38,6 @@ export class QuizPlayerComponent implements OnInit {
   }
 
   public joinQuiz() {
-    console.log(this.logInForm.value.groupName)
     this.quizPlayerService.joinQuiz(this.logInForm.value.groupName!, this.logInForm.value.playerName!)
     localStorage.setItem('playerName', this.logInForm.value.playerName!)
   }
