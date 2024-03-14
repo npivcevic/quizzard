@@ -98,7 +98,10 @@ export class QuizHostData {
     createCurrentQuestion() {
         let qCopy = Object.assign({}, this.questions[this.currentQuestionIndex])
         qCopy.answers = this.questions[this.currentQuestionIndex].answers.map((answer) => answer)
-        qCopy.answers = qCopy.answers.sort((a, b) => 0.5 - Math.random())
+        if(qCopy.questionType === "Abcd"){
+            qCopy.answers = qCopy.answers.sort((a, b) => 0.5 - Math.random())
+        }
+        
         return qCopy
     }
 

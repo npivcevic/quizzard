@@ -15,11 +15,11 @@
             (timeout)="timeout()">
         </app-spinner>
     </div>
-    <div class="answer-cards">
+    <div *ngIf="question.questionType !== 'Unesi odgovor'" class="answer-cards">
         <div *ngFor="let answer of question.answers; let i = index"
             class="answer-card-wrapper">
             <div class="answer-card" [class.correct]="answer.isCorrect && showAnswers">
-                <span class="answer-letter">{{getLetter(i)}}:</span>
+                <span class="answer-letter">{{question.questionType === 'Abcd' ? getLetter(i)+':' : ''}}</span>
                 <span class="answer-text" >{{answer.text}}</span>
             </div>
         </div>
