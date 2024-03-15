@@ -90,7 +90,6 @@ export class QuizHostData {
         this.currentQuestionIndex++
         this.currentQuestion = this.createCurrentQuestion()
         this.allQuizQuestions.push(this.currentQuestion)
-        console.log("ccccc",this.allQuizQuestions)
         this.currentCorrectAnswer = this.getCorrectAnswerToCurrentQuestion()
         this.quizState.next(QuizState.QuestionShowing)
     }

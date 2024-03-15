@@ -124,7 +124,6 @@ export class QuestionLibraryComponent implements OnInit {
     let index = this.questions.findIndex(q=>{
       return q.questionId === _questionId
     })
-    console.log(index)
     this.questionservice.deleteQuestion(_questionId).subscribe({
       next: () => {
         this.dataSource.data.splice(index, 1)

@@ -33,10 +33,6 @@ export class Player {
         })
     }
 
-    // recordAnswerId(answerId:string,answerText:string,isCorrect:boolean):string{
-    //     if(isCorrect)
-    // }
-
     assignPoints(currentQuestionId: string): void {
         let answerToCurrentQuesiton = this.getSubmittedAnswer(currentQuestionId)
         if (!answerToCurrentQuesiton) {

@@ -87,9 +87,6 @@ export class QuizPlayerComponent implements OnInit {
   }
 
   public sendAnswerToHost(answerText:string ,id?: string) {
-    console.log(id)
-    console.log(answerText)
-
     this.quizPlayerService.questionAnswered(answerText,id!)
   }
 

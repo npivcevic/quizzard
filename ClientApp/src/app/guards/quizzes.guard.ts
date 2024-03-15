@@ -4,6 +4,5 @@ import { AuthService } from '../services/auth.service';
 
 export const quizzesGuard: CanActivateFn = async (route, state) => {
   const authService = inject(AuthService)
-  console.log(authService.userRole)
   return authService.userRole == "Host";
 };

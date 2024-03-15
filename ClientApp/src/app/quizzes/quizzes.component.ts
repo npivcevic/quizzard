@@ -86,7 +86,6 @@ export class QuizzesComponent implements OnInit {
         this.openSnackBar("Kviz je izbrisan")
       },
       error: (error) => {
-        console.log(error)
         this.openSnackBar(`Kviz nije izbrisan. Error: ${error.statusText},${error.status} `)
       }
     }

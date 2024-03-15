@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
     if (this.authService.isUserLoggedIn) {
       this.authService.getUserRole(username!).subscribe({
         next: (res) => {
-          console.log(res.role)
           if (res.role === "Player") {
             this.router.navigate(['quiz-player']);
           }

@@ -16,7 +16,6 @@ export class ScoreboardComponent implements OnInit {
   
 
   ngOnInit(): void {
-    console.log(this.data)
     if(!this.data.playerName){
       this.answers = this.data
       return 
@@ -24,7 +23,6 @@ export class ScoreboardComponent implements OnInit {
     this.openedFromPlayer = false
     this.playerName = this.data.playerName
     this.answers = this.data.score
-    console.log("this is passed",this.data)
   }
 
   returnPlayerName(){

@@ -194,7 +194,7 @@ export class QuestionsComponent implements OnInit {
         order: index
       })
       this.questionservice.putQuestion(x)
-        .subscribe(data => console.log(data))
+        .subscribe()
     })
   }
 

@@ -55,7 +55,6 @@ export class AddQuestionSetComponent implements OnInit {
           this.dialogRef.close(data)
         },
         error: (error)=>{
-          console.log("error :" + error)
         }
       })
   }

@@ -40,8 +40,6 @@ export class AddQuizComponent implements OnInit {
   quizStatuses = QuizStatuses
 
   ngOnInit(): void {
-    console.log('data')
-    console.log(this.data)
     if (this.data) {
       this.isNew = false
       this.quizForm.setValue({
@@ -69,7 +67,6 @@ export class AddQuizComponent implements OnInit {
     }))
       .subscribe({
         error: (err) => {
-          console.log(err)
         },
         complete: () => {
           this.dialogRef.close("OK")
