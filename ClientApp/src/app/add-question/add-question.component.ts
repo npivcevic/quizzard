@@ -36,20 +36,20 @@ export class AddQuestionComponent implements OnInit {
     }
   }
 
-  doSomething(e:any){
-    console.log(e.target.value)
-    if(e.target.value === 'TypeAnswer'){
+  setAnswerInputForQuestionType(event:any){
+    let questionType = event.target.value
+    if(questionType === 'Unesi odgovor'){
       this.question.answers = [
         { text: "", isCorrect: true }
       ]
     }
-    if(e.target.value === 'YesNo'){
+    if(questionType === 'Da-Ne'){
       this.question.answers = [
         { text: "Yes", isCorrect: true },
         { text: "No", isCorrect: false }
       ]
     }
-    if(e.target.value === 'Abcd'){
+    if(questionType === 'Abcd'){
       this.question.answers = [
       { text: "", isCorrect: true },
       { text: "", isCorrect: false },

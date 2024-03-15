@@ -4,7 +4,7 @@
       <h4>Basic native select</h4>
       <mat-form-field>
         <mat-label>Tip pitanja</mat-label>
-        <select matNativeControl (change)="doSomething($event)" name="questionType" [(ngModel)]="question.questionType" required>
+        <select matNativeControl (change)="setAnswerInputForQuestionType($event)" name="questionType" [(ngModel)]="question.questionType" required>
           <option value="Da-Ne">Da-Ne</option>
           <option value="Abcd">Abcd</option>
           <option value="Unesi odgovor">Unesi odgovor</option>
