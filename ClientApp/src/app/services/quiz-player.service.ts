@@ -78,8 +78,10 @@ export class QuizPlayerService {
     }
   }
 
-  public questionAnswered(answerId: string) {
+  public questionAnswered(answerText:string ,answerId: string) {
     this.quizData.currentAnswerId = answerId
+    this.quizData.currentAnswerText = answerText
+
     this.sendAnswerToHost()
   }
 
@@ -100,6 +102,7 @@ export class QuizPlayerService {
     const data = {
       action: "PlayerAnswered",
       data: {
+        answerText: this.quizData.currentAnswerText,
         answerId: this.quizData.currentAnswerId
       }
     }

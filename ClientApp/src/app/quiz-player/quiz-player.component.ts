@@ -86,10 +86,13 @@ export class QuizPlayerComponent implements OnInit {
       && this.quizPlayerService.quizData.quizState === QuizPlayerState.QuestionShowing
   }
 
-  public sendAnswerToHost(id?: string) {
+  public sendAnswerToHost(answerText:string ,id?: string) {
     console.log(id)
-    this.quizPlayerService.questionAnswered(id!)
+    console.log(answerText)
+
+    this.quizPlayerService.questionAnswered(answerText,id!)
   }
+
 
   getLetter(n: number) {
     return letterFromIndex(n)

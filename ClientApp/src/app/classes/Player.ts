@@ -1,3 +1,4 @@
+import { Answer } from "../model/answer"
 import { Question } from "../model/question"
 import { QuestionSet } from "../model/question-set"
 import { SubmitedAnswer } from "../model/submitedAnswer"
@@ -14,8 +15,8 @@ export class Player {
         this.name = name
     }
 
-    recordAnswer(answerId: string, questionId: string, isCorrect: boolean) {
-        if (answerId === "") {
+    recordAnswer(answerId: string, answerText:string, questionId: string, isCorrect: boolean) {
+        if (answerId === "" && answerText === "") {
             return
         }
         const alreadyAnswered = this.submitedAnswers.some((submittedAnswer) => submittedAnswer.questionId === questionId)
@@ -26,10 +27,15 @@ export class Player {
 
         this.submitedAnswers.push({
             answerId,
+            answerText,
             questionId,
             isCorrect
         })
     }
+
+    // recordAnswerId(answerId:string,answerText:string,isCorrect:boolean):string{
+    //     if(isCorrect)
+    // }
 
     assignPoints(currentQuestionId: string): void {
         let answerToCurrentQuesiton = this.getSubmittedAnswer(currentQuestionId)
@@ -61,9 +67,15 @@ export class Player {
     getQuizReviewBoardForOneQuestionSet(questions: Question[]) {
         return questions.map(q => {
             const submitedAnswer = this.getSubmittedAnswer(q.questionId)
-            const answer = q.answers.find(a => a.answerId === submitedAnswer?.answerId)
             const correctAnswer = q.answers.find(a => a.isCorrect === true)
 
+            let answer:any = {} as Answer
+            if(q.questionType === "Unesi odgovor"){
+                answer!.text = submitedAnswer?.answerText
+                answer!.isCorrect = submitedAnswer?.answerText === correctAnswer?.text
+            }else{
+                answer = q.answers.find(a => a.answerId === submitedAnswer?.answerId)
+            }
             return {
                 questionText: q.text,
                 answerText: answer?.text,

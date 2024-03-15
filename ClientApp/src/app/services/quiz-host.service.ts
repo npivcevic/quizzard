@@ -176,11 +176,10 @@ export class QuizHostService {
       case 'QuestionSent':
         break;
       case 'PlayerAnswered':
-        this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId)
+        this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId,data.data.answerText)
         if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion() &&
             this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered) {
-              console.log( this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
-          this.showCorrectAnswer()
+              this.showCorrectAnswer()
         }
         break;
       case 'GroupCreated':

@@ -1,5 +1,6 @@
 export interface SubmitedAnswer {
     questionId: string
-    answerId: string
+    answerId: string,
+    answerText:string,
     isCorrect: boolean
 }

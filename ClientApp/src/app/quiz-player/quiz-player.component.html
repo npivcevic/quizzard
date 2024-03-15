@@ -72,14 +72,24 @@
             </div>
         </div>
 
-        <div class="answerList">
+        <div *ngIf="quizPlayerService.quizData.currentQuestion.questionType === 'Abcd' || quizPlayerService.quizData.currentQuestion.questionType === 'Da-Ne'" class="answerList">
             <div *ngFor="let answer of quizPlayerService.quizData.currentQuestion.answers; let i = index"
                 class="answer-wrapper">
                 <button class="answer-button" [class]="answerStyle(answer.answerId!)" mat-stroked-button
-                    [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost(answer.answerId)">
-                    <span class="answer-letter">{{getLetter(i)}}:</span> {{answer.text}}
+                    [disabled]="!isPossibleToAnswer()" (click)="sendAnswerToHost('',answer.answerId)">
+                    <span class="answer-letter">{{quizPlayerService.quizData.currentQuestion.questionType === 'Abcd' ? getLetter(i)+':' : ''}}</span> {{answer.text}}
                 </button>
             </div>
+        </div>
+        <div *ngIf="quizPlayerService.quizData.currentQuestion.questionType === 'Unesi odgovor'" class="answerList">
+
+            <mat-form-field style="width: 100%;">
+                <!-- <mat-label>Odgovor</mat-label> -->
+                <input matInput style=" text-align:center" type="text" [(ngModel)]="quizPlayerService.quizData.currentAnswerText">
+            </mat-form-field>
+
+            <button class="answer-button" style="justify-content:center" (click)="sendAnswerToHost(quizPlayerService.quizData.currentAnswerText,'')"  mat-stroked-button >Odgovori</button>
+
         </div>
     </div>
 

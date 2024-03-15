@@ -9,6 +9,7 @@ export class QuizPlayerData {
     quizState: QuizPlayerState = QuizPlayerState.Loading
     currentQuestion!: Question
     currentAnswerId: string = ""
+    currentAnswerText: string = ""
     currentCorrectAnswerId: string = ""
     playerScore:PlayerScore[]=[]
     displayedColumns: string[] = ['playerName', 'points'];
@@ -27,6 +28,7 @@ export class QuizPlayerData {
         }
         this.currentAnswerId = ""
         this.currentCorrectAnswerId = ""
+        this.currentAnswerText = ""
         this.currentQuestion = question
         this.quizState = QuizPlayerState.QuestionShowing
     }

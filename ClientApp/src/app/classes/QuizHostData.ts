@@ -54,7 +54,7 @@ export class QuizHostData {
         }
     }
 
-    recordAnswer(playerConnectionId: string, answerId: string) {
+    recordAnswer(playerConnectionId: string, answerId: string,answerText:string) {
         if (this.quizState.getValue() !== QuizState.QuestionShowing) {
             return
         }
@@ -62,8 +62,16 @@ export class QuizHostData {
         if (!player) {
             return
         }
-        const isCorrect = answerId === this.currentCorrectAnswer?.answerId
-        player.recordAnswer(answerId, this.currentQuestion.questionId, isCorrect)
+        const isCorrect = this.isAnswerCorrect(answerId,answerText)
+        player.recordAnswer(answerId,answerText, this.currentQuestion.questionId, isCorrect)
+    }
+
+    isAnswerCorrect(answerId:string,answerText:string):boolean{
+        if(answerId){
+            return answerId === this.currentCorrectAnswer?.answerId
+        }
+        return answerText === this.currentCorrectAnswer?.text
+
     }
 
     findPlayerByConnectionId(connectionId: string): Player | undefined {
