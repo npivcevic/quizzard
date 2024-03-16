@@ -52,7 +52,7 @@ export class QuestionsImporterComponent {
       this.questionsToImport.push(
         {
         text: parsedContent[i][2],
-        questionType : "Abcd",
+        questionType : parsedContent[i][6],
         order: 0,
         answers: answersObjects,
         questionSetId: null,
