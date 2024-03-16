@@ -70,7 +70,7 @@ export class QuizHostData {
         if(answerId){
             return answerId === this.currentCorrectAnswer?.answerId
         }
-        return answerText === this.currentCorrectAnswer?.text
+        return answerText.toLowerCase() === this.currentCorrectAnswer?.text.toLocaleLowerCase()
 
     }
 

@@ -24,4 +24,12 @@
             </div>
         </div>
     </div>
+    <div *ngIf="question.questionType === 'Unesi odgovor' && showAnswers" class="answer-cards">
+        <div *ngFor="let answer of question.answers; let i = index"
+            class="answer-card-wrapper">
+            <div class="answer-card" [class.correct]="showAnswers">
+                <span class="answer-text" >{{answer.text}}</span>
+            </div>
+        </div>
+    </div>
 </div>
