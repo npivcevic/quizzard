@@ -2,6 +2,7 @@ import { Component} from '@angular/core';
 import { NavBarService } from '../nav-bar.service';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { detectMobileDevice } from '../utils/mobileDeviceDetector';
 
 @Component({
   selector: 'app-nav-menu',
@@ -9,7 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
+  isMobile:boolean = true
   constructor(public navbarservice: NavBarService, public authService: AuthService, private router: Router) {
+    this.isMobile = detectMobileDevice()
     router.events.subscribe((val) => {
       this.navbarservice.collapse();
     })
@@ -25,4 +28,5 @@ export class NavMenuComponent {
       this.authService.isUserLoggedIn = false;
     });
   }
+  
 }

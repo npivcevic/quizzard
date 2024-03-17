@@ -8,12 +8,12 @@
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" [ngClass]="{ show: navbarservice.isExpanded }">
         <ul class="navbar-nav flex-grow">
-          <li class="nav-item"
+          <li *ngIf="!isMobile" class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-light" [routerLink]="['/quiz-host']">Host Quiz</a>
           </li>
-          <li  *ngIf="this.authService.isUserLoggedIn && this.authService.userRole === 'Host'"  class="nav-item"
+          <li  *ngIf=" this.authService.isUserLoggedIn && this.authService.userRole === 'Host'"  class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
             <a  class="nav-link text-light" [routerLink]="['/quizzes']">Quizzes</a>
