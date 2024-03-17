@@ -18,6 +18,7 @@ export class AddQuestionComponent implements OnInit {
   isNew: boolean = true
   question: PostQuestion | Question = {
     text: "",
+    fact: "",
     questionType: "Abcd",
     order: this.data.order,
     answers: [
