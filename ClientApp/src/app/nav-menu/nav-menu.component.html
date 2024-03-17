@@ -8,7 +8,7 @@
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" [ngClass]="{ show: navbarservice.isExpanded }">
         <ul class="navbar-nav flex-grow">
-          <li *ngIf="!isMobile" class="nav-item"
+          <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-light" [routerLink]="['/quiz-host']">Host Quiz</a>

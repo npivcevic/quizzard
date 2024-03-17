@@ -3,7 +3,7 @@ import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
 import { QuizState } from '../classes/QuizHostData';
 import { Player } from '../classes/Player';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { QuizSettings } from '../model/QuizSettings';
 import { letterFromIndex } from '../utils/letterFromIndex';
 import { Quiz } from '../model/quiz';
@@ -14,11 +14,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { QuestionSetService } from '../services/question-set.service';
 import { MatDialog } from '@angular/material/dialog';
 import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component';
-import { QuizCreatorComponent } from '../quiz-creator/quiz-creator.component';
 import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
-import { PlayerScore } from '../model/player-score';
 import anime from 'animejs/lib/anime.es.js';
-import { AnimeTimelineInstance } from 'animejs'
+import { detectMobileDevice } from '../utils/mobileDeviceDetector';
 
 @Component({
   selector: 'app-quiz-host',
@@ -36,7 +34,7 @@ export class QuizHostComponent implements OnInit, OnDestroy {
 
   currentSpinnerTimeout!: number
   currentSpinnerText!: string
-
+  detectMobileDevice = detectMobileDevice
   quizzes!: Quiz[]
   quizId!: string
 

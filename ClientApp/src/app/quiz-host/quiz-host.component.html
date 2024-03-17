@@ -8,10 +8,10 @@
             </a>
         </div>
 
-        <div class="top-bar-link">
-            Šifra<span class="logoKviz">Kviza</span>:
-            {{quizHostService.quizData.groupName}}
-            <span class="groupname-clipboard">
+        <div  class="top-bar-link">
+            <span *ngIf="!detectMobileDevice()">Šifra<span class="logoKviz">Kviza</span>: {{quizHostService.quizData.groupName}}</span>
+            
+            <span *ngIf="!detectMobileDevice()" class="groupname-clipboard">
                 <span *ngIf="!quizHostService.quizData.copyedToCLipboard;then copyBlock else doneBlock"></span>
                 <ng-template #copyBlock>
                     <app-button-icon icon="content_copy" (click)="quizHostService.quizData.copyedToCLipboard=true"
@@ -26,7 +26,11 @@
 
     </div>
 
-    <div class="body">
+    <div *ngIf="detectMobileDevice()" class="body">
+        <p style="padding: 20px;">Pokretanje kviza nije moguće sa mobitela. Molimo posjetite stranicu sa računala.</p>
+    </div>
+
+    <div *ngIf="!detectMobileDevice()" class="body">
 
         <div class="active-players">
             <div class="active-players-card">
