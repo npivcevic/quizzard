@@ -11,23 +11,22 @@ export class AppComponent implements OnInit {
   constructor(public authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    const username = localStorage.getItem("username");
-    this.authService.isUserLoggedIn = username != null ?? false
-    if (this.authService.isUserLoggedIn) {
-      this.authService.getUserRole(username!).subscribe({
-        next: (res) => {
-          if (res.role === "Player") {
-            this.router.navigate(['quiz-player']);
-          }
-          if (res.role === "Host") {
-            this.router.navigate(['quiz-host']);
-          }
-        }
-      })
-    }
+    this.authService.handleRefresh()
 
+
+    // const username = localStorage.getItem("username");
+    // this.authService.isUserLoggedIn = username != null ?? false
+    // if (this.authService.isUserLoggedIn) {
+    //   this.authService.getUserRole(username!).subscribe({
+    //     next: (res) => {
+    //       if (res.role === "Player") {
+    //         this.router.navigate(['quiz-player']);
+    //       }
+    //       if (res.role === "Host") {
+    //         this.router.navigate(['quiz-host']);
+    //       }
+    //     }
+    //   })
+    // }
   }
-
-
-
 }

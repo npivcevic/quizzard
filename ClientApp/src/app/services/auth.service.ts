@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private http: HttpClient) { }
 
   isUserLoggedIn: boolean = false;
 
@@ -39,5 +39,20 @@ export class AuthService {
 
   getUserRole(username: string): Observable<any> {
     return this.http.get<any>(environment.apiUrl + `api/Auth/get-user-role?username=${username}`)
+  }
+
+  handleRefresh(){
+    const username = localStorage.getItem("username");
+    if(username === null || username === undefined){
+      return
+    }
+    this.getUserRole(username!).subscribe({
+      next: (res) => {
+        this.isUserLoggedIn = true;
+        this.userRole = res.role
+      },
+      error: () => {
+      }
+    })
   }
 }

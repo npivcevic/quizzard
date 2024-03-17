@@ -26,12 +26,9 @@ export class LoginComponent {
         localStorage.setItem("username", this.loginForm.value.username!)
         this.authService.isUserLoggedIn = true;
         this.authService.userRole = res.role;
-        if (res.role == "Player") {
-          this._router.navigate(['quiz-player']);
-        }
 
         if (res.role == "Host") {
-          this._router.navigate(['quiz-host']);
+          this._router.navigate(['quizzes']);
         }
       },
       error: (err) => {
