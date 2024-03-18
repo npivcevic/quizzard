@@ -38,10 +38,11 @@ public class QuizHubGroup
     public void RemovePlayerFromGroup(String connectionId)
     {
         Player? player = players.Find(p=>p.connectionId == connectionId);
-        if(player != null)
+        if(player == null)
         {
-            this.players.Remove(player);
+            return;
         }
+        this.players.Remove(player);
     }
 
     public Player? FindPlayer(String connectionId)
