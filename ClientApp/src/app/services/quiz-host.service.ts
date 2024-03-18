@@ -150,7 +150,6 @@ export class QuizHostService {
       data: this.quizData.playersScoreboard()
     }
     
-    
     this.sendToGroup(JSON.stringify(data))
   }
 
@@ -182,13 +181,13 @@ export class QuizHostService {
         this.quizData.groupName = data.data
         break;
       case 'PlayerJoined':
-        this.quizData.playerConnected(data.data.connectionId,data.data.clientId, data.data.name)
+        this.quizData.playerConnected(data.data.connectionId, data.data.name)
         break;
       case 'PlayerDisconnected':
         this.quizData.playerDisconnected(data.data)
         break;
       case 'PlayerReconnected':
-        this.quizData.playerReconnected(data.data.connectionId,data.data.clientId, data.data.oldConnectionId)
+        this.quizData.playerReconnected(data.data.connectionId, data.data.oldConnectionId)
         break;
       default:
         console.log(`Action not implemented: ${data.action}.`);

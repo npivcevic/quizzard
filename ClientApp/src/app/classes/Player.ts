@@ -5,15 +5,13 @@ import { SubmitedAnswer } from "../model/submitedAnswer"
 
 export class Player {
     connectionId: string = ""
-    clientId:string = ""
     name: string = ""
     score: number = 0
     submitedAnswers: SubmitedAnswer[] = []
     isActive: Boolean = true
 
-    constructor(connectionId: string,clientId:string, name: string) {
+    constructor(connectionId: string, name: string) {
         this.connectionId = connectionId
-        this.clientId = clientId
         this.name = name
     }
 

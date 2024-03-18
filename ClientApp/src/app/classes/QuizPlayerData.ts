@@ -6,7 +6,6 @@ export class QuizPlayerData {
 
     groupName: string = ""
     playerName: string = ""
-    clientId:string = ""
     quizState: QuizPlayerState = QuizPlayerState.Loading
     currentQuestion!: Question
     currentAnswerId: string = ""

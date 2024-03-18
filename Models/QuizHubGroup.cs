@@ -20,11 +20,9 @@ public class QuizHubGroup
         this.players.Add(new Player(hostConnectionId, ""));
     }
 
-    public Player AddPlayer(String connectionId, String playerName)
+    public void AddPlayer(String connectionId, String playerName)
     {
-        var player = new Player(connectionId, playerName);
-        this.players.Add(player);
-        return player;
+        this.players.Add(new Player(connectionId, playerName));
     }
 
     public void DeactivateConnectionId(String connectionId)
@@ -40,7 +38,10 @@ public class QuizHubGroup
     public void RemovePlayerFromGroup(String connectionId)
     {
         var player = players.Where(p=>p.connectionId == connectionId).FirstOrDefault();
-        player.isRemovedByHost = true;
+        if(player != null)
+        {
+            this.players.Remove(player);
+        }
     }
 
     public Player? FindPlayer(String connectionId)
@@ -51,11 +52,6 @@ public class QuizHubGroup
     public Player? FindPlayerByName(String playerName)
     {
         return this.players.Find(p => p.playerName.ToLower() == playerName.ToLower());
-    }
-
-    public Player? FindPlayerByClientId(Guid clientId)
-    {
-        return this.players.Find(p => p.clientId == clientId);
     }
 
     public void ReconnectConnectionId(String newConnectionId, String oldConnectionId)

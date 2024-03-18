@@ -1,4 +1,3 @@
-using Duende.IdentityServer.Extensions;
 using Microsoft.AspNetCore.SignalR;
 using quizzard.Models;
 using System.Text.Json;
@@ -25,9 +24,8 @@ public class QuizHub : Hub
             $"{{\"action\":\"{ActionTypes.GroupCreated}\", \"data\":\"{groupName}\"}}");
     }
 
-    public async Task JoinQuiz(String groupName, String playerName, String clientId)
+    public async Task JoinQuiz(String groupName, String playerName)
     {
-
         QuizHubGroup? group = quizData.FindGroup(groupName);
         if (group == null)
         {
@@ -36,29 +34,13 @@ public class QuizHub : Hub
             return;
         }
 
-        if (!clientId.IsNullOrEmpty())
-        {
-            var clientIdToGuid = new Guid(clientId);
-
-            Player? removedPlayer = group.FindPlayerByClientId(clientIdToGuid);
-
-            if (removedPlayer != null && removedPlayer.isRemovedByHost)
-            {
-                await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
-                    $"{{\"action\":\"{ActionTypes.DisconnectedByHost}\", \"data\":\"\"}}");
-                return;
-            }
-        }
-
-        Player? player = group.FindPlayerByName(playerName);
-
-        if (player != null) {
+        if (group.FindPlayerByName(playerName) != null) {
             await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
                 $"{{\"action\":\"{ActionTypes.ErrorGroupHasPlayerWithSameName}\", \"data\":\"{groupName}\"}}");
             return;
         }
 
-        player = group.AddPlayer(Context.ConnectionId, playerName);
+        group.AddPlayer(Context.ConnectionId, playerName);
         await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 
         var playerJoinedDTO = new
@@ -67,8 +49,7 @@ public class QuizHub : Hub
             data = new
             {
                 name = playerName,
-                connectionId = Context.ConnectionId,
-                clientId = player.clientId,
+                connectionId = Context.ConnectionId
             }
         };
         await Clients.Client(group.HostConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(playerJoinedDTO));
@@ -77,8 +58,7 @@ public class QuizHub : Hub
         var succesfullyJoinedGroupDTO = new
         {
             action = ActionTypes.SuccesfullyJoinedGroup,
-            data = groupName,
-            clientId = player.clientId,
+            data = groupName
         };
         await Clients.Client(Context.ConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(succesfullyJoinedGroupDTO));
     }
@@ -231,7 +211,6 @@ public class QuizHub : Hub
             {
                 name = playerName,
                 connectionId = Context.ConnectionId,
-                clientId = player.clientId,
                 oldConnectionId = oldConnectionId
             }
         };
@@ -240,10 +219,9 @@ public class QuizHub : Hub
         var succesfullyReconnectedDTO = new
         {
             action = ActionTypes.SuccesfullyReconnected,
-            data = groupName,
-            clientId = player.clientId
+            data = groupName
         };
-        await Clients.Client(playerReconnectedDTO.data.connectionId).SendAsync("transferdata", JsonSerializer.Serialize(succesfullyReconnectedDTO));
+        await Clients.Client(Context.ConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(succesfullyReconnectedDTO));
     }
 }
 

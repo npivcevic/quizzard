@@ -41,7 +41,7 @@ export class QuizPlayerService {
     this.quizData.groupName = groupName
     this.quizData.playerName = playerName
     this.removeErrorMessages();
-    this.signalRService.joinQuiz(groupName, playerName, localStorage.getItem("clientId") === null ? "":localStorage.getItem("clientId")!.toString())
+    this.signalRService.joinQuiz(groupName, playerName)
   }
 
   public async checkIfReconnectIsPossible() {
@@ -92,7 +92,6 @@ export class QuizPlayerService {
       playerName: this.quizData.playerName,
       connectionId: this.signalRService.connectionId
     }))
-    localStorage.setItem("clientId",this.quizData.clientId)
   }
 
   public clearLastConnectionFromLocalStorage() {
@@ -122,7 +121,6 @@ export class QuizPlayerService {
     switch (data.action) {
       case 'SuccesfullyJoinedGroup':
         this.quizData.quizState = QuizPlayerState.WaitingForStart
-        this.quizData.clientId = data.clientId
         this.saveCurrentConnectionToLocalStorage()
         break
       case 'QuestionSent':
@@ -168,7 +166,6 @@ export class QuizPlayerService {
       case 'SuccesfullyReconnected':
         this.quizData.quizState = QuizPlayerState.WaitingForStart
         this.quizData.reconnected = true
-        this.quizData.clientId = data.clientId
         this.saveCurrentConnectionToLocalStorage()
         break
       case 'RejoinedInADifferentTab':
