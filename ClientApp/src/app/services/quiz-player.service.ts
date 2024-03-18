@@ -31,10 +31,10 @@ export class QuizPlayerService {
     this.quizData.quizState = QuizPlayerState.Disconnected
   }
 
-  openHostDisconnectedDialog():void{
+  openSimpleDialog(text: string):void{
     const dialog = this.dialog.open(SimpleDialogComponent, {
       width: '50%',
-      data: { text: 'Voditelj je napustio igru.' },
+      data: { text: text },
     })
   }
 
@@ -142,7 +142,7 @@ export class QuizPlayerService {
         break
       case 'HostDisconnected':
         this.quizData.quizState = QuizPlayerState.Disconnected
-        this.openHostDisconnectedDialog()
+        this.openSimpleDialog("Voditelj kviza je napustio igru.")
         break
       case 'QuizEnded':
         this.quizData.quizState = QuizPlayerState.End
@@ -187,7 +187,7 @@ export class QuizPlayerService {
         break;
       case "DisconnectedByHost":
         this.quizData.quizState = QuizPlayerState.Disconnected
-        this.joinErrorMessage = "Izbačen si od strane hosta kviza"
+        this.openSimpleDialog("Izbačen si od strane voditelja kviza.")
         this.clearLastConnectionFromLocalStorage()
         break;
       default:
