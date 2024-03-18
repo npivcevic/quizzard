@@ -154,13 +154,8 @@ export class QuizHostService {
   }
 
   removePlayerFromQuiz(player: Player ){
-    const data = {
-      action: 'Disconnected'
-    }
     this.quizData.removePlayer(player.connectionId)
-    this.sendToPlayer(JSON.stringify(data), player.connectionId)
     this.signalRService.removePlayerGromGroup(player.connectionId, this.quizData.groupName)
-
   }
 
   public sendToPlayer(data: string, playerConnectionId: string) {

@@ -84,7 +84,7 @@ public class QuizHub : Hub
         await Groups.RemoveFromGroupAsync(playerConnectionId, groupName);
         group.RemovePlayerFromGroup(playerConnectionId);
         await Clients.Client(playerConnectionId).SendAsync("transferdata",
-            $"{{\"action\":\"{ActionTypes.PlayerDisconnectedByHost}\", \"data\":\"Izba?en si od strane hosta kviza\"}}");
+            $"{{\"action\":\"{ActionTypes.DisconnectedByHost}\", \"data\":\"\"}}");
     }
 
     public async Task SendToGroup(String data)
@@ -243,6 +243,6 @@ static class ActionTypes
     public const string SuccesfullyReconnected = "SuccesfullyReconnected";
     public const string RejoinedInADifferentTab = "RejoinedInADifferentTab";
     public const string PlayerReconnected = "PlayerReconnected";
-    public const string PlayerDisconnectedByHost = "PlayerDisconnectedByHost";
+    public const string DisconnectedByHost = "DisconnectedByHost";
 
 }
