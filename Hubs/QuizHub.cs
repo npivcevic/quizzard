@@ -69,7 +69,13 @@ public class QuizHub : Hub
         if (group == null)
         {
             await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
-                $"{{\"action\":\"{ActionTypes.ReconnectNotPossible}\", \"data\":\"Group not found\"}}");
+                $"{{\"action\":\"{ActionTypes.ErrorRemovingPlayerFromGroup}\", \"data\":\"Group name not found.\"}}");
+            return;
+        }
+
+        if (!quizData.IsConnectionHostOfGroup(group.Name, Context.ConnectionId)) {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorRemovingPlayerFromGroup}\", \"data\":\"Only the host can remove a player from a group.\"}}");
             return;
         }
 
@@ -78,9 +84,10 @@ public class QuizHub : Hub
         if (player == null)
         {
             await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
-                $"{{\"action\":\"{ActionTypes.ReconnectNotPossible}\", \"data\":\"ConnectionId not found in group\"}}");
+                $"{{\"action\":\"{ActionTypes.ErrorRemovingPlayerFromGroup}\", \"data\":\"Player not found.\"}}");
             return;
         }
+
         await Groups.RemoveFromGroupAsync(playerConnectionId, groupName);
         group.RemovePlayerFromGroup(playerConnectionId);
         await Clients.Client(playerConnectionId).SendAsync("transferdata",
@@ -232,6 +239,7 @@ static class ActionTypes
     public const string PlayerDisconnected = "PlayerDisconnected";
     public const string ErrorTryingToJoinNonExistingGroup = "ErrorTryingToJoinNonExistingGroup";
     public const string ErrorGroupHasPlayerWithSameName = "ErrorGroupHasPlayerWithSameName";
+    public const string ErrorRemovingPlayerFromGroup = "ErrorRemovingPlayerFromGroup";
     public const string ErrorSendingToHost = "ErrorSendingToHost";
     public const string ErrorSendingToPlayer = "ErrorSendingToPlayer";
     public const string HostDisconnected = "HostDisconnected";
