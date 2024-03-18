@@ -61,8 +61,8 @@ export class SignalrService {
       .catch((err:any) => console.error(err));
   }
 
-  public joinQuiz = (groupName: string, playerName: string) => {
-    this.hubConnection.invoke('joinquiz', groupName, playerName)
+  public joinQuiz = (groupName: string, playerName: string,clientId:string="") => {
+    this.hubConnection.invoke('joinquiz', groupName, playerName,clientId)
       .catch((err:any) => console.error(err));
   }
 

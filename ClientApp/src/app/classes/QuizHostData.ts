@@ -35,8 +35,8 @@ export class QuizHostData {
         this.quizState.next(QuizState.Idle)
     }
 
-    playerConnected(connectionId: string, playerName: string) {
-        this.players.push(new Player(connectionId, playerName))
+    playerConnected(connectionId: string, clientId:string,playerName: string) {
+        this.players.push(new Player(connectionId,clientId, playerName))
     }
 
     playerDisconnected(connectionId: string) {
@@ -46,11 +46,12 @@ export class QuizHostData {
         }
     }
 
-    playerReconnected(newConnectionId: string, oldConnectionId: string) {
+    playerReconnected(newConnectionId: string,clientId:string, oldConnectionId: string) {
         let player = this.players.find((p) => p.connectionId === oldConnectionId)
         if (player) {
             player.connectionId = newConnectionId
             player.isActive = true;
+            player.clientId = clientId
         }
     }
 
