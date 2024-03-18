@@ -63,6 +63,30 @@ public class QuizHub : Hub
         await Clients.Client(Context.ConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(succesfullyJoinedGroupDTO));
     }
 
+    public async Task RemovePlayerFromGroup(String groupName,String playerConnectionId)
+    {
+        QuizHubGroup? group = quizData.FindGroup(groupName);
+        if (group == null)
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ReconnectNotPossible}\", \"data\":\"Group not found\"}}");
+            return;
+        }
+
+        Player? player = group.FindPlayer(playerConnectionId);
+
+        if (player == null)
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ReconnectNotPossible}\", \"data\":\"ConnectionId not found in group\"}}");
+            return;
+        }
+        await Groups.RemoveFromGroupAsync(playerConnectionId, groupName);
+        group.RemovePlayerFromGroup(playerConnectionId);
+        await Clients.Client(playerConnectionId).SendAsync("transferdata",
+            $"{{\"action\":\"{ActionTypes.PlayerDisconnectedByHost}\", \"data\":\"Izba?en si od strane hosta kviza\"}}");
+    }
+
     public async Task SendToGroup(String data)
     {
         QuizHubGroup? group = quizData.FindGroupOfConnectionId(Context.ConnectionId);
@@ -219,4 +243,6 @@ static class ActionTypes
     public const string SuccesfullyReconnected = "SuccesfullyReconnected";
     public const string RejoinedInADifferentTab = "RejoinedInADifferentTab";
     public const string PlayerReconnected = "PlayerReconnected";
+    public const string PlayerDisconnectedByHost = "PlayerDisconnectedByHost";
+
 }

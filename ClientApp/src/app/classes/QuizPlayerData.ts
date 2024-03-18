@@ -18,6 +18,7 @@ export class QuizPlayerData {
     reconnectPossible: Boolean = false;
     oldClientConnected: Boolean = false;
     reconnected: Boolean = false;
+    disconnectedByHost:boolean = false;
 
     constructor() {
     }

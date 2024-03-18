@@ -26,16 +26,6 @@ export class QuizHostService {
     })
   }
 
-  // startQuiz(quizSettings: QuizSettings, quizId:string) {
-  //   this.quizSettings = quizSettings
-  //   this.questionservice.getRandomQuestions(this.quizSettings.numberOfQuestions)
-  //     .subscribe(data => {
-  //       this.quizData.reset();
-  //       this.quizData.questions = data
-  //       this.nextQuestion();
-  //     })
-  // }
-
   backFromPreview(){
     this.quizData.quizState.next(QuizState.Idle)
   }
@@ -161,6 +151,16 @@ export class QuizHostService {
     }
     
     this.sendToGroup(JSON.stringify(data))
+  }
+
+  removePlayerFromQuiz(player: Player ){
+    const data = {
+      action: 'Disconnected'
+    }
+    this.quizData.removePlayer(player.connectionId)
+    this.sendToPlayer(JSON.stringify(data), player.connectionId)
+    this.signalRService.removePlayerGromGroup(player.connectionId, this.quizData.groupName)
+
   }
 
   public sendToPlayer(data: string, playerConnectionId: string) {

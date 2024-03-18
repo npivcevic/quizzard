@@ -47,6 +47,10 @@
                     <div class="player-score" [class.disconnected]="!player.isActive">
                         {{player.score}}
                     </div>
+                    <app-button-icon icon="highlight_remove"
+                                    (click)="quizHostService.removePlayerFromQuiz(player)"
+                                    >
+                    </app-button-icon>
                     <app-button-icon icon="assessment"
                                     (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)"
                                     *ngIf="isAfterQuiz()">
