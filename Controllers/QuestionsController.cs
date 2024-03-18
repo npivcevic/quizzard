@@ -94,6 +94,7 @@ namespace quizzard.Controllers
             _context.RemoveRange(dbQuestion.Answers);
 
             dbQuestion.Text = question.Text;
+            dbQuestion.Fact = question.Fact;
             dbQuestion.Answers = question.Answers;
             dbQuestion.QuestionSetId = question.QuestionSetId;
             dbQuestion.Order = question.Order;
