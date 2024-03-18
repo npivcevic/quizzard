@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { QuizPlayerData, QuizPlayerState } from '../classes/QuizPlayerData';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { HostDisconnectedComponent } from '../host-disconnected/host-disconnected.component';
+import { SimpleDialogComponent } from '../simple-dialog/simple-dialog.component';
 import {  MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 
@@ -32,8 +32,9 @@ export class QuizPlayerService {
   }
 
   openHostDisconnectedDialog():void{
-    const dialog = this.dialog.open(HostDisconnectedComponent, {
+    const dialog = this.dialog.open(SimpleDialogComponent, {
       width: '50%',
+      data: { text: 'Voditelj je napustio igru.' },
     })
   }
 

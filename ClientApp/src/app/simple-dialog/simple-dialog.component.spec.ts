@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HostDisconnectedComponent } from './host-disconnected.component';
+import { SimpleDialogComponent } from './simple-dialog.component';
 
 describe('HostDisconnectedComponent', () => {
-  let component: HostDisconnectedComponent;
-  let fixture: ComponentFixture<HostDisconnectedComponent>;
+  let component: SimpleDialogComponent;
+  let fixture: ComponentFixture<SimpleDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HostDisconnectedComponent ]
+      declarations: [ SimpleDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HostDisconnectedComponent);
+    fixture = TestBed.createComponent(SimpleDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

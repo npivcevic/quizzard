@@ -20,7 +20,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { QuizHostComponent } from './quiz-host/quiz-host.component';
 import { QuizPlayerComponent } from './quiz-player/quiz-player.component';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { HostDisconnectedComponent } from './host-disconnected/host-disconnected.component'
+import { SimpleDialogComponent } from './simple-dialog/simple-dialog.component'
 import { LogoComponent } from './logo/logo.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
@@ -53,7 +53,7 @@ import { ContactPageComponent } from './contact/contact.component';
     QuizHostComponent,
     QuizPlayerComponent,
     SpinnerComponent,
-    HostDisconnectedComponent,
+    SimpleDialogComponent,
     LogoComponent,
     ScoreboardComponent,
     QuizzesComponent,
