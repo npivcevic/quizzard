@@ -187,7 +187,6 @@ export class QuizPlayerService {
       case "DisconnectedByHost":
         this.quizData.quizState = QuizPlayerState.Disconnected
         this.joinErrorMessage = "Izbačen si od strane hosta kviza"
-        this.quizData.disconnectedByHost = false;
         this.clearLastConnectionFromLocalStorage()
         break;
       default:
