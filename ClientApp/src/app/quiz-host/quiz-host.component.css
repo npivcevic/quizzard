@@ -275,4 +275,11 @@ table {
   .answered {
       background-color: rgb(116 98 27);
   }
+
+  .remove-player-icon {
+    opacity: 0;
+  }
+  .active-player-card:hover>.remove-player-icon {
+    opacity: 1 !important;
+  }
   
