@@ -13,6 +13,10 @@
         <mat-label>Pitanje</mat-label>
         <input matInput name="question" [(ngModel)]="question.text" required>
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>Fun fact</mat-label>
+        <input matInput name="fact" [(ngModel)]="question.fact">
+      </mat-form-field>
       <br>
       <div *ngIf="this.question.questionType === 'Abcd' || this.question.questionType === 'Da-Ne'">
         <div  *ngFor="let answer of question.answers; let i = index">
