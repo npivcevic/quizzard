@@ -275,4 +275,13 @@ table {
   .answered {
       background-color: rgb(116 98 27);
   }
-  
+
+  .info_content {
+    margin: 20px 0;
+    display: flex;
+  }
+
+  .info_content_column {
+    width: 50%;
+    padding: 10px;
+  }
