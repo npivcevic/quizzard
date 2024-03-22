@@ -2,16 +2,21 @@
 
     <div class="top-bar">
 
-        <div class="domain ">
+        <div class="domain">
             <a class="domain-link" [routerLink]="['/']">
                 <app-logo></app-logo>
             </a>
         </div>
 
-        <div class="top-bar-link">
-            Šifra<span class="logoKviz">Kviza</span>:
-            {{quizHostService.quizData.groupName}}
-            <span class="groupname-clipboard">
+        <div class="top-bar-middle">
+                <div class="middle-first-line">Znaš odgovore? Priključi se!</div>
+                <div class="middle-second-line">Igraj putem mobitela na: <u>pubkviz.hr</u></div>
+        </div>
+
+        <div  class="top-bar-link">
+            <span *ngIf="!detectMobileDevice()">Šifra<span class="logoKviz">Kviza</span>: {{quizHostService.quizData.groupName}}</span>
+            
+            <span *ngIf="!detectMobileDevice()" class="groupname-clipboard">
                 <span *ngIf="!quizHostService.quizData.copyedToCLipboard;then copyBlock else doneBlock"></span>
                 <ng-template #copyBlock>
                     <app-button-icon icon="content_copy" (click)="quizHostService.quizData.copyedToCLipboard=true"
@@ -26,7 +31,11 @@
 
     </div>
 
-    <div class="body">
+    <div *ngIf="detectMobileDevice()" class="body">
+        <p style="padding: 20px;">Pokretanje kviza nije moguće sa mobitela. Molimo posjetite stranicu sa računala.</p>
+    </div>
+
+    <div *ngIf="!detectMobileDevice()" class="body">
 
         <div class="active-players">
             <div class="active-players-card">
@@ -43,6 +52,11 @@
                     <div class="player-score" [class.disconnected]="!player.isActive">
                         {{player.score}}
                     </div>
+                    <app-button-icon icon="highlight_remove"
+                        class="remove-player-icon"
+                                    (click)="quizHostService.removePlayerFromQuiz(player)"
+                                    >
+                    </app-button-icon>
                     <app-button-icon icon="assessment"
                                     (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)"
                                     *ngIf="isAfterQuiz()">
@@ -54,6 +68,30 @@
 
         <div class="quiz">
             <div *ngIf="isIdle()" [formGroup]="quizSetup">
+                <div>
+                    <h1>Zaigraj kviz i natječi se s prijateljima!</h1>
+                    <h4>Pokreni kviz na računalu a zatim se svaki igrač koristeći svoj mobitel pridruži igri.</h4>
+                    <div class="info_content">
+                        <div class="info_content_column">
+                            <h5><u>Kako igrati:</u></h5>
+                            <ul>
+                                <li>Na računalu odaberi jedan od niže ponuđenih kvizeva.</li>
+                                <li>Igrači na mobitelima otiđu na <u>pubkviz.hr</u> i upišu šifru kviza (vidi gore desno).</li>
+                                <li>Kada su se svi igrači spojili, pokreni kviz na kompjuteru.</li>
+                                <li>Zabavi se!</li>
+                            </ul>
+                        </div>
+                        <div class="info_content_column">
+                            <h5><u>Napomene:</u></h5>
+                            <ul>
+                                <li>Ne zatvaraj ovu stranicu na računalu dok traje kviz jer će to prekinuti igru bez mogučnosti nastavka.</li>
+                                <li>Nije moguće odgovarati na računalu, potrebno se spojiti mobitelom.</li>
+                                <li>Za još bolji ugođaj spojite računalo na televiziju.</li>
+                                <li>Igrači se mogu spajati i nakon početka kviza.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
 
                     <!-- Position Column -->

@@ -1,16 +1,16 @@
 .main-frame{
     border-style:none;
-}
-
-body{
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .top-bar{
     display: flex;
     border-bottom: 4px #f4ce26 solid;
     color:whitesmoke;
-    background-color: #0a1d36 ;
+    background-color: #0a1d36;
+    overflow: hidden;
 }
 
 .domain{
@@ -18,6 +18,7 @@ body{
     width: 15%;
     font-size: 40px;
     position: relative;
+    height: 80px;
 }
 
 .domain-link{
@@ -30,12 +31,61 @@ body{
 }
 
 .top-bar-link{
-    margin-left:auto;
     margin-right: 10px;
     padding: 10px;
-    width: 80%;
     font-size: 40px;
     text-align:right;
+}
+
+.top-bar-middle {
+  flex-grow: 1;
+  align-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-direction: column;
+  line-height: 20px;
+}
+
+.middle-first-line {
+  transform: translateY(12px);
+  animation-name: first-line;
+  animation-duration: 14s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes first-line {
+  0%, 10% {
+    transform: translateY(12px);
+    opacity: 1;
+  }
+  50%, 100% {
+    transform: translateY(-42px);
+    opacity: 0;
+  }
+}
+
+
+.middle-second-line {
+  transform: translateY(42px);
+  opacity: 0;
+  animation-name: second-line;
+  animation-duration: 14s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes second-line {
+  0%, 10% {
+    transform: translateY(42px);
+    opacity: 0;
+  }
+  50%, 100% {
+    transform: translateY(-13px);
+    opacity: 1;
+  }
 }
 
 .groupname-clipboard-button{
@@ -49,10 +99,8 @@ body{
 
 .body{
     display: flex;
-    position: absolute;
-    top: 84px;
-    bottom: 0;
-    width: 100%; 
+    width: 100%;
+    flex-grow: 1;
 }
 
 .active-players{
@@ -183,95 +231,120 @@ mat-card{
 }
 
 table {
-    width: 100%;
-  }
+  width: 100%;
+}
   
-  tr.example-detail-row {
-    height: 0;
-  }
-  
-  tr.example-element-row:not(.example-expanded-row):hover {
-    background: whitesmoke;
-  }
-  
-  tr.example-element-row:not(.example-expanded-row):active {
-    background: #efefef;
-  }
-  
-  .example-element-row td {
-    border-bottom-width: 0;
-  }
-  
-  .example-element-detail {
-    overflow: hidden;
-    display: flex;
-    
-  }
-  
-  .example-element-diagram {
-    min-width: 80px;
-    border: 2px solid black;
-    padding: 8px;
-    font-weight: lighter;
-    margin: 8px 0;
-    height: 104px;
-  }
-  
-  .example-element-symbol {
-    font-weight: bold;
-    font-size: 40px;
-    line-height: normal;
-  }
-  
-  .example-element-description {
-    padding: 16px;
-  }
-  
-  .example-element-description-attribution {
-    opacity: 0.5;
-  }
+tr.example-detail-row {
+  height: 0;
+}
 
-  .preview-page{
-    display: flex;
-    align-items: stretch;
-  }
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
 
-  .quiz-preview{
-    flex-grow: 8;
-  }
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
 
-  .questions-row{
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-  }
+.example-element-row td {
+  border-bottom-width: 0;
+}
 
-  .questions-row>div{
-    border: solid;
-    width: 50px;
-    border-width: 1px;
-  }
-
-  .players-row{
-    display: flex;
-  }
-  .players-row>div{
-    border: solid;
-    width: 50px;
-    border-width: 1px;
-  }
-
-  .player-name-score{
-    width: 200px !important;
-  }
-
-  .correct {
-    background-color: rgb(22 107 22)
-  }
-  .incorrect {
-      background-color: rgb(152 57 57);
-  }
-  .answered {
-      background-color: rgb(116 98 27);
-  }
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
   
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.remove-player-icon {
+  opacity: 0;
+}
+
+.active-player-card:hover>.remove-player-icon {
+  opacity: 1 !important;
+}
+  
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+.preview-page{
+  display: flex;
+  align-items: stretch;
+}
+
+.quiz-preview{
+  flex-grow: 8;
+}
+
+.questions-row{
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.questions-row>div{
+  border: solid;
+  width: 50px;
+  border-width: 1px;
+}
+
+.players-row{
+  display: flex;
+}
+.players-row>div{
+  border: solid;
+  width: 50px;
+  border-width: 1px;
+}
+
+.player-name-score{
+  width: 200px !important;
+}
+
+.correct {
+  background-color: rgb(22 107 22)
+}
+.incorrect {
+    background-color: rgb(152 57 57);
+}
+.answered {
+    background-color: rgb(116 98 27);
+}
+
+.info_content {
+  margin: 20px 0;
+  display: flex;
+}
+
+.info_content_column {
+  width: 50%;
+  padding: 10px;
+}
+
+.remove-player-icon {
+  opacity: 0;
+}
+
+.active-player-card:hover>.remove-player-icon {
+  opacity: 1 !important;
+}

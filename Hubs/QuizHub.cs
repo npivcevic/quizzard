@@ -63,6 +63,37 @@ public class QuizHub : Hub
         await Clients.Client(Context.ConnectionId).SendAsync("transferdata", JsonSerializer.Serialize(succesfullyJoinedGroupDTO));
     }
 
+    public async Task RemovePlayerFromGroup(String groupName,String playerConnectionId)
+    {
+        QuizHubGroup? group = quizData.FindGroup(groupName);
+        if (group == null)
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorRemovingPlayerFromGroup}\", \"data\":\"Group name not found.\"}}");
+            return;
+        }
+
+        if (!quizData.IsConnectionHostOfGroup(group.Name, Context.ConnectionId)) {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorRemovingPlayerFromGroup}\", \"data\":\"Only the host can remove a player from a group.\"}}");
+            return;
+        }
+
+        Player? player = group.FindPlayer(playerConnectionId);
+
+        if (player == null)
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("transferdata",
+                $"{{\"action\":\"{ActionTypes.ErrorRemovingPlayerFromGroup}\", \"data\":\"Player not found.\"}}");
+            return;
+        }
+
+        await Groups.RemoveFromGroupAsync(playerConnectionId, groupName);
+        group.RemovePlayerFromGroup(playerConnectionId);
+        await Clients.Client(playerConnectionId).SendAsync("transferdata",
+            $"{{\"action\":\"{ActionTypes.DisconnectedByHost}\", \"data\":\"\"}}");
+    }
+
     public async Task SendToGroup(String data)
     {
         QuizHubGroup? group = quizData.FindGroupOfConnectionId(Context.ConnectionId);
@@ -208,6 +239,7 @@ static class ActionTypes
     public const string PlayerDisconnected = "PlayerDisconnected";
     public const string ErrorTryingToJoinNonExistingGroup = "ErrorTryingToJoinNonExistingGroup";
     public const string ErrorGroupHasPlayerWithSameName = "ErrorGroupHasPlayerWithSameName";
+    public const string ErrorRemovingPlayerFromGroup = "ErrorRemovingPlayerFromGroup";
     public const string ErrorSendingToHost = "ErrorSendingToHost";
     public const string ErrorSendingToPlayer = "ErrorSendingToPlayer";
     public const string HostDisconnected = "HostDisconnected";
@@ -219,4 +251,6 @@ static class ActionTypes
     public const string SuccesfullyReconnected = "SuccesfullyReconnected";
     public const string RejoinedInADifferentTab = "RejoinedInADifferentTab";
     public const string PlayerReconnected = "PlayerReconnected";
+    public const string DisconnectedByHost = "DisconnectedByHost";
+
 }

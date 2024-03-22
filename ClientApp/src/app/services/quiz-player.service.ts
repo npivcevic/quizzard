@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { QuizPlayerData, QuizPlayerState } from '../classes/QuizPlayerData';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { HostDisconnectedComponent } from '../host-disconnected/host-disconnected.component';
+import { SimpleDialogComponent } from '../simple-dialog/simple-dialog.component';
 import {  MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 
@@ -31,9 +31,10 @@ export class QuizPlayerService {
     this.quizData.quizState = QuizPlayerState.Disconnected
   }
 
-  openHostDisconnectedDialog():void{
-    const dialog = this.dialog.open(HostDisconnectedComponent, {
+  openSimpleDialog(text: string):void{
+    const dialog = this.dialog.open(SimpleDialogComponent, {
       width: '50%',
+      data: { text: text },
     })
   }
 
@@ -141,7 +142,7 @@ export class QuizPlayerService {
         break
       case 'HostDisconnected':
         this.quizData.quizState = QuizPlayerState.Disconnected
-        this.openHostDisconnectedDialog()
+        this.openSimpleDialog("Voditelj kviza je napustio igru.")
         break
       case 'QuizEnded':
         this.quizData.quizState = QuizPlayerState.End
@@ -183,6 +184,11 @@ export class QuizPlayerService {
       case "ErrorGroupHasPlayerWithSameName":
         this.quizData.quizState = QuizPlayerState.Disconnected
         this.joinErrorMessage = "Neuspješno spajanje. Igrač s imenom " + this.quizData.playerName + " na kvizu '" + this.quizData.groupName + "' već postoji. Molimo odaberite neko drugo ime i pokušajte ponovno."
+        break;
+      case "DisconnectedByHost":
+        this.quizData.quizState = QuizPlayerState.Disconnected
+        this.openSimpleDialog("Izbačen si od strane voditelja kviza.")
+        this.clearLastConnectionFromLocalStorage()
         break;
       default:
         console.log(`Action not implemented: ${data.action}.`)

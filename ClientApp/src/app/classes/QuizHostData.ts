@@ -146,6 +146,15 @@ export class QuizHostData {
         })
     }
 
+    public removePlayer(playerId:string){
+        for (let i = 0; i < this.players.length; i++) {
+            if (this.players[i].connectionId === playerId) {
+                this.players.splice(i,1)
+                return;
+            }
+        }
+    }
+
     getCorrectAnswerToCurrentQuestion() {
         return this.questions[this.currentQuestionIndex].answers.find((a) => a.isCorrect === true)
     }

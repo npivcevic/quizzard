@@ -35,6 +35,16 @@ public class QuizHubGroup
         player.Deactivate();
     }
 
+    public void RemovePlayerFromGroup(String connectionId)
+    {
+        Player? player = players.Find(p=>p.connectionId == connectionId);
+        if(player == null)
+        {
+            return;
+        }
+        this.players.Remove(player);
+    }
+
     public Player? FindPlayer(String connectionId)
     {
         return this.players.Find(p => p.connectionId == connectionId);

@@ -66,6 +66,11 @@ export class SignalrService {
       .catch((err:any) => console.error(err));
   }
 
+  public removePlayerGromGroup(playerConnectionId:string,groupName : string){
+    this.hubConnection.invoke('RemovePlayerFromGroup', groupName, playerConnectionId)
+      .catch((err:any) => console.error(err));
+  }
+
   public async reconnectCheck (groupName: string, playerName: string, oldConnectionId: string) {
     try {
       let result = await this.hubConnection.invoke('reconnectcheck', groupName, playerName, oldConnectionId);
