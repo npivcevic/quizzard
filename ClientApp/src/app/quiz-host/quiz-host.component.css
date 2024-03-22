@@ -271,6 +271,14 @@ tr.example-element-row:not(.example-expanded-row):active {
   line-height: normal;
 }
 
+.remove-player-icon {
+  opacity: 0;
+}
+
+.active-player-card:hover>.remove-player-icon {
+  opacity: 1 !important;
+}
+  
 .example-element-description {
   padding: 16px;
 }

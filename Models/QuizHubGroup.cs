@@ -37,11 +37,12 @@ public class QuizHubGroup
 
     public void RemovePlayerFromGroup(String connectionId)
     {
-        var player = players.Where(p=>p.connectionId == connectionId).FirstOrDefault();
-        if(player != null)
+        Player? player = players.Find(p=>p.connectionId == connectionId);
+        if(player == null)
         {
-            this.players.Remove(player);
+            return;
         }
+        this.players.Remove(player);
     }
 
     public Player? FindPlayer(String connectionId)
