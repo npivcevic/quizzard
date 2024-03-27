@@ -186,9 +186,15 @@
                 ></app-quiz-host-transition-display>
             </div>
 
-            <div *ngIf="isAfterQuiz(); then afterQuizBlock"></div>
+            <app-quiz-host-finish-display
+                *ngIf="isAfterQuiz()"
+                [quizName]="quizHostService.quizData.quiz.name"
+                [topPlayers]="quizHostService.quizData.getPlayerNamesByCurrentRank()"
+                [funFacts]="quizHostService.quizData.getAllFunFactsFromQuiz()">
+            </app-quiz-host-finish-display>
 
-            <ng-template #afterQuizBlock>
+            <!-- <div *ngIf="isAfterQuiz(); then afterQuizBlock"></div> -->
+            <!-- <ng-template #afterQuizBlock>
                 <mat-tab-group>
                     <mat-tab [label]="set.name" *ngFor="let set of quizHostService.quizData.quiz.questionSets; index as i">
                         <div class="questions-row">
@@ -208,7 +214,7 @@
                 </mat-tab-group>
                 <app-button text="Natrag na tablicu kvizova"
                             (click)="setQuizStateToIdle()"></app-button>
-            </ng-template>
+            </ng-template> -->
             <div class="quizOverlay"></div>
         </div>
 

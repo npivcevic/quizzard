@@ -1,0 +1,48 @@
+.award {
+    display: flex;
+}
+
+.award_medal {
+    font-size: 260px;
+    line-height: normal;
+    margin-top: -20px;
+}
+
+.award_medal.small {
+    font-size: 140px;
+    line-height: normal;
+}
+
+.award_description {
+    display: flex;
+    flex-direction: column;
+}
+
+.award_place_text {
+    font-size: 35px;
+    line-height: normal;
+}
+
+.award_place_text.small {
+    font-size: 25px;
+    line-height: normal;
+}
+
+.award_place_name {
+    font-size: 60px;
+    line-height: normal;
+}
+.award_place_name.small {
+    font-size: 40px;
+    line-height: normal;
+}
+
+.award_place_other {
+    font-size: 30px;
+    line-height: normal;
+}
+
+.award_place_other.small {
+    font-size: 20px;
+    line-height: normal;
+}

@@ -1,0 +1,37 @@
+<div class="finish-display">
+    <div class="quizInfo">
+        <div class="quizInfoHeader">{{'Kraj kviza: ' + quizName}}</div>
+        <div class="backButton">
+            <app-button text="Povratak na odabir kviza"
+                                    (click)="setQuizStateToIdle()"></app-button>
+        </div>
+    </div>
+    <div class="awards" *ngIf="topPlayers.length > 0">
+        <div class="awards_column_1">
+            <app-quiz-host-award
+                [position]="1"
+                [playerName]="topPlayers[0]">
+            </app-quiz-host-award>
+        </div>
+        <div class="awards_column_2">
+            <app-quiz-host-award
+                *ngIf="topPlayers.length > 1"
+                [position]="2"
+                [playerName]="topPlayers[1]">
+            </app-quiz-host-award>
+            <app-quiz-host-award
+                *ngIf="topPlayers.length > 2"
+                [position]="3"
+                [playerName]="topPlayers[2]">
+            </app-quiz-host-award>
+        </div>
+    </div>
+
+    <div class="fun-fact" *ngIf="funFacts.length > 0">
+        <h3 class="fun-fact-title">
+            <mat-icon class="icon-button">bookmark</mat-icon>
+            Jeste li znali?
+        </h3>
+        <p class="fun-fact-text">{{randomOrderFunFacts[currentFunFactIndex]}}</p>
+    </div>
+</div>

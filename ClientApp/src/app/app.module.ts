@@ -41,6 +41,9 @@ import { QuizHostQuestionDisplayComponent } from './quiz-host-question-display/q
 import { QuizHostTransitionDisplayComponent } from './quiz-host-transition-display/quiz-host-transition-display.component';
 import { QuestionsImporterComponent } from './questions-importer/questions-importer.component';
 import { ContactPageComponent } from './contact/contact.component';
+import { QuizHostFinishDisplayComponent } from './quiz-host-finish-display/quiz-host-finish-display.component';
+import { QuizHostAwardComponent } from './quiz-host-award/quiz-host-award.component';
+import { QuizHostFunFactComponent } from './quiz-host-fun-fact/quiz-host-fun-fact.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +74,9 @@ import { ContactPageComponent } from './contact/contact.component';
     QuizHostTransitionDisplayComponent,
     QuestionsImporterComponent,
     ContactPageComponent,
+    QuizHostFinishDisplayComponent,
+    QuizHostAwardComponent,
+    QuizHostFunFactComponent,
   ],
   imports: [
     ClipboardModule,
