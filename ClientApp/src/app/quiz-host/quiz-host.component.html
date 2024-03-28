@@ -52,15 +52,22 @@
                     <div class="player-score" [class.disconnected]="!player.isActive">
                         {{player.score}}
                     </div>
-                    <app-button-icon icon="highlight_remove"
-                        class="remove-player-icon"
-                                    (click)="quizHostService.removePlayerFromQuiz(player)"
-                                    >
-                    </app-button-icon>
-                    <app-button-icon icon="assessment"
-                                    (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)"
-                                    *ngIf="isAfterQuiz()">
-                    </app-button-icon>
+                    <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        class="player-menu-icon">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="quizHostService.removePlayerFromQuiz(player)">
+                          <mat-icon>highlight_remove</mat-icon>
+                          <span>Remove Player</span>
+                        </button>
+                        <button mat-menu-item [disabled]="!isAfterQuiz()" (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)">
+                          <mat-icon>assessment</mat-icon>
+                          <span>Player Stats</span>
+                        </button>
+                      </mat-menu>
                 </div>
             </div>
         </div>
@@ -186,9 +193,15 @@
                 ></app-quiz-host-transition-display>
             </div>
 
-            <div *ngIf="isAfterQuiz(); then afterQuizBlock"></div>
+            <app-quiz-host-finish-display
+                *ngIf="isAfterQuiz()"
+                [quizName]="quizHostService.quizData.quiz.name"
+                [topPlayers]="quizHostService.quizData.getPlayerNamesByCurrentRank()"
+                [funFacts]="quizHostService.quizData.getAllFunFactsFromQuiz()">
+            </app-quiz-host-finish-display>
 
-            <ng-template #afterQuizBlock>
+            <!-- <div *ngIf="isAfterQuiz(); then afterQuizBlock"></div> -->
+            <!-- <ng-template #afterQuizBlock>
                 <mat-tab-group>
                     <mat-tab [label]="set.name" *ngFor="let set of quizHostService.quizData.quiz.questionSets; index as i">
                         <div class="questions-row">
@@ -208,7 +221,7 @@
                 </mat-tab-group>
                 <app-button text="Natrag na tablicu kvizova"
                             (click)="setQuizStateToIdle()"></app-button>
-            </ng-template>
+            </ng-template> -->
             <div class="quizOverlay"></div>
         </div>
 

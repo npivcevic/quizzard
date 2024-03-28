@@ -7,6 +7,7 @@
 
 .top-bar{
     display: flex;
+    flex-shrink: 0;
     border-bottom: 4px #f4ce26 solid;
     color:whitesmoke;
     background-color: #0a1d36;
@@ -183,15 +184,6 @@
     background-color: white;
 }
 
-button{
-    color: whitesmoke;
-    background-color: #0a1d36;
-    border-color: #f4ce26 !important;
-    border-style:solid ; 
-    border-width: 3px;
-    font-size: 30px; 
-}
-
 .icon-button{
     padding-bottom: 35px;
   }
@@ -271,11 +263,12 @@ tr.example-element-row:not(.example-expanded-row):active {
   line-height: normal;
 }
 
-.remove-player-icon {
+.player-menu-icon {
   opacity: 0;
+  font-size: 22px;
 }
 
-.active-player-card:hover>.remove-player-icon {
+.active-player-card:hover>.player-menu-icon {
   opacity: 1 !important;
 }
   

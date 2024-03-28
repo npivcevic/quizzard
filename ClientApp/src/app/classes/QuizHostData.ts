@@ -35,6 +35,22 @@ export class QuizHostData {
         this.quizState.next(QuizState.Idle)
     }
 
+    getPlayerNamesByCurrentRank() {
+        return this.players.map(p => p.name)
+    }
+
+    getAllFunFactsFromQuiz() {
+        let funFacts :Array<string> = [];
+        this.quiz.questionSets.forEach(qs => {
+            qs.questions.forEach(q => {
+                if (q.fact) {
+                    funFacts.push(q.fact)
+                }
+            })
+        })
+        return funFacts
+    }
+
     playerConnected(connectionId: string, playerName: string) {
         this.players.push(new Player(connectionId, playerName))
     }

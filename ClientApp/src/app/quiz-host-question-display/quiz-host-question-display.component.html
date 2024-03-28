@@ -32,11 +32,9 @@
             </div>
         </div>
     </div>
-    <div class="fun-fact" [class.visible]="showAnswers && question.fact">
-        <h3 class="fun-fact-title">
-            <mat-icon class="icon-button">bookmark</mat-icon>
-            Jeste li znali?
-        </h3>
-        <p class="fun-fact-text">{{question.fact}}</p>
-    </div>
+
+    <app-quiz-host-fun-fact
+        class="fun-fact" [class.visible]="showAnswers && question.fact"
+        [text]="question.fact ? question.fact : ''">
+    </app-quiz-host-fun-fact>
 </div>
