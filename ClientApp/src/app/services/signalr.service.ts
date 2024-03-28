@@ -34,6 +34,12 @@ export class SignalrService {
       this.dataHistory.push(JSON.stringify(parsedData))
       this.dataReceived.next(parsedData)
     });
+
+    this.hubConnection.onclose(() => {
+      this.dataReceived.next({
+        action: 'ConnectionLost',
+      })
+    })
   }
 
   private async getConnectionId() {
@@ -85,5 +91,9 @@ export class SignalrService {
   public reconnect = (groupName: string, playerName: string, oldConnectionId: string) => {
     this.hubConnection.invoke('reconnect', groupName, playerName, oldConnectionId)
       .catch((err:any) => console.error(err));
+  }
+
+  public isConnected() {
+    return this.hubConnection.state === "Connected"
   }
 }
