@@ -52,15 +52,22 @@
                     <div class="player-score" [class.disconnected]="!player.isActive">
                         {{player.score}}
                     </div>
-                    <app-button-icon icon="highlight_remove"
-                        class="remove-player-icon"
-                                    (click)="quizHostService.removePlayerFromQuiz(player)"
-                                    >
-                    </app-button-icon>
-                    <app-button-icon icon="assessment"
-                                    (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)"
-                                    *ngIf="isAfterQuiz()">
-                    </app-button-icon>
+                    <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        class="player-menu-icon">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="quizHostService.removePlayerFromQuiz(player)">
+                          <mat-icon>highlight_remove</mat-icon>
+                          <span>Remove Player</span>
+                        </button>
+                        <button mat-menu-item [disabled]="!isAfterQuiz()" (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)">
+                          <mat-icon>assessment</mat-icon>
+                          <span>Player Stats</span>
+                        </button>
+                      </mat-menu>
                 </div>
             </div>
         </div>
