@@ -3,7 +3,7 @@ import { SignalrService } from './signalr.service';
 import { QuizPlayerData, QuizPlayerState } from '../classes/QuizPlayerData';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { SimpleDialogComponent } from '../simple-dialog/simple-dialog.component';
-import {  MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 
 
@@ -19,6 +19,9 @@ export class QuizPlayerService {
   public currentSpinnerTimeout = 0
   public currentSpinnerText = ""
   public joinErrorMessage = "";
+
+  private retryConnectionIntervalID : number | undefined;
+  private currentDialog: MatDialogRef<SimpleDialogComponent> | undefined;
   
   constructor(public signalRService: SignalrService, public fb : UntypedFormBuilder, private dialog: MatDialog ) { }
 
@@ -32,7 +35,8 @@ export class QuizPlayerService {
   }
 
   openSimpleDialog(text: string):void{
-    const dialog = this.dialog.open(SimpleDialogComponent, {
+    this.currentDialog?.close()
+    this.currentDialog = this.dialog.open(SimpleDialogComponent, {
       width: '50%',
       data: { text: text },
     })
@@ -118,6 +122,26 @@ export class QuizPlayerService {
     this.joinErrorMessage = ""
   }
 
+  public handleConnectionLost() {
+    this.openSimpleDialog("Izubljena veza sa serverom, pokušavamo te vratiti u igru...")
+    this.retryConnectionIntervalID = window.setInterval(async () => {
+      try {
+        await this.signalRService.startConnection()
+      } catch (e) {
+        console.log('unable to connect')
+      }
+      if (this.signalRService.isConnected()) {
+        this.quizData.quizState = QuizPlayerState.Disconnected
+        clearInterval(this.retryConnectionIntervalID)
+        await this.checkIfReconnectIsPossible()
+        this.currentDialog?.close();
+        if (this.quizData.reconnectPossible) {
+          this.reconnectToQuiz();
+        }
+      }
+    }, 1000)
+  }
+
   public processMessage(data: any) {
     switch (data.action) {
       case 'SuccesfullyJoinedGroup':
@@ -189,6 +213,9 @@ export class QuizPlayerService {
         this.quizData.quizState = QuizPlayerState.Disconnected
         this.openSimpleDialog("Izbačen si od strane voditelja kviza.")
         this.clearLastConnectionFromLocalStorage()
+        break;
+      case "ConnectionLost":
+        this.handleConnectionLost();
         break;
       default:
         console.log(`Action not implemented: ${data.action}.`)
