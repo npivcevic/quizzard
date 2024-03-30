@@ -1,8 +1,10 @@
-.main-frame{
+.main-frame {
     border-style:none;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
 }
 
 .top-bar{
@@ -102,6 +104,7 @@
     display: flex;
     width: 100%;
     flex-grow: 1;
+    overflow: hidden;
 }
 
 .active-players{
@@ -109,7 +112,7 @@
     min-width: 340px;
     border-right: solid #f4ce26 5px;
     background-color: #0a1d36;
-    overflow: auto;
+    overflow: scroll;
 }
 
 .active-players-card{
