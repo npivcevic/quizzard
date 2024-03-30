@@ -61,11 +61,11 @@
                       <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="quizHostService.removePlayerFromQuiz(player)">
                           <mat-icon>highlight_remove</mat-icon>
-                          <span>Remove Player</span>
+                          <span>Izbaci igrača</span>
                         </button>
                         <button mat-menu-item [disabled]="!isAfterQuiz()" (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)">
                           <mat-icon>assessment</mat-icon>
-                          <span>Player Stats</span>
+                          <span>Statistika igrača</span>
                         </button>
                       </mat-menu>
                 </div>

@@ -11,17 +11,17 @@
           <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-light" [routerLink]="['/quiz-host']">Host Quiz</a>
+            <a class="nav-link text-light" [routerLink]="['/quiz-host']">Pokreni Kviz</a>
           </li>
           <li  *ngIf=" this.authService.isUserLoggedIn && this.authService.userRole === 'Host'"  class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a  class="nav-link text-light" [routerLink]="['/quizzes']">Quizzes</a>
+            <a  class="nav-link text-light" [routerLink]="['/quizzes']">Kvizovi</a>
           </li>
           <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-light" [routerLink]="['/quiz-player']">Join Quiz</a>
+            <a class="nav-link text-light" [routerLink]="['/']">Igraj</a>
           </li>
           <!-- <li *ngIf="!this.authService.isUserLoggedIn" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-light" [routerLink]="['/login']">Login</a>
@@ -32,7 +32,7 @@
             <a class="nav-link text-light" [routerLink]="['/contact']">O nama</a>
           </li>
           <li *ngIf="this.authService.isUserLoggedIn" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" (click)="logout()" [routerLink]="['']">Logout</a>
+            <a class="nav-link text-light" (click)="logout()" [routerLink]="['']">Odjava</a>
           </li>
         </ul>
       </div>
