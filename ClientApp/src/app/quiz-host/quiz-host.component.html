@@ -8,7 +8,7 @@
             </a>
         </div>
 
-        <div class="top-bar-middle">
+        <div *ngIf="!detectMobileDevice()" class="top-bar-middle">
                 <div class="middle-first-line">Znaš odgovore? Priključi se!</div>
                 <div class="middle-second-line">Igraj putem mobitela na: <u>pubkviz.hr</u></div>
         </div>
