@@ -44,6 +44,7 @@ import { ContactPageComponent } from './contact/contact.component';
 import { QuizHostFinishDisplayComponent } from './quiz-host-finish-display/quiz-host-finish-display.component';
 import { QuizHostAwardComponent } from './quiz-host-award/quiz-host-award.component';
 import { QuizHostFunFactComponent } from './quiz-host-fun-fact/quiz-host-fun-fact.component';
+import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,8 @@ import { QuizHostFunFactComponent } from './quiz-host-fun-fact/quiz-host-fun-fac
       { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'contact', component: ContactPageComponent },
     ]),
+    NgxGoogleAnalyticsModule.forRoot('G-TXN0SQD6ME'),
+    NgxGoogleAnalyticsRouterModule,
     BrowserAnimationsModule
   ],
   providers: [
