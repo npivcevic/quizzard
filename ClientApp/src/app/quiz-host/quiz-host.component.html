@@ -8,7 +8,7 @@
             </a>
         </div>
 
-        <div class="top-bar-middle">
+        <div *ngIf="!detectMobileDevice()" class="top-bar-middle">
                 <div class="middle-first-line">Znaš odgovore? Priključi se!</div>
                 <div class="middle-second-line">Igraj putem mobitela na: <u>pubkviz.hr</u></div>
         </div>
@@ -37,7 +37,7 @@
 
     <div *ngIf="!detectMobileDevice()" class="body">
 
-        <div class="active-players">
+        <div class="active-players" #activePlayers>
             <div class="active-players-card">
                 Aktivni igrači:
             </div>
@@ -61,14 +61,17 @@
                       <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="quizHostService.removePlayerFromQuiz(player)">
                           <mat-icon>highlight_remove</mat-icon>
-                          <span>Remove Player</span>
+                          <span>Izbaci igrača</span>
                         </button>
                         <button mat-menu-item [disabled]="!isAfterQuiz()" (click)="openPlayerScoreDetails(player.getQuizReviewBoard(this.quizHostService.quizData.quiz.questionSets),player.name)">
                           <mat-icon>assessment</mat-icon>
-                          <span>Player Stats</span>
+                          <span>Statistika igrača</span>
                         </button>
                       </mat-menu>
                 </div>
+            </div>
+            <div class="morePlayersPill" [class.hidden]="!showMorePlayersPill">
+                ⬇️ Još igrača (ukupno {{quizHostService.quizData.players.length}}) ⬇️
             </div>
         </div>
 
