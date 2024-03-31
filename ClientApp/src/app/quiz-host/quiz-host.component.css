@@ -171,6 +171,19 @@
     font-size: 22px;
 }
 
+.morePlayersPill {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  font-size: 18px;
+  background-color: #f5ce26;;
+  text-align: center;
+}
+
+.hidden {
+  opacity: 0;
+}
+
 .quiz{
     padding: 20px;
     width: 80%;

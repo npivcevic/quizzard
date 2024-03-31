@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
 import { QuizState } from '../classes/QuizHostData';
@@ -30,7 +30,8 @@ import { detectMobileDevice } from '../utils/mobileDeviceDetector';
     ]),
   ]
 })
-export class QuizHostComponent implements OnInit, OnDestroy {
+export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('activePlayers') activePlayersComponent!: ElementRef<HTMLDivElement>;
 
   currentSpinnerTimeout!: number
   currentSpinnerText!: string
@@ -54,6 +55,8 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     MoveToNextQuestionWhenAllPlayersAnswered: this.fb.nonNullable.control(this.quizHostService.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered)
   })
 
+  showMorePlayersPill = false;
+
   constructor(
     public quizHostService: QuizHostService,
     private quizservice: QuizzesService,
@@ -70,6 +73,10 @@ export class QuizHostComponent implements OnInit, OnDestroy {
     })
     this.quizservice.getPublishedQuizzes()
       .subscribe(data => this.dataSource.data = data)
+  }
+
+  ngAfterViewInit() {
+    this.initPlayerListObservers()
   }
 
   ngOnDestroy(): void {
@@ -301,5 +308,43 @@ export class QuizHostComponent implements OnInit, OnDestroy {
           overlay.style.left = "0";
         }
       })
+  }
+
+  initPlayerListObservers() {
+    if (!this.activePlayersComponent) {
+      return
+    }
+    this.showMorePlayersPill = this.playerListIsOverflowing() && !this.playerListIsScrolledToBottom();
+
+    const config = { attributes: false, childList: true, subtree: false };
+    const observer = new MutationObserver((mutations, observer) => {
+      this.updateShowMorePlayersPill()
+    });
+    observer.observe(this.activePlayersComponent.nativeElement, config);
+
+    this.activePlayersComponent.nativeElement.addEventListener('scroll', (event) => {
+      this.updateShowMorePlayersPill();
+    })
+
+    window.addEventListener('resize', (event) => {
+      this.updateShowMorePlayersPill();
+    })
+  }
+
+  updateShowMorePlayersPill() {
+    this.showMorePlayersPill = this.playerListIsOverflowing() && !this.playerListIsScrolledToBottom();
+  }
+
+  playerListIsOverflowing ()
+  {
+      var container = this.activePlayersComponent.nativeElement;
+      console.log('client height', container.clientHeight, 'scroll height', container.scrollHeight)
+      return container.clientHeight < container.scrollHeight;
+  }
+
+  playerListIsScrolledToBottom ()
+  {
+      var element = this.activePlayersComponent.nativeElement;
+      return Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) < 1;
   }
 }

@@ -37,7 +37,7 @@
 
     <div *ngIf="!detectMobileDevice()" class="body">
 
-        <div class="active-players">
+        <div class="active-players" #activePlayers>
             <div class="active-players-card">
                 Aktivni igrači:
             </div>
@@ -69,6 +69,9 @@
                         </button>
                       </mat-menu>
                 </div>
+            </div>
+            <div class="morePlayersPill" [class.hidden]="!showMorePlayersPill">
+                ⬇️ Još igrača (ukupno {{quizHostService.quizData.players.length}}) ⬇️
             </div>
         </div>
 
