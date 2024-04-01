@@ -17,6 +17,7 @@ import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component'
 import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
 import anime from 'animejs/lib/anime.es.js';
 import { detectMobileDevice } from '../utils/mobileDeviceDetector';
+import { Sound, SoundService } from '../services/sound.service';
 
 @Component({
   selector: 'app-quiz-host',
@@ -63,6 +64,7 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
     private quizservice: QuizzesService,
     private questionsetservice: QuestionSetService,
     public navbarservice: NavBarService,
+    public soundService: SoundService,
     private dialog: MatDialog,
     public fb: UntypedFormBuilder) { }
 
@@ -74,6 +76,7 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
     })
     this.quizservice.getPublishedQuizzes()
       .subscribe(data => this.dataSource.data = data)
+    this.soundService.playBackgroundMusic()
   }
 
   ngAfterContentInit() {
@@ -83,6 +86,7 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
 
   ngOnDestroy(): void {
     this.navbarservice.visible = true
+    this.soundService.stopBackgroundMusic();
   }
 
   openQuizSettingsDialog() {
