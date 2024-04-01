@@ -125,11 +125,6 @@ export class QuizPlayerService {
   public handleConnectionLost() {
     this.openSimpleDialog("Izubljena veza sa serverom, pokušavamo te vratiti u igru...")
     this.retryConnectionIntervalID = window.setInterval(async () => {
-      try {
-        await this.signalRService.startConnection()
-      } catch (e) {
-        console.log('unable to connect')
-      }
       if (this.signalRService.isConnected()) {
         this.quizData.quizState = QuizPlayerState.Disconnected
         clearInterval(this.retryConnectionIntervalID)
@@ -138,6 +133,13 @@ export class QuizPlayerService {
         if (this.quizData.reconnectPossible) {
           this.reconnectToQuiz();
         }
+        return;
+      }
+
+      try {
+        await this.signalRService.startConnection()
+      } catch (e) {
+        console.error('Unable to start ws connection, error: ', e)
       }
     }, 1000)
   }
