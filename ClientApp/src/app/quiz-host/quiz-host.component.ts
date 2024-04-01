@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterContentInit } from '@angular/core';
 import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
 import { QuizState } from '../classes/QuizHostData';
@@ -30,7 +30,7 @@ import { detectMobileDevice } from '../utils/mobileDeviceDetector';
     ]),
   ]
 })
-export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
+export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
   @ViewChild('activePlayers') activePlayersComponent!: ElementRef<HTMLDivElement>;
 
   currentSpinnerTimeout!: number
@@ -56,6 +56,7 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   })
 
   showMorePlayersPill = false;
+  wakeLock : WakeLockSentinel | undefined;
 
   constructor(
     public quizHostService: QuizHostService,
@@ -75,8 +76,9 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(data => this.dataSource.data = data)
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit() {
     this.initPlayerListObservers()
+    this.manageWakeLock()
   }
 
   ngOnDestroy(): void {
@@ -106,7 +108,6 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
 
   setQuizId(quiz: Quiz) {
     if (this.quizId === quiz.quizId) {
-      console.log("im deselection", quiz.quizId)
       this.quizId = ""
       this.selection.clear()
       return
@@ -338,7 +339,6 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   playerListIsOverflowing ()
   {
       var container = this.activePlayersComponent.nativeElement;
-      console.log('client height', container.clientHeight, 'scroll height', container.scrollHeight)
       return container.clientHeight < container.scrollHeight;
   }
 
@@ -346,5 +346,20 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   {
       var element = this.activePlayersComponent.nativeElement;
       return Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) < 1;
+  }
+
+  async manageWakeLock() {
+    await this.initWakeLock()
+    window.onfocus = async () => {
+      await this.initWakeLock();
+    }
+  };
+
+  async initWakeLock() {
+    try {
+      this.wakeLock = await navigator.wakeLock.request('screen');
+    } catch (err: any) {
+      console.error(`${err.name}, ${err.message}`);
+    }
   }
 }
