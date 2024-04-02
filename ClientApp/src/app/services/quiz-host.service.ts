@@ -26,6 +26,7 @@ export class QuizHostService {
     this.signalRService.dataReceived.subscribe({
       next: (data) => this.processMessage(data)
     })
+    this.quizSettings.loadFromLocalStorage();
   }
 
   backFromPreview(){
@@ -62,6 +63,11 @@ export class QuizHostService {
 
     this.quizData.nextQuestion()
     this.sendQuestiontoGroup()
+  }
+
+  public updateQuizSettings(quizSettings: QuizSettings) {
+    this.quizSettings = quizSettings;
+    this.quizSettings.saveToLocalStorage()
   }
 
   public nextQuestionSet() {

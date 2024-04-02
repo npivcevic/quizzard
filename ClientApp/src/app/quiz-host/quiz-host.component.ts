@@ -105,7 +105,7 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
           newSettings.nextSetDelay = data.nextSetDelay! * 1000
           newSettings.MoveToNextQuestionWhenAllPlayersAnswered = data.MoveToNextQuestionWhenAllPlayersAnswered!
 
-          this.quizHostService.quizSettings = newSettings
+          this.quizHostService.updateQuizSettings(newSettings);
         }
       })
   }
