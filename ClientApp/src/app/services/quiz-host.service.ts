@@ -5,6 +5,7 @@ import { QuestionService } from '../question.service';
 import { QuizHostData, QuizState } from '../classes/QuizHostData';
 import { QuizSettings } from '../model/QuizSettings';
 import { QuizzesService } from './quizzes.service';
+import { SoundService, Sound } from './sound.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class QuizHostService {
 
   constructor(public signalRService: SignalrService,
     public questionservice: QuestionService,
-    public quizservice: QuizzesService) { }
+    public quizservice: QuizzesService,
+    private soundService: SoundService) { }
 
   public async initialize() {
     this.quizData = new QuizHostData()
@@ -68,6 +70,7 @@ export class QuizHostService {
   }
 
   public showCorrectAnswer() {
+    this.soundService.playSound(Sound.AnswerReveal01);
     this.quizData.quizState.next(QuizState.AnswersShowing)
     this.quizData.checkAnswersAndAssignPoints()
     this.sendCorrectAnswerToGroup()
@@ -175,7 +178,9 @@ export class QuizHostService {
         if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion() &&
             this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered) {
               this.showCorrectAnswer()
+              return;
         }
+        this.soundService.playSound(Sound.PlayerAnswered01)
         break;
       case 'GroupCreated':
         this.quizData.groupName = data.data

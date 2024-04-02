@@ -6,38 +6,49 @@ import { environment } from 'src/environments/environment';
 })
 export class SoundService {
   public isSoundOn = true;
-  public isBackgroundMusicOn = true;
-  isSoundEnabledLocalStorageKey = 'isSoundEnabled';
+  public isSfxOn = true;
+
+  isBackgroundMusicEnabledStorageKey = 'isMusicEnabled';
+  isSfxEnabledStorageKey = 'isSfxEnabled';
 
   loadedSounds: { [key: string]: HTMLAudioElement } = {};
 
   constructor() {
     const isSoundEnabled = localStorage.getItem(
-      this.isSoundEnabledLocalStorageKey
+      this.isBackgroundMusicEnabledStorageKey
     );
     if (isSoundEnabled === 'false') {
       this.isSoundOn = false;
     }
-    // this.preloadAllSounds();
+    if (this.isSoundOn) {
+      this.playBackgroundMusic()
+    }
+
+    const isSfxEnabled = localStorage.getItem(
+      this.isSfxEnabledStorageKey
+    );
+    if (isSfxEnabled === 'false') {
+      this.isSfxOn = false;
+    }
   }
 
   public toggleSound() {
     this.isSoundOn = !this.isSoundOn;
-    this.handleBackgroundMusic();
+    this.isSoundOn
+      ? this.playBackgroundMusic()
+      : this.stopBackgroundMusic()
     localStorage.setItem(
-      this.isSoundEnabledLocalStorageKey,
+      this.isBackgroundMusicEnabledStorageKey,
       this.isSoundOn ? 'true' : 'false'
     );
   }
 
-  public handleBackgroundMusic() {
-    if (!this.isSoundOn || !this.isBackgroundMusicOn) {
-      this.stopSound(Sound.BackGroundMusic01)
-      return;
-    }
-    if (this.isSoundOn && this.isBackgroundMusicOn) {
-      this.playSound(Sound.BackGroundMusic01, true)
-    }
+  public toggleSfx() {
+    this.isSfxOn = !this.isSfxOn;
+    localStorage.setItem(
+      this.isSfxEnabledStorageKey,
+      this.isSfxOn ? 'true' : 'false'
+    );
   }
 
   preloadAllSounds() {
@@ -50,16 +61,15 @@ export class SoundService {
     navigator.vibrate(30);
   }
 
-  playSound(sound: Sound, loop: boolean = false) {
-    if (!this.isSoundOn) {
+  playSound(sound: Sound) {
+    if (!this.isSfxOn) {
       return;
     }
     if (!this.loadedSounds[sound]) {
       this.loadSound(sound);
     }
-    this.loadedSounds[sound].loop = loop
+    this.loadedSounds[sound].currentTime = 0
     this.loadedSounds[sound].play()
-
   }
 
   stopSound(sound: Sound) {
@@ -71,22 +81,53 @@ export class SoundService {
 
   loadSound(sound: Sound) {
     let audio = new Audio();
-    audio.src = environment.fileStorageUrl + sound;
+    audio.src = environment.fileStorageUrl + Sounds[sound].url
     audio.load();
     this.loadedSounds[sound] = audio;
+    this.loadedSounds[sound].volume = Sounds[sound].volume
   }
 
   playBackgroundMusic() {
-    this.isBackgroundMusicOn = true;
-    this.handleBackgroundMusic();
+    if (!this.isSoundOn) {
+      return
+    }
+
+    let sound = Sound.BackGroundMusic01;
+    if (!this.loadedSounds[sound]) {
+      this.loadSound(sound)
+    }
+    this.loadedSounds[sound].loop = true;
+    this.loadedSounds[sound].volume = 0.10
+    this.loadedSounds[sound].play()
   }
 
   stopBackgroundMusic() {
-    this.isBackgroundMusicOn = false;
-    this.handleBackgroundMusic()
+    this.stopSound(Sound.BackGroundMusic01)
   }
 }
 
 export enum Sound {
-  BackGroundMusic01 = '/static/background_music_01.mp3',
+  BackGroundMusic01 = 'BackGroundMusic01',
+  QuestionTransition01 = 'QuestionTransition01',
+  AnswerReveal01 = 'AnswerReveal01',
+  PlayerAnswered01 = 'PlayerAnswered01',
+}
+
+const Sounds = {
+  'BackGroundMusic01': {
+    url: '/static/background_music_01.mp3',
+    volume: 0.10
+  },
+  'QuestionTransition01': {
+    url: '/static/question_transition_01.mp3',
+    volume: 0.3
+  },
+  'AnswerReveal01': {
+    url: '/static/answer_reveal_01.mp3',
+    volume: 1
+  },
+  'PlayerAnswered01': {
+    url: '/static/player_answered_01.mp3',
+    volume: 0.05
+  },
 }

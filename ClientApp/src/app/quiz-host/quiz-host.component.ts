@@ -297,6 +297,9 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
         duration: 1000,
         width: "100%",
         easing: 'easeInOutExpo',
+        begin: () => {
+          this.soundService.playSound(Sound.QuestionTransition01);
+        },
         complete: function (tl) {
           overlay.style.right = "0";
           overlay.style.left = "auto";
@@ -308,6 +311,9 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
         duration: 800,
         width: "0",
         easing: 'easeInOutExpo',
+        begin: () => {
+          this.soundService.playSound(Sound.QuestionTransition01);
+        },
         complete: function (tl) {
           overlay.style.right = "auto";
           overlay.style.left = "0";
