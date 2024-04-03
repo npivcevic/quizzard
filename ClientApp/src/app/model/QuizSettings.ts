@@ -25,7 +25,6 @@ export class QuizSettings {
     }
 
     saveToLocalStorage() {
-        console.log('stringify', JSON.stringify(this))
         localStorage.setItem(quizSettingsLocalStorageKey, JSON.stringify(this))
     }
 }
