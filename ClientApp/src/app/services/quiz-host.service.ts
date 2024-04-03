@@ -34,6 +34,7 @@ export class QuizHostService {
   }
 
   previewQuiz(quizId: string){
+    this.soundService.playBackgroundMusic()
     this.quizservice.getQuiz(quizId)
       .subscribe(data => {
         this.quizData.reset();
