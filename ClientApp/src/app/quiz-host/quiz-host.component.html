@@ -40,6 +40,26 @@
         <div class="active-players" #activePlayers>
             <div class="active-players-card">
                 Aktivni igrači:
+                <button
+                    mat-icon-button
+                    [matMenuTriggerFor]="settingsMenu"
+                    class="quizSettingsIcon">
+                    <mat-icon>settings</mat-icon>
+                </button>
+                <mat-menu #settingsMenu="matMenu">
+                    <button mat-menu-item (click)="this.soundService.toggleSound()" (click)="$event.stopPropagation()">
+                        <mat-icon>{{this.soundService.isSoundOn ? 'volume_up' : 'volume_off'}}</mat-icon>
+                        <span>Pozadinska muzika</span>
+                    </button>
+                    <button mat-menu-item (click)="this.soundService.toggleSfx()" (click)="$event.stopPropagation()">
+                        <mat-icon>{{this.soundService.isSfxOn ? 'volume_up' : 'volume_off'}}</mat-icon>
+                        <span>Zvučni efekti</span>
+                    </button>
+                    <button mat-menu-item (click)="openQuizSettingsDialog()">
+                        <mat-icon>settings</mat-icon>
+                        <span>Postavke kviza</span>
+                    </button>
+                </mat-menu>
             </div>
             <div *ngFor="let player of quizHostService.quizData.players; let i = index">
                 <div [class]="playerCardClass(player)" class="active-player-card">

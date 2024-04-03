@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterContentInit } from '@angular/core';
 import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
 import { QuizState } from '../classes/QuizHostData';
@@ -17,6 +17,7 @@ import { QuizSettingsComponent } from '../quiz-settings/quiz-settings.component'
 import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
 import anime from 'animejs/lib/anime.es.js';
 import { detectMobileDevice } from '../utils/mobileDeviceDetector';
+import { Sound, SoundService } from '../services/sound.service';
 
 @Component({
   selector: 'app-quiz-host',
@@ -30,7 +31,7 @@ import { detectMobileDevice } from '../utils/mobileDeviceDetector';
     ]),
   ]
 })
-export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
+export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
   @ViewChild('activePlayers') activePlayersComponent!: ElementRef<HTMLDivElement>;
 
   currentSpinnerTimeout!: number
@@ -56,12 +57,14 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   })
 
   showMorePlayersPill = false;
+  wakeLock : WakeLockSentinel | undefined;
 
   constructor(
     public quizHostService: QuizHostService,
     private quizservice: QuizzesService,
     private questionsetservice: QuestionSetService,
     public navbarservice: NavBarService,
+    public soundService: SoundService,
     private dialog: MatDialog,
     public fb: UntypedFormBuilder) { }
 
@@ -73,14 +76,17 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
     })
     this.quizservice.getPublishedQuizzes()
       .subscribe(data => this.dataSource.data = data)
+    this.soundService.playBackgroundMusic()
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit() {
     this.initPlayerListObservers()
+    this.manageWakeLock()
   }
 
   ngOnDestroy(): void {
     this.navbarservice.visible = true
+    this.soundService.stopBackgroundMusic();
   }
 
   openQuizSettingsDialog() {
@@ -99,14 +105,13 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
           newSettings.nextSetDelay = data.nextSetDelay! * 1000
           newSettings.MoveToNextQuestionWhenAllPlayersAnswered = data.MoveToNextQuestionWhenAllPlayersAnswered!
 
-          this.quizHostService.quizSettings = newSettings
+          this.quizHostService.updateQuizSettings(newSettings);
         }
       })
   }
 
   setQuizId(quiz: Quiz) {
     if (this.quizId === quiz.quizId) {
-      console.log("im deselection", quiz.quizId)
       this.quizId = ""
       this.selection.clear()
       return
@@ -292,6 +297,9 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
         duration: 1000,
         width: "100%",
         easing: 'easeInOutExpo',
+        begin: () => {
+          this.soundService.playSound(Sound.QuestionTransition01);
+        },
         complete: function (tl) {
           overlay.style.right = "0";
           overlay.style.left = "auto";
@@ -303,6 +311,9 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
         duration: 800,
         width: "0",
         easing: 'easeInOutExpo',
+        begin: () => {
+          this.soundService.playSound(Sound.QuestionTransition01);
+        },
         complete: function (tl) {
           overlay.style.right = "auto";
           overlay.style.left = "0";
@@ -338,7 +349,6 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   playerListIsOverflowing ()
   {
       var container = this.activePlayersComponent.nativeElement;
-      console.log('client height', container.clientHeight, 'scroll height', container.scrollHeight)
       return container.clientHeight < container.scrollHeight;
   }
 
@@ -346,5 +356,20 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   {
       var element = this.activePlayersComponent.nativeElement;
       return Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) < 1;
+  }
+
+  async manageWakeLock() {
+    await this.initWakeLock()
+    window.onfocus = async () => {
+      await this.initWakeLock();
+    }
+  };
+
+  async initWakeLock() {
+    try {
+      this.wakeLock = await navigator.wakeLock.request('screen');
+    } catch (err: any) {
+      console.error(`${err.name}, ${err.message}`);
+    }
   }
 }
