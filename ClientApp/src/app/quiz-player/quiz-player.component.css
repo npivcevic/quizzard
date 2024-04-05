@@ -110,6 +110,8 @@ input::placeholder{
     text-align: left;
     font-size: 15px;
     white-space: normal;
+    height: auto;
+    height: -webkit-fill-available;
 }
 
 .answer-letter {

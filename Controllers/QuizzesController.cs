@@ -32,6 +32,7 @@ namespace quizzard.Controllers
             }
             return await _context.Quizzes
                 .Where(quiz => quiz.Status == QuizStatus.Published)
+                .OrderByDescending(quiz => quiz.PublishDate)
                 .Include(quiz => quiz.QuestionSets.OrderBy(s => s.Order))
                 .ThenInclude(set => set.Questions.OrderBy(s => s.Order))
                 .ThenInclude(question => question.Answers)
@@ -54,6 +55,7 @@ namespace quizzard.Controllers
                 return NotFound();
             }
             return await _context.Quizzes
+                .OrderByDescending(quiz => quiz.PublishDate)
                 .Include(quiz => quiz.QuestionSets.OrderBy(s => s.Order))
                 .ThenInclude(set => set.Questions.OrderBy(s => s.Order))
                 .ThenInclude(question => question.Answers)

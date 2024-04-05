@@ -13,6 +13,7 @@
 }
 .quizInfoDescription {
     font-size: 28px;
+    white-space: pre-wrap;
 }
 .quizSettingsIcon {
     float: right;
