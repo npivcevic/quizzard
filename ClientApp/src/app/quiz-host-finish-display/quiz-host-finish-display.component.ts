@@ -26,7 +26,7 @@ export class QuizHostFinishDisplayComponent implements OnInit {
     setInterval(() => {
         this.currentFunFactIndex === this.randomOrderFunFacts.length - 1
           ? this.currentFunFactIndex = 0 : this.currentFunFactIndex++;
-    }, 7000)
+    }, 10000)
   }
 
   setQuizStateToIdle() {
