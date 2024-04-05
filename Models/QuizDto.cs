@@ -15,5 +15,7 @@ public class QuizDto
 
     public string Description { get; set; } = "";
 
+    public DateTime? PublishDate { get; set; } = null;
+
     public int NumberOfQuestions { get; set; }
 }

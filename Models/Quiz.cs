@@ -28,6 +28,7 @@ public class Quiz
             Name = this.Name,
             Status = this.Status,
             Description = this.Description,
+            PublishDate = this.PublishDate,
             NumberOfQuestions = this.QuestionSets.Aggregate(0, (acc, set) => acc += set.Questions.Count)
         };
     }
