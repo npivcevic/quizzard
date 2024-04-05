@@ -38,7 +38,7 @@
     transition: all 0s;
     transition-delay: 0s;
     /* opacity: 0; */
-    max-width: 50%;
+    max-width: 66%;
     margin: auto;
     margin-top: 20px;
     display: block;
@@ -56,4 +56,5 @@
 
 .fun-fact-text {
     font-size: 24px;
+    white-space: pre-wrap;
 }

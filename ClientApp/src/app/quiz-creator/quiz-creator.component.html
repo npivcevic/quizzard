@@ -2,13 +2,14 @@
   <div class="quizInfo">
     <div class="quizInfoColumn">
       <div class="quizInfoHeader">{{'Ime kviza : ' + quiz.name}}</div>
-      <div>{{'Opis kviza : ' + quiz.description}}</div>
       <div>{{'Quiz ID : '+quiz.quizId}}</div>
-    </div>
-    <div class="quizInfoColumn">
       <div>{{'Status : ' + QuizStatusNameByKey(quiz.status)}}</div>
       <div>{{'Datum objave : ' + quiz.publishDate}}</div>
       <app-button text="Uredi" (click)="openPutQuizDialog()"></app-button>
+    </div>
+    <div class="quizInfoColumn">
+      <div>Opis kviza: </div>
+      <div style="white-space: pre-wrap;" [innerHTML]="quiz.description"></div>
     </div>
   </div>
 
