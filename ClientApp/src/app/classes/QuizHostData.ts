@@ -156,6 +156,7 @@ export class QuizHostData {
     public playersScoreboard() {
         return this.players.map(player =>{
             return{
+                playerId: player.connectionId,
                 playerName:player.name,
                 points: player.score
             }

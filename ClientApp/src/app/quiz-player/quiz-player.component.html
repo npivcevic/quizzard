@@ -46,20 +46,30 @@
                 <strong>
                     Pozdrav {{ quizPlayerService.quizData.playerName }}, hvala ti na prijavi!
                     <br>
-                    Molim te sačekaj početak igre.
+                    Molim te pričekaj početak igre.
                 </strong>
             </mat-card-title>
             <mat-card-title *ngIf="quizPlayerService.quizData.reconnected">
                 <strong>
-                    Pozdrav {{ quizPlayerService.quizData.playerName }}, dobrodosao natrag!
+                    Pozdrav {{ quizPlayerService.quizData.playerName }}, dobrodošao natrag!
                     <br>
-                    Molim te sačekaj početak novog pitanja.
+                    Molim te pričekaj početak novog pitanja.
                 </strong>
             </mat-card-title>
         </mat-card>
     </div>
 
     <div *ngIf="isQuizInProgress() && quizPlayerService.quizData.currentQuestion" class="container">
+        <div class="stats">
+            <div class="statsLeft">
+                <div>Pitanje: {{this.quizPlayerService.quizData.currentQuestionNumber}}/{{this.quizPlayerService.quizData.totalNumberOfQuestionsInSet}}</div>
+                <div>Set: {{this.quizPlayerService.quizData.currentSetNumber}}/{{this.quizPlayerService.quizData.totalNumberOfSets}}</div>
+            </div>
+            <div class="statsRight">
+                <div>Bodovi: {{this.quizPlayerService.quizData.currentScore}}</div>
+                <div>Mjesto: {{this.quizPlayerService.quizData.currentPosition}}.</div>
+            </div>
+        </div>
         <div class="player-spinner">
             <app-spinner type="progressBar" [time]="quizPlayerService.currentSpinnerTimeout"
                 [text]="quizPlayerService.currentSpinnerText">
@@ -107,12 +117,12 @@
                 <strong>
                     {{ quizPlayerService.quizData.playerName }}, hvala ti na odigranoj igri
                     <br>
-                    Molim te sačekaj početak nove igre
+                    Molim te pričekaj početak nove igre
                 </strong>
             </mat-card-title>
         </mat-card>
 
-        <table mat-table [dataSource]="quizPlayerService.quizData.dataSource" class="mat-elevation-z8">
+        <table mat-table [dataSource]="quizPlayerService.quizData.scoreBoard" class="mat-elevation-z8">
 
             <ng-container matColumnDef="playerName">
                 <th mat-header-cell *matHeaderCellDef> Igrač </th>

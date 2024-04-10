@@ -157,7 +157,7 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
     this.quizState = state
 
     if (state === QuizState.AnswersShowing) {
-      this.currentSpinnerText = this.quizHostService.quizData.isLastQuestion() ? "Set gotov za" : "Sljedece pitanje"
+      this.currentSpinnerText = this.quizHostService.quizData.isLastQuestion() ? "Set gotov za" : "Sljedeće pitanje"
       this.currentSpinnerTimeout = this.quizHostService.quizSettings.nextQuestionDelay
       return;
     }
@@ -190,6 +190,9 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
 
   public spinnerTimeout() {
     if (this.quizState === QuizState.AnswersShowing || this.quizState === QuizState.SetDelayShowing || this.quizState === QuizState.QuizStartDelayShowing) {
+      if (this.quizState === QuizState.QuizStartDelayShowing) {
+        this.quizHostService.sendScoreBoardToPlayers();
+      }
       this.showOverlay(() => this.quizHostService.nextQuestion())
       return;
     }
