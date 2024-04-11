@@ -37,7 +37,7 @@ export class QuizPlayerService {
   openSimpleDialog(text: string):void{
     this.currentDialog?.close()
     this.currentDialog = this.dialog.open(SimpleDialogComponent, {
-      width: '50%',
+      width: '80%',
       data: { text: text },
     })
   }
@@ -156,6 +156,10 @@ export class QuizPlayerService {
 
         this.currentSpinnerText = data.data.text
         this.currentSpinnerTimeout = data.data.timer
+        this.quizData.currentQuestionNumber = data.data.questionNumber
+        this.quizData.totalNumberOfQuestionsInSet = data.data.totalQuestions
+        this.quizData.currentSetNumber = data.data.setNumber
+        this.quizData.totalNumberOfSets = data.data.totalSets
         break
       case 'CorrectAnswer':
         if (this.quizData.quizState !== QuizPlayerState.QuestionShowing) {
@@ -165,6 +169,7 @@ export class QuizPlayerService {
         this.quizData.currentCorrectAnswerId = data.data.correctAnswerId
         this.currentSpinnerText = data.data.spinnerText
         this.currentSpinnerTimeout = data.data.spinnerTimer
+        this.quizData.setScoreBoard(data.data.scoreBoard, this.signalRService.connectionId)
         break
       case 'HostDisconnected':
         this.quizData.quizState = QuizPlayerState.Disconnected
@@ -177,7 +182,7 @@ export class QuizPlayerService {
         this.quizData.playerScore = data.data
         break
       case 'PlayersScoreboard':
-        this.quizData.dataSource = data.data
+        this.quizData.setScoreBoard(data.data, this.signalRService.connectionId)
         break
       case 'ReconnectNotPossible':
         this.quizData.reconnectPossible = false;

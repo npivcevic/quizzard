@@ -13,7 +13,7 @@
     <div *ngIf="isDisconnected()" class="container" [formGroup]="logInForm">
         <fieldset [disabled]="quizPlayerService.quizData.reconnectPossible">
             <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
-                <input matInput style="width: 100%; text-align: center;" placeholder="Šifra kviza" formControlName="groupName" (input)="quizPlayerService.removeErrorMessages()">
+                <input matInput style="width: 100%; text-align: center;" placeholder="Šifra kviza" formControlName="groupName" oninput="this.value = this.value.toUpperCase()" (input)="quizPlayerService.removeErrorMessages()">
             </mat-form-field>
             <br />
             <mat-form-field style="width: 100%; text-align: center;" appearance="fill">
@@ -46,20 +46,31 @@
                 <strong>
                     Pozdrav {{ quizPlayerService.quizData.playerName }}, hvala ti na prijavi!
                     <br>
-                    Molim te sačekaj početak igre.
+                    Molim te pričekaj početak igre.
                 </strong>
             </mat-card-title>
             <mat-card-title *ngIf="quizPlayerService.quizData.reconnected">
                 <strong>
-                    Pozdrav {{ quizPlayerService.quizData.playerName }}, dobrodosao natrag!
+                    Pozdrav {{ quizPlayerService.quizData.playerName }}, dobrodošao natrag!
                     <br>
-                    Molim te sačekaj početak novog pitanja.
+                    Molim te pričekaj početak novog pitanja.
                 </strong>
             </mat-card-title>
         </mat-card>
     </div>
 
     <div *ngIf="isQuizInProgress() && quizPlayerService.quizData.currentQuestion" class="container">
+        <div class="stats">
+            <div class="statsLeft">
+                <div>Pitanje: {{this.quizPlayerService.quizData.currentQuestionNumber}}/{{this.quizPlayerService.quizData.totalNumberOfQuestionsInSet}}</div>
+                <div>Set: {{this.quizPlayerService.quizData.currentSetNumber}}/{{this.quizPlayerService.quizData.totalNumberOfSets}}</div>
+            </div>
+            <div class="statsRight">
+                <div>Bodovi: {{this.quizPlayerService.quizData.currentScore}}</div>
+                <div style="display: flex;">Mjesto: {{this.quizPlayerService.quizData.currentPosition}}. <mat-icon (click)="openLeaderboardDialog()">assessment</mat-icon> </div>
+            </div>
+            <!-- <app-button-icon  class="close-button" icon="assessment"></app-button-icon> -->
+        </div>
         <div class="player-spinner">
             <app-spinner type="progressBar" [time]="quizPlayerService.currentSpinnerTimeout"
                 [text]="quizPlayerService.currentSpinnerText">
@@ -107,26 +118,12 @@
                 <strong>
                     {{ quizPlayerService.quizData.playerName }}, hvala ti na odigranoj igri
                     <br>
-                    Molim te sačekaj početak nove igre
+                    Molim te pričekaj početak nove igre
                 </strong>
             </mat-card-title>
         </mat-card>
 
-        <table mat-table [dataSource]="quizPlayerService.quizData.dataSource" class="mat-elevation-z8">
-
-            <ng-container matColumnDef="playerName">
-                <th mat-header-cell *matHeaderCellDef> Igrač </th>
-                <td mat-cell *matCellDef="let element"> {{element.playerName}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="points">
-                <th mat-header-cell *matHeaderCellDef> Bodovi </th>
-                <td mat-cell *matCellDef="let element"> {{element.points}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="quizPlayerService.quizData.displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: quizPlayerService.quizData.displayedColumns;"></tr>
-        </table>
+        <app-player-leaderboard [leaderboard]="quizPlayerService.quizData.scoreBoard"></app-player-leaderboard>
 
         <button mat-raised-button (click)="this.openPlayerScoreDetails(quizPlayerService.quizData.playerScore)">Vidi svoje odgovore</button>
 

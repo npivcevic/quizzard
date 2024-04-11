@@ -84,6 +84,23 @@ input::placeholder{
     background-color: rgb(116 98 27) !important;
 }
 
+.stats {
+    display: flex;
+    border-bottom: 1px solid black;
+    margin-bottom: 8px;
+}
+.statsLeft {
+    display: flex;
+    flex-direction: column;
+}
+.statsRight {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    justify-content: right;
+    align-items: end;
+}
+
 .player-spinner {
     margin: 0 auto;
     text-align: center;

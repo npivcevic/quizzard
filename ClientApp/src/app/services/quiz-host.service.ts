@@ -97,6 +97,10 @@ export class QuizHostService {
       action: "QuestionSent",
       data: {
         question: this.quizData.currentQuestionWithoutIsCorrect(),
+        questionNumber: this.quizData.currentQuestionIndex+1,
+        totalQuestions: this.quizData.currentQuestionSet.questions.length,
+        setNumber: this.quizData.currentQuestionSetIndex+1,
+        totalSets: this.quizData.quiz.questionSets.length,
         text: "Preostalo vrijeme",
         timer: this.quizSettings.totalTimePerQuestion
       }
@@ -108,7 +112,7 @@ export class QuizHostService {
     const data = {
       action: "EvaluatingAnswers",
       data: {
-        text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
+        text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedeće pitanje",
         timer: this.quizSettings.nextQuestionDelay
       }
     }
@@ -119,7 +123,7 @@ export class QuizHostService {
     const data = {
       action: "NextSetDelay",
       data: {
-        text: "Sljedeci set za",
+        text: "Sljedeći set za",
         timer: this.quizSettings.nextSetDelay
       }
     }
@@ -139,8 +143,9 @@ export class QuizHostService {
       action: "CorrectAnswer",
       data: {
         correctAnswerId: this.quizData.getCorrectAnswerToCurrentQuestion()?.answerId,
-        spinnerText: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedece pitanje",
-        spinnerTimer: this.quizSettings.nextQuestionDelay
+        spinnerText: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedeće pitanje",
+        spinnerTimer: this.quizSettings.nextQuestionDelay,
+        scoreBoard: this.quizData.playersScoreboard(),
       }
     }
     this.sendToGroup(JSON.stringify(data))

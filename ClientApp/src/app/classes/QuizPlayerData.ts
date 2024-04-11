@@ -11,10 +11,17 @@ export class QuizPlayerData {
     currentAnswerId: string = ""
     currentAnswerText: string = ""
     currentCorrectAnswerId: string = ""
+    currentQuestionNumber: number = 0
+    totalNumberOfQuestionsInSet: number = 0
+    currentSetNumber: number = 0
+    totalNumberOfSets: number = 0
+
+    scoreBoard:ScoreboardRow[]=[]
+    currentScore: number = 0
+    currentPosition: number = 0
+
     playerScore:PlayerScore[]=[]
     displayedColumns: string[] = ['playerName', 'points'];
-    scoreBoard:ScoreboardRow[]=[]
-    dataSource = this.scoreBoard
     reconnectPossible: Boolean = false;
     oldClientConnected: Boolean = false;
     reconnected: Boolean = false;
@@ -31,6 +38,28 @@ export class QuizPlayerData {
         this.currentAnswerText = ""
         this.currentQuestion = question
         this.quizState = QuizPlayerState.QuestionShowing
+    }
+
+    setScoreBoard(scoreBoard: ScoreboardRow[], playerConnectionId: string) {
+        this.scoreBoard = scoreBoard
+        this.currentPosition = this.getPlayerPosition(playerConnectionId);
+        this.currentScore = this.getPlayerScore(playerConnectionId);
+    }
+
+    getPlayerScore(playerConnectionId: string) {
+        let player = this.scoreBoard.find((p) => p.playerId === playerConnectionId)
+        if (!player) {
+            return 0
+        }
+        return player.points;
+    }
+
+    getPlayerPosition(playerConnectionId: string) {
+        let playerIndex = this.scoreBoard.findIndex((p) => p.playerId === playerConnectionId)
+        if (playerIndex === -1) {
+            return 0
+        }
+        return playerIndex+1;
     }
 }
 

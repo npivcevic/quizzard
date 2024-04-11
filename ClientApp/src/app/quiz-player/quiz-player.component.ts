@@ -6,6 +6,8 @@ import { letterFromIndex } from '../utils/letterFromIndex';
 import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerScore } from '../model/player-score';
+import { PlayerLeaderboardComponent } from '../player-leaderboard/player-leaderboard.component';
+import { PlayerLeaderboardDialogComponent } from '../player-leaderboard-dialog/player-leaderboard-dialog.component';
 
 @Component({
   selector: 'app-quiz-player',
@@ -32,9 +34,20 @@ export class QuizPlayerComponent implements OnInit {
   public openPlayerScoreDetails(details: PlayerScore[]) {
     const dialog = this.dialog.open(ScoreboardComponent, {
       data: details,
-      width: '90%'
+      width: '90%',
+      maxHeight: '100vh'
     })
     dialog.afterClosed()
+  }
+
+  public openLeaderboardDialog() {
+    const dialog = this.dialog.open(PlayerLeaderboardDialogComponent, {
+      data: { leaderboard: this.quizPlayerService.quizData.scoreBoard },
+      width: '90%',
+      maxHeight: '100vh'
+    })
+    dialog.afterClosed()
+
   }
 
   public joinQuiz() {
