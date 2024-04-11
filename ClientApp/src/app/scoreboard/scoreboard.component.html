@@ -1,27 +1,21 @@
-<app-dialog [title]="openedFromPlayer ? 'Tvoji odgovori na pitanja' : returnPlayerName()">
+<app-dialog [title]="openedFromPlayer ? 'Pitanja' : returnPlayerName()">
   <mat-tab-group>
   <mat-tab *ngFor="let questionSet of answers" [label]="questionSet.questionSetName">
     <div *ngFor="let answer of questionSet.score">
       <mat-accordion>
         <mat-expansion-panel class="answer-panel" hideToggle>
-          <mat-expansion-panel-header [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
+          <mat-expansion-panel-header class="answer-panel-header" [ngStyle]="{background: answer.isCorrect===true? 'rgb(153, 211, 153)' : 'rgb(236, 157, 157)'}">
             <mat-panel-title >
               {{answer.questionText}}
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div *ngIf="answer.answerText" >
-            <strong *ngIf="openedFromPlayer">Tvoj odgovor : <span>{{answer.answerText}}</span></strong>
-            <strong *ngIf="!openedFromPlayer">Odgovor od {{playerName}} : <span>{{answer.answerText}}</span></strong>
-            <div [hidden]="answer.isCorrect">
-            <strong>Točan odgovor : <span>{{answer.correctAnswer}}</span></strong>
-          </div>
+          <div *ngIf="answer.answerText" style="padding: 8px 24px;" >
+            <div *ngIf="openedFromPlayer" style="margin-bottom: 6;">Tvoj odgovor : <span>{{answer.answerText}}</span></div>
+            <div *ngIf="!openedFromPlayer">Odgovor od {{playerName}} : <span>{{answer.answerText}}</span></div>
+            <div [hidden]="answer.isCorrect" style="margin-top: 6px;">Točan odgovor : <span>{{answer.correctAnswer}}</span></div>
           </div>
           <div *ngIf="!answer.answerText">
-            <span>Ovo pitanje nije odgovoreno. Točan odgovor je : </span>
-            <div>
-              <strong>{{answer.correctAnswer}}</strong>
-    
-            </div>
+            <div>Ovo pitanje nije odgovoreno. Točan odgovor je: {{answer.correctAnswer}}</div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>

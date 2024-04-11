@@ -37,7 +37,7 @@ export class QuizPlayerService {
   openSimpleDialog(text: string):void{
     this.currentDialog?.close()
     this.currentDialog = this.dialog.open(SimpleDialogComponent, {
-      width: '50%',
+      width: '80%',
       data: { text: text },
     })
   }

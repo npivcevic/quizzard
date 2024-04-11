@@ -1,3 +1,7 @@
 .answer-panel{
     margin: 5px 0;
 }
+
+.answer-panel-header {
+    height: auto;
+}

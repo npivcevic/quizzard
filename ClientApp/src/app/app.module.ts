@@ -45,6 +45,8 @@ import { QuizHostFinishDisplayComponent } from './quiz-host-finish-display/quiz-
 import { QuizHostAwardComponent } from './quiz-host-award/quiz-host-award.component';
 import { QuizHostFunFactComponent } from './quiz-host-fun-fact/quiz-host-fun-fact.component';
 import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
+import { PlayerLeaderboardComponent } from './player-leaderboard/player-leaderboard.component';
+import { PlayerLeaderboardDialogComponent } from './player-leaderboard-dialog/player-leaderboard-dialog.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,8 @@ import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-go
     QuizHostFinishDisplayComponent,
     QuizHostAwardComponent,
     QuizHostFunFactComponent,
+    PlayerLeaderboardComponent,
+    PlayerLeaderboardDialogComponent,
   ],
   imports: [
     ClipboardModule,
