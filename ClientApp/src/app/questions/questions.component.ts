@@ -103,7 +103,6 @@ export class QuestionsComponent implements OnInit {
     })
     this.questionservice.putQuestion(questionCopy).subscribe({
       next: () => {
-          console.log("im called")
           this.questions.splice(index, 1)
           this.openSnackBar("Pitanje je izbrisano iz seta")
         
