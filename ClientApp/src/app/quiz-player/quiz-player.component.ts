@@ -5,7 +5,7 @@ import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { letterFromIndex } from '../utils/letterFromIndex';
 import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
 import { MatDialog } from '@angular/material/dialog';
-import { PlayerScore } from '../model/player-score';
+import { PlayerScore, QuestionSetPlayerScore } from '../model/player-score';
 import { PlayerLeaderboardComponent } from '../player-leaderboard/player-leaderboard.component';
 import { PlayerLeaderboardDialogComponent } from '../player-leaderboard-dialog/player-leaderboard-dialog.component';
 
@@ -31,7 +31,7 @@ export class QuizPlayerComponent implements OnInit {
       })
     }
   }
-  public openPlayerScoreDetails(details: PlayerScore[]) {
+  public openPlayerScoreDetails(details: QuestionSetPlayerScore[]) {
     const dialog = this.dialog.open(ScoreboardComponent, {
       data: details,
       width: '90%',

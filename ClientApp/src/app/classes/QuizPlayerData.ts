@@ -1,4 +1,4 @@
-import { PlayerScore } from "../model/player-score";
+import { PlayerScore, QuestionSetPlayerScore } from "../model/player-score";
 import { Question } from "../model/question";
 import { ScoreboardRow } from "../model/scoreboard-row";
 
@@ -20,7 +20,7 @@ export class QuizPlayerData {
     currentScore: number = 0
     currentPosition: number = 0
 
-    playerScore:PlayerScore[]=[]
+    playerScore:QuestionSetPlayerScore[]=[]
     displayedColumns: string[] = ['playerName', 'points'];
     reconnectPossible: Boolean = false;
     oldClientConnected: Boolean = false;
@@ -60,6 +60,12 @@ export class QuizPlayerData {
             return 0
         }
         return playerIndex+1;
+    }
+
+    getTotalNumberOfQuestions() {
+        return this.playerScore.reduce((result, set) => {
+            return result + set.score.length
+        },0)
     }
 }
 

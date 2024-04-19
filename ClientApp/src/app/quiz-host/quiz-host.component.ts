@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterContentInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { QuizHostService } from '../services/quiz-host.service';
 import { NavBarService } from '../nav-bar.service';
 import { QuizState } from '../classes/QuizHostData';
@@ -31,7 +31,7 @@ import { Sound, SoundService } from '../services/sound.service';
     ]),
   ]
 })
-export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
+export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('activePlayers') activePlayersComponent!: ElementRef<HTMLDivElement>;
 
   currentSpinnerTimeout!: number
@@ -79,7 +79,7 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterContentInit {
     this.soundService.playBackgroundMusic()
   }
 
-  ngAfterContentInit() {
+  ngAfterViewInit() {
     this.initPlayerListObservers()
     this.manageWakeLock()
   }

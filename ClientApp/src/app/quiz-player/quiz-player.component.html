@@ -113,19 +113,18 @@
     </div>
 
     <div *ngIf="isQuizEnd()" class="container">
-        <mat-card style="text-align: center;">
-            <mat-card-title>
-                <strong>
-                    {{ quizPlayerService.quizData.playerName }}, hvala ti na odigranoj igri
-                    <br>
-                    Molim te pričekaj početak nove igre
-                </strong>
-            </mat-card-title>
-        </mat-card>
-
-        <app-player-leaderboard [leaderboard]="quizPlayerService.quizData.scoreBoard"></app-player-leaderboard>
-
-        <button mat-raised-button (click)="this.openPlayerScoreDetails(quizPlayerService.quizData.playerScore)">Vidi svoje odgovore</button>
-
+        <h1>Kraj kviza!</h1>
+        <br/>
+        <h3>Osvojeno mjesto: {{this.quizPlayerService.quizData.currentPosition}}.</h3>
+        <button mat-raised-button (click)="this.openLeaderboardDialog()">Pogledaj rang listu</button>
+        <br/>
+        <h3>Bodovi: {{this.quizPlayerService.quizData.currentScore}}/{{this.quizPlayerService.quizData.getTotalNumberOfQuestions()}}</h3>
+        <button mat-raised-button (click)="this.openPlayerScoreDetails(quizPlayerService.quizData.playerScore)">Pogledaj svoje odgovore</button>
+        <br/>
+        <br/>
+        <br/>
+        <h3>Hvala ti na odigranoj igri!</h3>
+        <br/>
+        <div>Jeli bilo zanimljivo? Pomozi nam da pubkviz.hr bude još bolji. <a [routerLink]="['/contact']">Saznaj više -></a></div>
     </div>
 </div>

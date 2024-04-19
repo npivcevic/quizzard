@@ -4,3 +4,8 @@ export interface PlayerScore{
     isCorrect:boolean
     correctAnswer:string
 }
+
+export interface QuestionSetPlayerScore{
+    questionSetName:string,
+    score: PlayerScore[]
+}
