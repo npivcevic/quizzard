@@ -102,9 +102,23 @@ input::placeholder{
     align-items: end;
 }
 
+.remainingTime {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .player-spinner {
-    margin: 0 auto;
     text-align: center;
+}
+
+.playersAnswered {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-left: auto;
+    font-size: 14px;
+    line-height: normal;
 }
 
 .answerList {

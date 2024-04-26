@@ -71,10 +71,15 @@
             </div>
             <!-- <app-button-icon  class="close-button" icon="assessment"></app-button-icon> -->
         </div>
-        <div class="player-spinner">
-            <app-spinner type="progressBar" [time]="quizPlayerService.currentSpinnerTimeout"
+        <div class="remainingTime">
+            <app-spinner class="player-spinner" type="progressBar" [time]="quizPlayerService.currentSpinnerTimeout"
                 [text]="quizPlayerService.currentSpinnerText">
             </app-spinner>
+            <div class="playersAnswered">
+                <div>Odgovorilo</div>
+                <div>{{this.quizPlayerService.quizData.numberOfPlayersWhoAnswered}} od {{this.quizPlayerService.quizData.numberOfPlayers}}</div>
+                <div>igrača</div>
+            </div>
         </div>
 
         <div class="questionTitleCard">

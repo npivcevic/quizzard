@@ -153,6 +153,16 @@ export class QuizHostData {
         return true
     }
 
+    public numberOfPlayersWhoAnsweredCurrentQuestion() {
+        let result = 0
+        for (let i = 0; i < this.players.length; i++) {
+            if (this.players[i].hasAnswered(this.currentQuestion.questionId)) {
+                result++
+            }
+        }
+        return result
+    }
+
     public playersScoreboard() {
         return this.players.map(player =>{
             return{

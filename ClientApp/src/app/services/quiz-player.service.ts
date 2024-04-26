@@ -122,6 +122,13 @@ export class QuizPlayerService {
     this.joinErrorMessage = ""
   }
 
+  private handleNumberOfPlayersWhoAnswered(numberOfPlayers: number, numberOfPlayersWhoAnswered: number) {
+    if (this.quizData.numberOfPlayersWhoAnswered < numberOfPlayersWhoAnswered) {
+      this.quizData.numberOfPlayers = numberOfPlayers
+      this.quizData.numberOfPlayersWhoAnswered = numberOfPlayersWhoAnswered
+    }
+  }
+
   public handleConnectionLost() {
     this.openSimpleDialog("Izubljena veza sa serverom, pokušavamo te vratiti u igru...")
     this.retryConnectionIntervalID = window.setInterval(async () => {
@@ -160,6 +167,8 @@ export class QuizPlayerService {
         this.quizData.totalNumberOfQuestionsInSet = data.data.totalQuestions
         this.quizData.currentSetNumber = data.data.setNumber
         this.quizData.totalNumberOfSets = data.data.totalSets
+        this.quizData.numberOfPlayers = data.data.numberOfPlayers
+        this.quizData.numberOfPlayersWhoAnswered = 0
         break
       case 'CorrectAnswer':
         if (this.quizData.quizState !== QuizPlayerState.QuestionShowing) {
@@ -223,6 +232,9 @@ export class QuizPlayerService {
         break;
       case "ConnectionLost":
         this.handleConnectionLost();
+        break;
+      case "NumberOfPlayersWhoAnswered":
+        this.handleNumberOfPlayersWhoAnswered(data.data.numberOfPlayers, data.data.numberOfPlayersWhoAnsweredCurrentQuestion);
         break;
       default:
         console.log(`Action not implemented: ${data.action}.`)

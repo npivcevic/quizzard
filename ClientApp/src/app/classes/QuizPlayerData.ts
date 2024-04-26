@@ -26,6 +26,9 @@ export class QuizPlayerData {
     oldClientConnected: Boolean = false;
     reconnected: Boolean = false;
 
+    numberOfPlayers: number = 0;
+    numberOfPlayersWhoAnswered: number = 0;
+
     constructor() {
     }
 
