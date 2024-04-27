@@ -57,7 +57,6 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   })
 
   showMorePlayersPill = false;
-  wakeLock : WakeLockSentinel | undefined;
 
   constructor(
     public quizHostService: QuizHostService,
@@ -81,7 +80,6 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.initPlayerListObservers()
-    this.manageWakeLock()
   }
 
   ngOnDestroy(): void {
@@ -359,20 +357,5 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   {
       var element = this.activePlayersComponent.nativeElement;
       return Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) < 1;
-  }
-
-  async manageWakeLock() {
-    await this.initWakeLock()
-    window.onfocus = async () => {
-      await this.initWakeLock();
-    }
-  };
-
-  async initWakeLock() {
-    try {
-      this.wakeLock = await navigator.wakeLock.request('screen');
-    } catch (err: any) {
-      console.error(`${err.name}, ${err.message}`);
-    }
-  }
+  } 
 }
