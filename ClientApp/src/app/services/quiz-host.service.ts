@@ -102,7 +102,8 @@ export class QuizHostService {
         setNumber: this.quizData.currentQuestionSetIndex+1,
         totalSets: this.quizData.quiz.questionSets.length,
         text: "Preostalo vrijeme",
-        timer: this.quizSettings.totalTimePerQuestion
+        timer: this.quizSettings.totalTimePerQuestion,
+        numberOfPlayers: this.quizData.players.length
       }
     }
     this.sendToGroup(JSON.stringify(data));
@@ -168,6 +169,18 @@ export class QuizHostService {
     this.sendToGroup(JSON.stringify(data))
   }
 
+  public sendNumberOfPlayersWhoAnsweredToGroup() {
+    const data = {
+      action: "NumberOfPlayersWhoAnswered",
+      data: {
+        numberOfPlayers: this.quizData.players.length,
+        numberOfPlayersWhoAnsweredCurrentQuestion: this.quizData.numberOfPlayersWhoAnsweredCurrentQuestion()
+      }
+    }
+
+    this.sendToGroup(JSON.stringify(data))
+  }
+
   removePlayerFromQuiz(player: Player ){
     this.quizData.removePlayer(player.connectionId)
     this.signalRService.removePlayerGromGroup(player.connectionId, this.quizData.groupName)
@@ -187,6 +200,7 @@ export class QuizHostService {
         break;
       case 'PlayerAnswered':
         this.quizData.recordAnswer(data.senderConnectionId, data.data.answerId,data.data.answerText)
+        this.sendNumberOfPlayersWhoAnsweredToGroup()
         if (this.quizData.checkIfAllPlayerAnsweredCurrentQuestion() &&
             this.quizSettings.MoveToNextQuestionWhenAllPlayersAnswered) {
               this.showCorrectAnswer()

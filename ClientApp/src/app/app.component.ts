@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
@@ -7,8 +7,10 @@ import { DOCUMENT } from '@angular/common';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'app';
+  wakeLock : WakeLockSentinel | undefined;
+
   constructor(public authService: AuthService, private router: Router, @Inject(DOCUMENT) private document: Document) { }
 
   ngOnInit(): void {
@@ -30,5 +32,23 @@ export class AppComponent implements OnInit {
     //     }
     //   })
     // }
+  }
+
+  ngAfterViewInit(): void {
+    this.manageWakeLock()
+  }
+  async manageWakeLock() {
+    await this.initWakeLock()
+    window.onfocus = async () => {
+      await this.initWakeLock();
+    }
+  };
+
+  async initWakeLock() {
+    try {
+      this.wakeLock = await navigator.wakeLock.request('screen');
+    } catch (err: any) {
+      console.error(`${err.name}, ${err.message}`);
+    }
   }
 }
