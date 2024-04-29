@@ -26,6 +26,10 @@ export class QuizPlayerService {
   constructor(public signalRService: SignalrService, public fb : UntypedFormBuilder, private dialog: MatDialog ) { }
 
   public async initialize() {
+    if (this.signalRService.isConnected()) {
+      return
+    }
+
     await this.signalRService.startConnection();
     this.signalRService.dataReceived.subscribe({
       next: (data) => this.processMessage(data)

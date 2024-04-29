@@ -28,14 +28,14 @@
         <mat-error *ngIf="quizPlayerService.joinErrorMessage">{{quizPlayerService.joinErrorMessage}}</mat-error>
 
         <div *ngIf="quizPlayerService.quizData.reconnectPossible">
-            <span *ngIf="!quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz, klikom na 'vrati
-                se u igru' mozete nastaviti.</span>
-            <span *ngIf="quizPlayerService.quizData.oldClientConnected">Vec ste prijavljeni na kviz u nekom drugom
-                tab-u. Klikom na vrati se mozete nastaviti kviz igrati ovdje.</span>
+            <span *ngIf="!quizPlayerService.quizData.oldClientConnected">Već ste prijavljeni na kviz, klikom na 'vrati
+                se u kviz' možete nastaviti.</span>
+            <span *ngIf="quizPlayerService.quizData.oldClientConnected">Već ste prijavljeni na kviz u nekom drugom
+                tab-u. Klikom na 'vrati se u kviz' možete nastaviti kviz igrati ovdje.</span>
 
             <button class="join-group-button" color="primary" mat-stroked-button (click)="reconnectToQuiz()"
                 type="submit" [disabled]="this.logInForm.invalid">
-                Vrati se u igru
+                Vrati se u kviz
             </button>
         </div>
     </div>

@@ -18,6 +18,7 @@ public class QuizHub : Hub
 
     public async Task HostQuiz()
     {
+        await DisconnectUserFromExistingGroup(Context.ConnectionId);
         string groupName = quizData.CreateGroup(Context.ConnectionId);
         await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         await Clients.Group(groupName).SendAsync("transferdata",
@@ -26,6 +27,7 @@ public class QuizHub : Hub
 
     public async Task JoinQuiz(String groupName, String playerName)
     {
+        await DisconnectUserFromExistingGroup(Context.ConnectionId);
         QuizHubGroup? group = quizData.FindGroup(groupName);
         if (group == null)
         {
@@ -139,6 +141,11 @@ public class QuizHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
+        await DisconnectUserFromExistingGroup(Context.ConnectionId);
+        await base.OnDisconnectedAsync(exception);
+    }
+
+    private async Task DisconnectUserFromExistingGroup(string connectionId) {
         QuizHubGroup? group = quizData.FindGroupOfConnectionId(Context.ConnectionId);
         if (group == null)
         {
@@ -155,8 +162,6 @@ public class QuizHub : Hub
             await Clients.Client(group.HostConnectionId).SendAsync("transferdata",
                     $"{{\"action\":\"{ActionTypes.PlayerDisconnected}\", \"data\":\"{Context.ConnectionId}\"}}");
         }
-
-        await base.OnDisconnectedAsync(exception);
     }
 
     public string ReconnectCheck(String groupName, String playerName, String oldConnectionId)

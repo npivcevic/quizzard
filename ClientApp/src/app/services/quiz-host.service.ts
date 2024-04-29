@@ -6,13 +6,16 @@ import { QuizHostData, QuizState } from '../classes/QuizHostData';
 import { QuizSettings } from '../model/QuizSettings';
 import { QuizzesService } from './quizzes.service';
 import { SoundService, Sound } from './sound.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizHostService {
-  public quizData!: QuizHostData
+  public quizData: QuizHostData = new QuizHostData()
   public quizSettings:QuizSettings = new QuizSettings()
+  
+  private dataReceivedObserver!: Subscription;
 
   constructor(public signalRService: SignalrService,
     public questionservice: QuestionService,
@@ -20,13 +23,20 @@ export class QuizHostService {
     private soundService: SoundService) { }
 
   public async initialize() {
-    this.quizData = new QuizHostData()
     await this.signalRService.startConnection();
-    this.signalRService.hostQuiz();
-    this.signalRService.dataReceived.subscribe({
+    this.dataReceivedObserver = this.signalRService.dataReceived.subscribe({
       next: (data) => this.processMessage(data)
     })
+    
+    if (!this.quizData.groupName) {
+      this.signalRService.hostQuiz();
+    }
+    
     this.quizSettings.loadFromLocalStorage();
+  }
+
+  public async stopProcessingMessages() {
+    this.dataReceivedObserver.unsubscribe()
   }
 
   backFromPreview(){

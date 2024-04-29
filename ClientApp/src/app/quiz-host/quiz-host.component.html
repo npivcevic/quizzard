@@ -32,7 +32,8 @@
     </div>
 
     <div *ngIf="detectMobileDevice()" class="body">
-        <p style="padding: 20px;">Pokretanje kviza nije moguće sa mobitela. Molimo posjetite stranicu sa računala.</p>
+        <p style="padding: 20px;">Organiziranje kviza je besplatno ali nije moguće sa mobitela. Molimo posjetite stranicu sa računala. <a [routerLink]="['/']">Vrati se nazad</a> </p>
+        
     </div>
 
     <div *ngIf="!detectMobileDevice()" class="body">
