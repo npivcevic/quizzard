@@ -69,6 +69,9 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.navbarservice.visible = false
+    if (detectMobileDevice()) {
+      return;
+    }
     this.quizHostService.initialize();
     this.quizHostService.quizData.quizState.subscribe({
       next: (data) => this.quizStateChanged(data)
@@ -85,6 +88,7 @@ export class QuizHostComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.navbarservice.visible = true
     this.soundService.stopBackgroundMusic();
+    this.quizHostService.stopProcessingMessages();
   }
 
   openQuizSettingsDialog() {

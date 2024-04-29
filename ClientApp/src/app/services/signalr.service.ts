@@ -16,9 +16,10 @@ export class SignalrService {
   constructor(@Inject('BASE_URL') private baseUrl: string) { }
 
   public async startConnection() {
-    // if (this.hubConnection && this.hubConnection.state === "Connected") {
-    //   TODO: handle case when connection is already established
-    // }
+    if (this.hubConnection && this.hubConnection.state === "Connected") {
+      return
+    }
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl}quizhub`, {
         transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling
@@ -94,6 +95,6 @@ export class SignalrService {
   }
 
   public isConnected() {
-    return this.hubConnection.state === "Connected"
+    return this.hubConnection && this.hubConnection.state === "Connected"
   }
 }
