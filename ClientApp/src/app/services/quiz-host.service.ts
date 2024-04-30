@@ -119,17 +119,6 @@ export class QuizHostService {
     this.sendToGroup(JSON.stringify(data));
   }
 
-  public sendEvaluatingAnswersToGroup() {
-    const data = {
-      action: "EvaluatingAnswers",
-      data: {
-        text: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedeće pitanje",
-        timer: this.quizSettings.nextQuestionDelay
-      }
-    }
-    this.sendToGroup(JSON.stringify(data))
-  }
-
   public sendNextSetDelay() {
     const data = {
       action: "NextSetDelay",
