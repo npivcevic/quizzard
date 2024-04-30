@@ -154,7 +154,9 @@ export class QuizHostService {
       action: "CorrectAnswer",
       data: {
         correctAnswerId: this.quizData.getCorrectAnswerToCurrentQuestion()?.answerId,
-        spinnerText: this.quizData.isLastQuestion() ? "Kviz gotov za" : "Sljedeće pitanje",
+        spinnerText: this.quizData.isLastQuestion()
+          ? this.quizData.isLastQuestionSet() ? "Kviz gotov za" : "Set gotov za"
+          : "Sljedeće pitanje",
         spinnerTimer: this.quizSettings.nextQuestionDelay,
         scoreBoard: this.quizData.playersScoreboard(),
       }
